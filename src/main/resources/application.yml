@@ -1,1 +1,14 @@
-spring.application.name=closetBuddy
+spring:
+  application:
+    name: closetBuddy
+
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+
+jwt:
+  secret:
