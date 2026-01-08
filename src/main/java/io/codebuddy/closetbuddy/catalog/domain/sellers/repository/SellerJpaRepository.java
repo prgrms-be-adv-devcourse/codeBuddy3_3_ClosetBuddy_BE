@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface SellerJpaRepository extends JpaRepository<Seller, Long> {
 
-    Optional<Seller> findBySellerId(Long sellerId);
+    Optional<Seller> findByMemberId(Long memberId);
 }
