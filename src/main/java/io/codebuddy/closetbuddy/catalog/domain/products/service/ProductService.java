@@ -21,10 +21,10 @@ public class ProductService {
 
         Product product = Product.builder()
                 .productId(request.productId())
-                .productName(request.ProductName())
+                .productName(request.productName())
                 .productPrice(request.productPrice())
                 .productStock(request.productStock())
-                .storeId(request.storeID())
+                .storeId(request.storeId())
                 .build();
 
         return productJpaRepository.save(product);
