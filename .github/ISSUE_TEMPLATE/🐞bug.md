@@ -1,7 +1,7 @@
 ---
 name: "\U0001F41EBug"
 about: 버그제보
-title: ''
+title: "[BUG] - "
 labels: ''
 assignees: ''
 

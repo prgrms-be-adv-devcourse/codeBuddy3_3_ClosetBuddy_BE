@@ -1,7 +1,7 @@
 ---
 name: "\U0001F4C4 Feature"
-about: "[Feat] - "
-title: ''
+about: 개발 할 기능에 대한 요약
+title: "[Feat] - "
 labels: ''
 assignees: ''
 
