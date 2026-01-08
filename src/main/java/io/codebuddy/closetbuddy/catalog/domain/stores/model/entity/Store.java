@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @Entity
-@Table(name = "store", schema = "catalog_db")
+@Table(name = "store")
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class Store {
     @Id

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Table(name = "seller", schema = "catalog_db",
+@Table(name = "seller",
     uniqueConstraints = @UniqueConstraint(name = "uk_seller_member", columnNames = "member_id"))
 @NoArgsConstructor
 public class Seller {

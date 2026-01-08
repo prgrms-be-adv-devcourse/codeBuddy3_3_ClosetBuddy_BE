@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@Table(name = "product", schema = "catalog_db")
+@Table(name = "product")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Product {
 
@@ -17,7 +17,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private Long productId;
-    @Column(name = "product_name", nullable = false, length = 200)
+    @Column(name = "product_name", length = 200)
     private String productName;
     @Column(name = "product_price", nullable = false)
     private Long productPrice;
