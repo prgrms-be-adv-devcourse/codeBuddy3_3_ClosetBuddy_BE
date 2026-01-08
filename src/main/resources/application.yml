@@ -1,14 +1,36 @@
 spring:
   application:
     name: closetBuddy
+  security:
+    user:
+      name: user
+      password: 1234
+
 
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test-db
+    username: sa
+    password:
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
 
   jpa:
     hibernate:
       ddl-auto: create
 
 
+
+
 jwt:
   secret:
+
+springdoc:
+  swagger-ui:
+    path: /closetBuddy
+
+server:
+  port: 8084
