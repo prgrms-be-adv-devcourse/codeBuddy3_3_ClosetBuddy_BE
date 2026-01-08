@@ -1,5 +1,5 @@
 ---
-name: "\U0001F4C4 Task Request"
+name: "☄️ Task Request"
 about: 요청할 작업 요약
 title: "[CHORE] - "
 labels: ''
