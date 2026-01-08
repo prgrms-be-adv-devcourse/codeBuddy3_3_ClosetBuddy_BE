@@ -1,5 +1,5 @@
 ---
-name: "\U0001F4C4 Feature"
+name: "\U0001F30F Feature"
 about: 개발 할 기능에 대한 요약
 title: "[Feat] - "
 labels: ''
