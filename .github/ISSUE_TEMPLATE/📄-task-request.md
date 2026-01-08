@@ -1,7 +1,7 @@
 ---
 name: "\U0001F4C4 Task Request"
-about: "[CHORE] - "
-title: ''
+about: 요청할 작업 요약
+title: "[CHORE] - "
 labels: ''
 assignees: ''
 

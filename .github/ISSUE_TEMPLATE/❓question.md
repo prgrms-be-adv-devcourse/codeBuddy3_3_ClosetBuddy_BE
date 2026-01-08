@@ -1,7 +1,7 @@
 ---
 name: "❓Question"
-about: "[QUESTION] - "
-title: ''
+about: 궁금하신 점이나 질문 내용을 간결하게 작성해 주세요.
+title: "[QUESTION] - "
 labels: ''
 assignees: ''
 
