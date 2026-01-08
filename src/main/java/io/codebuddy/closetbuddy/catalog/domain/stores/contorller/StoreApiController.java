@@ -21,7 +21,17 @@ public class StoreApiController {
     public ResponseEntity<Store> create(
             @RequestBody UpsertStoreRequest request
             ) {
-        Store Store = storeService.save(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(Store);
+        Store saved = storeService.save(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
+
+
+//    @GetMapping("/me/stores")
+//    @ResponseStatus(HttpStatus.OK)
+//    public ResponseEntity<Store> findMyStores(
+//
+//    ){
+//
+//        return ResponseEntity.
+//    }
 }
