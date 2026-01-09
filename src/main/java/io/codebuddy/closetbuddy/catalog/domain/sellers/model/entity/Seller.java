@@ -22,13 +22,16 @@ public class Seller {
     private String sellerName;
 
     @Builder
-    public Seller(Long sellerId, Long memberId) {
+    public Seller(Long sellerId, Long memberId, String sellerName) {
         this.sellerId = sellerId;
         this.memberId = memberId;
+        this.sellerName = sellerName;
     }
 
-    public void update(Long sellerId, Long memberId) {
+    //update 메서드 로직
+    public void update(Long sellerId, Long memberId, String sellerName) {
         this.sellerId = sellerId;
         this.memberId = memberId;
+        this.sellerName = sellerName;
     }
 }
