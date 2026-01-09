@@ -1,14 +1,31 @@
+server:
+  port: 8082
+
+
 spring:
   application:
-    name: closetBuddy
-
-  datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-
+    name: "UserService"
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: C_id
+            scope: C_secret
+              - email
+              - profile
+
+custom:
+  jwt:
+    redirection:
+      base: http://localhost:8084
 
 
-jwt:
-  secret:
+
