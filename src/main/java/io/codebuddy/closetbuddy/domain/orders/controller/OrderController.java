@@ -1,6 +1,7 @@
 package io.codebuddy.closetbuddy.domain.orders.controller;
 
-import io.codebuddy.closetbuddy.domain.orders.dto.OrderCreateRequestDto;
+import io.codebuddy.closetbuddy.domain.orders.dto.OrderRequestDto;
+import io.codebuddy.closetbuddy.domain.orders.dto.OrderResponseDto;
 import io.codebuddy.closetbuddy.domain.orders.dto.OrderStatusRequestDto;
 import io.codebuddy.closetbuddy.domain.orders.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,6 +10,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/orders")
@@ -22,13 +25,13 @@ public class OrderController {
             description = "주문 내역을 생성합니다."
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "주문 생성 성공"),
+            @ApiResponse(responseCode = "201", description = "주문 생성 성공"),
             @ApiResponse(responseCode = "400", description = "잘못된 요청 데이터"),
             @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @PostMapping
-    public ResponseEntity<OrderCreateRequestDto> createOrder(
-            @RequestBody OrderCreateRequestDto request
+    public ResponseEntity<OrderRequestDto> createOrder(
+            @RequestBody OrderRequestDto request
     ){
         return ResponseEntity.ok(request);
     }
@@ -43,10 +46,13 @@ public class OrderController {
             @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @GetMapping("/orderList")
-    public void checkOrder(
-            @RequestParam Long memberId
+    public ResponseEntity<List<OrderResponseDto>> getOrder(
+            @AuthenticationPrincipal CustomUserDetails userDetails
     ){
-        orderService.searchOrder(memberId);
+        Long memberId = userDetails.getMember().getId();
+        List<OrderResponseDto> orderResponseDto = orderService.getOrder(memberId);
+
+        return ResponseEntity.ok(orderResponseDto);
     }
 
     @Operation(
@@ -59,7 +65,7 @@ public class OrderController {
             @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @GetMapping("/orderDetail")
-    public void checkDetailOrder(
+    public void getDetailOrder(
             @RequestParam Long orderId
     ){
         orderService.searchDetailOrder(orderId);
