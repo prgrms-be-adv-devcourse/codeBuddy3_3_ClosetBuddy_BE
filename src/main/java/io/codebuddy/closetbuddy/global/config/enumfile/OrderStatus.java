@@ -1,4 +1,4 @@
-package io.codebuddy.closetbuddy.domain.orders;
+package io.codebuddy.closetbuddy.global.config.enumfile;
 
 public enum OrderStatus {
     CREATED,
