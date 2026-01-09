@@ -12,6 +12,7 @@ public class SellerService {
 
     private final SellerJpaRepository sellerJpaRepository;
 
+    //판매자 등록 서비스 로직
     public Seller save(UpsertSellerRequest request) {
 
         Seller seller = Seller.builder()
@@ -21,4 +22,6 @@ public class SellerService {
 
         return sellerJpaRepository.save(seller);
     }
+
+    //
 }
