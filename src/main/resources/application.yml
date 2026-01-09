@@ -3,13 +3,13 @@ spring:
     name: closetBuddy
   security:
     user:
-      name: user
-      password: 1234
+      name:
+      password:
 
   datasource:
-    url: jdbc:mysql://localhost:3306/closetBuddy_db?serverTimezone=Asia/Seoul&useSSL=false
-    username: root
-    password: tuna372#5585
+    url:
+    username:
+    password:
 
   jpa:
     hibernate:
@@ -24,7 +24,7 @@ jwt:
 
 springdoc:
   swagger-ui:
-    path: /closetBuddy
+    path:
 
 server:
-  port: 8084
+  port:
