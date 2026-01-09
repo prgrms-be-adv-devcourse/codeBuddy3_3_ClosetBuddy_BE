@@ -1,5 +1,6 @@
 package io.codebuddy.closetbuddy.catalog.domain.products.model.entity;
 
+import io.codebuddy.closetbuddy.catalog.domain.products.model.dto.Category;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -25,14 +26,32 @@ public class Product {
     private int  productStock;
     @Column(name = "store_id", nullable = false)
     private Long storeId;
+    @Column(name = "image_url")
+    private String imageUrl;
+    @Column(name = "category")
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
     @Builder
-    public Product(Long productId, String productName, Long productPrice, int productStock, Long storeId) {
+    public Product(Long productId, String productName, Long productPrice, int productStock, Long storeId, String imageUrl, Category category) {
         this.productId = productId;
         this.productName = productName;
         this.productPrice = productPrice;
         this.productStock = productStock;
         this.storeId = storeId;
+        this.imageUrl = imageUrl;
+        //카테고리는 분류가 안되어 있을 수 있음(null 허용)
+        this.category = category;
+    }
+
+    //update 비지니스 로직을 담은 메서드
+    public void update(String productName, Long productPrice, int productStock, Long storeId, String imageUrl, Category category) {
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.productStock = productStock;
+        this.storeId = storeId;
+        this.imageUrl = imageUrl;
+        this.category = category;
     }
 
 }

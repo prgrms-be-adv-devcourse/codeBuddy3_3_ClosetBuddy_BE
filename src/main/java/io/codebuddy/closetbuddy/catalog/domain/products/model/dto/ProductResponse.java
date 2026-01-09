@@ -1,11 +1,27 @@
 package io.codebuddy.closetbuddy.catalog.domain.products.model.dto;
 
+import io.codebuddy.closetbuddy.catalog.domain.products.model.entity.Product;
+
 public record ProductResponse(
         Long productId,
         String productName,
         Long productPrice,
         int productStock,
-        Long storeId
-        //추후 storeName 포함 가능
+        Long storeId,
+        String imageUrl,
+        Category category
 ) {
+
+    //엔티티를 DTO로 변환해주는 편의 메서드
+    public static ProductResponse from(Product product) {
+        return new ProductResponse(
+                product.getProductId(),
+                product.getProductName(),
+                product.getProductPrice(),
+                product.getProductStock(),
+                product.getStoreId(),
+                product.getImageUrl(),
+                product.getCategory()
+        );
+    }
 }
