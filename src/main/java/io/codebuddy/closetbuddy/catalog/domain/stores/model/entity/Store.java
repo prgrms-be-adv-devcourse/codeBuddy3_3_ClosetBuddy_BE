@@ -27,9 +27,7 @@ public class Store {
         this.storeName = storeName;
     }
 
-    public void update(Long storeId, Long sellerId, String storerName) {
-        this.storeId = storeId;
-        this.sellerId = sellerId;
+    public void update(String storerName) {
         this.storeName = storerName;
     }
 }

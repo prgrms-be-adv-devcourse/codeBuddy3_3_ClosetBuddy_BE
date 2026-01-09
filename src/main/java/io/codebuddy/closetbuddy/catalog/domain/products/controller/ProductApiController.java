@@ -29,7 +29,9 @@ public class ProductApiController {
 
     //상품 상세조회(단건)
     @GetMapping("products/{productId}")
-    public ResponseEntity<ProductResponse> getProduct(@PathVariable Long productId) {
+    public ResponseEntity<ProductResponse> getProduct(
+            @PathVariable Long productId
+    ) {
         ProductResponse response = productService.getProduct(productId);
         return ResponseEntity.ok(response);
     }
