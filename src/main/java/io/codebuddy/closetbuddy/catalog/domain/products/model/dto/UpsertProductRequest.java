@@ -5,7 +5,8 @@ public record UpsertProductRequest(
         String productName,
         Long productPrice,
         int productStock,
-        Long storeId
-        //추후 관심상품, 상품 설명, 상태등 추가예정
+        Long storeId,
+        String imageUrl,
+        Category category
 ) {
 }
