@@ -41,7 +41,11 @@ dependencies {
     //swagger-ui
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6'
 
+    // redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
     //mysql 드라이버
+
     runtimeOnly 'com.mysql:mysql-connector-j'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     //jjwt
