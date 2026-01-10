@@ -22,7 +22,9 @@ public class ProductApiController {
     //상품 등록
     @PostMapping("/products")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Product> create(@RequestBody UpsertProductRequest request) {
+    public ResponseEntity<Product> create(
+            @RequestBody UpsertProductRequest request
+    ) {
         Product saved = productService.save(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }

@@ -36,6 +36,7 @@ public class ProductService {
     }
 
     //상품 상세조회(단건)
+    @Transactional
     public ProductResponse getProduct(Long productId) {
         Product product = productJpaRepository.findById(productId)
                 .orElseThrow( () -> new IllegalArgumentException("상품을 찾을 수 없습니다."));
@@ -44,6 +45,7 @@ public class ProductService {
     }
 
     //특정 가게의 상품 목록 조회
+    @Transactional
     public List<ProductResponse> getProductByStoreId(Long storeId) {
         return productJpaRepository.findByStoreId(storeId).stream()
                 .map(ProductResponse::from)
@@ -51,6 +53,7 @@ public class ProductService {
     }
 
     //전체 상품목록 조회
+    @Transactional
     public List<ProductResponse> getAllProducts() {
         return productJpaRepository.findAll().stream()
                 .map(ProductResponse::from)
