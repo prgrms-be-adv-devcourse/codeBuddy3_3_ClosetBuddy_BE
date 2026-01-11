@@ -17,8 +17,9 @@ spring:
       client:
         registration:
           google:
-            client-id: C_id
-            scope: C_secret
+            client-id: cid
+            client-secret: csecret
+            scope:
               - email
               - profile
 
