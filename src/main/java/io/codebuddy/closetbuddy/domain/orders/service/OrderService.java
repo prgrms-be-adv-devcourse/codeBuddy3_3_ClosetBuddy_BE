@@ -1,7 +1,7 @@
 package io.codebuddy.closetbuddy.domain.orders.service;
 
-import io.codebuddy.closetbuddy.domain.orderItems.dto.OrderItemDto;
-import io.codebuddy.closetbuddy.domain.orderItems.entity.OrderItem;
+import io.codebuddy.closetbuddy.domain.orders.dto.OrderItemDto;
+import io.codebuddy.closetbuddy.domain.orders.entity.OrderItem;
 import io.codebuddy.closetbuddy.domain.orders.dto.OrderResponseDto;
 import io.codebuddy.closetbuddy.global.config.enumfile.OrderStatus;
 import io.codebuddy.closetbuddy.domain.orders.dto.OrderRequestDto;
@@ -23,6 +23,7 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
 
+    @Transactional
     public Long createOrder(OrderRequestDto request){
 
         Member member = memberRepository.findById(request.getMemberId())
@@ -49,6 +50,7 @@ public class OrderService {
         List<Order> orders = orderRepository.findAllByMemberId(memberId);
 
         return orders.stream()
+
                 .map(order -> {
                     OrderResponseDto orderResponseDto = new OrderResponseDto();
                     orderResponseDto.setOrderId(order.getOrderId());
@@ -58,7 +60,7 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public OrderResponseDto getDetailOrder(Long orderId){
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("주문이 없습니다."));

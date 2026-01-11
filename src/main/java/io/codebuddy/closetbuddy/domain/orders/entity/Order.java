@@ -1,6 +1,5 @@
 package io.codebuddy.closetbuddy.domain.orders.entity;
 
-import io.codebuddy.closetbuddy.domain.orderItems.entity.OrderItem;
 import io.codebuddy.closetbuddy.global.config.enumfile.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -52,6 +51,10 @@ public class Order {
 
         return order;
 
+    }
+
+    public OrderResponseDto toResponseDto() {
+        this.
     }
 
     // 상태 변경 -> 주문 취소

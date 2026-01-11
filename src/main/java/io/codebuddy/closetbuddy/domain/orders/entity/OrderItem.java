@@ -1,12 +1,10 @@
-package io.codebuddy.closetbuddy.domain.orderItems.entity;
+package io.codebuddy.closetbuddy.domain.orders.entity;
 
-import io.codebuddy.closetbuddy.domain.orders.entity.Order;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 @Entity
 @Getter
