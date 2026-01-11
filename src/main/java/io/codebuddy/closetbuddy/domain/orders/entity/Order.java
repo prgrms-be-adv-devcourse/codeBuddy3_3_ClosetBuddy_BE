@@ -53,10 +53,6 @@ public class Order {
 
     }
 
-    public OrderResponseDto toResponseDto() {
-        this.
-    }
-
     // 상태 변경 -> 주문 취소
     public void changeStatus(OrderStatus newStatus) {
         this.orderStatus = newStatus;
