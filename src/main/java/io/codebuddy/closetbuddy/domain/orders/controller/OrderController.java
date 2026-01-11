@@ -64,11 +64,12 @@ public class OrderController {
             @ApiResponse(responseCode = "400", description = "잘못된 요청 데이터"),
             @ApiResponse(responseCode = "500", description = "서버 오류")
     })
-    @GetMapping("/orderDetail")
-    public void getDetailOrder(
-            @RequestParam Long orderId
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderResponseDto> getDetailOrder(
+            @PathVariable Long orderId
     ){
-        orderService.searchDetailOrder(orderId);
+        OrderResponseDto response = orderService.getDetailOrder(orderId);
+        return ResponseEntity.ok(response);
     }
 
 
@@ -83,10 +84,9 @@ public class OrderController {
     })
     @PatchMapping("/{orderId}/status")
     public ResponseEntity<Void> canceledOrder(
-            @PathVariable Long orderId,
-            @RequestBody OrderStatusRequestDto request
+            @PathVariable Long orderId
     ){
-        orderService.cancelledOrder(orderId, request.orderStatus());
+        orderService.cancelledOrder(orderId);
         return ResponseEntity.ok().build();
     }
 }
