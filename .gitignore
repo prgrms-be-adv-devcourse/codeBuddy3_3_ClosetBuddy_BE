@@ -7,6 +7,9 @@ build/
 ##yml
 application.yml
 
+##compose
+src/main/resources/dockerfile.compose
+
 ### STS ###
 .apt_generated
 .classpath
