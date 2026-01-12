@@ -1,0 +1,18 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: closetBuddy-mysql
+    restart: always
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: closetBuddy
+      MYSQL_DATABASE: closetBuddy
+      MYSQL_USER: user
+      MYSQL_PASSWORD: closetBuddy
+      TZ: Asia/Seoul
+    volumes:
+      #초기화 스크립트
+      - src/main/resources/mysql/init/initDDL.sql
+      #도커 데이터 볼륨 경로
+      - closet-data:/var/lib/mysql
