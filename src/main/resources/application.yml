@@ -1,14 +1,20 @@
+server:
+  port: 8084
+
+springdoc:
+  swagger-ui:
+    path: /closetBuddy
+
 spring:
   application:
     name: closetBuddy
 
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://mysql:3306/closetBuddy?useSSL=false&serverTimezone=Asia/Seoul
+    username: user
+    password: closetBuddy
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
       ddl-auto: create
-
-
-jwt:
-  secret:
