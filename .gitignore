@@ -40,3 +40,5 @@ out/
 /src/main/resources/application.yml
 docker-compose.yml
 /mysql/init/data.sql
+
+
