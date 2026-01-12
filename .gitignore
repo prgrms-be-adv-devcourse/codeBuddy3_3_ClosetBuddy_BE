@@ -35,7 +35,7 @@ out/
 
 # Spring Boot config
 application.yml
-
+*.application.yml
 
 ### VS Code ###
 .vscode/
