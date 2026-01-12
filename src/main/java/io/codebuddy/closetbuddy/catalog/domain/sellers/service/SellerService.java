@@ -19,7 +19,8 @@ public class SellerService {
 
         Seller seller = Seller.builder()
                 .sellerId(request.sellerId())
-                .id(request.id())
+                .memberId(request.memberId())
+                .sellerName(request.sellerName())
                 .build();
 
         return sellerJpaRepository.save(seller);

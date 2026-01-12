@@ -6,6 +6,11 @@ import io.codebuddy.closetbuddy.catalog.domain.products.model.dto.UpsertProductR
 import io.codebuddy.closetbuddy.catalog.domain.products.model.entity.Product;
 import io.codebuddy.closetbuddy.catalog.domain.products.repository.ProductJpaRepository;
 
+import io.codebuddy.closetbuddy.catalog.domain.sellers.model.entity.Seller;
+import io.codebuddy.closetbuddy.catalog.domain.sellers.repository.SellerJpaRepository;
+import io.codebuddy.closetbuddy.catalog.domain.sellers.service.SellerService;
+import io.codebuddy.closetbuddy.catalog.domain.stores.model.entity.Store;
+import io.codebuddy.closetbuddy.catalog.domain.stores.repository.StoreJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,10 +22,25 @@ import java.util.List;
 public class ProductService {
 
     private final ProductJpaRepository productJpaRepository;
+    private final StoreJpaRepository storeJpaRepository;
+    private final SellerJpaRepository sellerJpaRepository;
+    private final SellerService sellerService;
 
     //상품 등록
     @Transactional
-    public Product save(UpsertProductRequest request) {
+    public Product save(UpsertProductRequest request, Long memberId) {
+        // 가게 조회
+        Store store = storeJpaRepository.findById(request.storeId())
+                .orElseThrow(() -> new IllegalArgumentException("Store not found"));
+
+        //판매자 조회 (id -> seller_id)
+        Seller seller = sellerJpaRepository.findByMemberId(memberId)
+                .orElseThrow( () -> new IllegalArgumentException("This member is not seller."));
+
+        //주인 확인
+        if (!store.getSellerId().equals(seller.getSellerId())) {
+            throw new IllegalArgumentException("This store is not your store.");
+        }
 
         Product product = Product.builder()
                 .productId(request.productId())
