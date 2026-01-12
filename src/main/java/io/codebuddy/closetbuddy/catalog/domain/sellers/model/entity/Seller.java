@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @Table(name = "seller",
-    uniqueConstraints = @UniqueConstraint(name = "uk_seller_member", columnNames = "member_id"))
+    uniqueConstraints = @UniqueConstraint(name = "uk_seller_member", columnNames = "id"))
 @NoArgsConstructor
 public class Seller {
 
@@ -16,22 +16,22 @@ public class Seller {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "seller_id")
     private Long sellerId;
-    @Column(name = "member_id", nullable = false)
-    private Long memberId;
+    @Column(name = "id", nullable = false)
+    private Long id;
     @Column(name = "seller_name")
     private String sellerName;
 
     @Builder
-    public Seller(Long sellerId, Long memberId, String sellerName) {
+    public Seller(Long sellerId, Long id, String sellerName) {
         this.sellerId = sellerId;
-        this.memberId = memberId;
+        this.id = id;
         this.sellerName = sellerName;
     }
 
     //update 메서드 로직
-    public void update(Long sellerId, Long memberId, String sellerName) {
+    public void update(Long sellerId, Long id, String sellerName) {
         this.sellerId = sellerId;
-        this.memberId = memberId;
+        this.id = id;
         this.sellerName = sellerName;
     }
 }
