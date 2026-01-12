@@ -8,7 +8,8 @@ build/
 application.yml
 
 ##compose
-docker-compose.yml
+src/main/resources/docker-compose.yml
+*/docker-compose.yml
 
 ### STS ###
 .apt_generated
