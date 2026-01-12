@@ -1,4 +1,4 @@
-package io.codebuddy.closetbuddy.domain.carts.Dto;
+package io.codebuddy.closetbuddy.domain.carts.Dto.response;
 
 import io.codebuddy.closetbuddy.domain.carts.entity.CartItem;
 

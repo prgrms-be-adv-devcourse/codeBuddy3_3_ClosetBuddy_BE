@@ -1,4 +1,4 @@
-package io.codebuddy.closetbuddy.domain.orders.dto;
+package io.codebuddy.closetbuddy.domain.orders.dto.request;
 
 public record OrderRequestDto(
         Long productName,
