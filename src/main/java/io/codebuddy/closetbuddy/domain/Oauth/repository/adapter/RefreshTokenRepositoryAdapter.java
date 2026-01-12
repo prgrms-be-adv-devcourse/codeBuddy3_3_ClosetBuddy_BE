@@ -1,11 +1,11 @@
 package io.codebuddy.closetbuddy.domain.Oauth.repository.adapter;
 
-import io.codebuddy.closetbuddy.domain.Oauth.Entity.Member ;
 import io.codebuddy.closetbuddy.domain.Oauth.Entity.RefreshTokenBlackList ;
 import io.codebuddy.closetbuddy.domain.Oauth.Entity.RefreshToken ;
 import io.codebuddy.closetbuddy.domain.Oauth.repository.RefreshTokenBlackListRepository ;
 import io.codebuddy.closetbuddy.domain.Oauth.repository.RefreshTokenRepository ;
 import io.codebuddy.closetbuddy.domain.Oauth.repository.TokenRepository ;
+import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

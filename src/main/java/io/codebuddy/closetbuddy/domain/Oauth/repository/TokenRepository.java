@@ -1,8 +1,8 @@
 package io.codebuddy.closetbuddy.domain.Oauth.repository;
 
-import io.codebuddy.closetbuddy.domain.Oauth.Entity.Member ;
 import io.codebuddy.closetbuddy.domain.Oauth.Entity.RefreshTokenBlackList ;
 import io.codebuddy.closetbuddy.domain.Oauth.Entity.RefreshToken ;
+import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 
 import java.util.Optional;
 

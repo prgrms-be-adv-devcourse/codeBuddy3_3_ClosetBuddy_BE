@@ -1,7 +1,7 @@
 package io.codebuddy.closetbuddy.domain.account.Login.security.auth;
 
-import io.codebuddy.closetbuddy.domain.account.common.model.entity.LoginMember;
-import io.codebuddy.closetbuddy.domain.account.common.repository.LoginRepository;
+import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
+import io.codebuddy.closetbuddy.domain.account.repository.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,7 +19,7 @@ public class MemberPrincipalDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // 넘겨받은 id 로 DB 에서 회원 정보를 찾음
-        LoginMember member = loginRepository.findByUserid(username);
+        Member member = loginRepository.findByUserid(username);
         System.out.println("username : " + username);
         System.out.println("member : " + member);
 

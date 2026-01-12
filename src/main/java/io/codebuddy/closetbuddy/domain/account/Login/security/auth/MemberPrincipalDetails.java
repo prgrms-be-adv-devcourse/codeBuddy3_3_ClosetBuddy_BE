@@ -1,6 +1,6 @@
 package io.codebuddy.closetbuddy.domain.account.Login.security.auth;
 
-import io.codebuddy.closetbuddy.domain.account.common.model.entity.LoginMember;
+import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,14 +14,14 @@ import java.util.List;
 // 이 클래스를 통해 Spring Security 에서 사용자의 정보를 담아둠
 public class MemberPrincipalDetails implements UserDetails {
     // member 패키지에 선언해놓은 member 엔티티를 사용하기 위해 선언
-    private final LoginMember member;
+    private final Member member;
 
-    public MemberPrincipalDetails(LoginMember member) {
+    public MemberPrincipalDetails(Member member) {
         this.member = member;
     }
 
     // 생성자
-    public LoginMember getMember() {
+    public Member getMember() {
         return member;
     }
 

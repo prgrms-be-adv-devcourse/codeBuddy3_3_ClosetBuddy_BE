@@ -1,12 +1,12 @@
 package io.codebuddy.closetbuddy.domain.Oauth.app;
 
-import io.codebuddy.closetbuddy.domain.Oauth.Entity.Member ;
 import io.codebuddy.closetbuddy.domain.Oauth.Entity.RefreshToken ;
-import io.codebuddy.closetbuddy.domain.Oauth.dto.Role ;
+import io.codebuddy.closetbuddy.domain.common.model.dto.Role;
 import io.codebuddy.closetbuddy.domain.Oauth.dto.TokenBody ;
 import io.codebuddy.closetbuddy.domain.Oauth.dto.TokenPair ;
 import io.codebuddy.closetbuddy.domain.Oauth.repository.TokenRepository ;
 import io.codebuddy.closetbuddy.domain.Oauth.config.JwtConfiguration ;
+import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;

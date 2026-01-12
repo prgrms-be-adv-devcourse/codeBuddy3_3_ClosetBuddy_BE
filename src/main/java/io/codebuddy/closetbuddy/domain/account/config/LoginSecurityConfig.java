@@ -1,4 +1,4 @@
-package io.codebuddy.closetbuddy.domain.account.common.config;
+package io.codebuddy.closetbuddy.domain.account.config;
 
 import io.codebuddy.closetbuddy.domain.account.Login.security.auth.MemberPrincipalDetailService;
 import io.codebuddy.closetbuddy.domain.account.Login.security.config.MemberAuthFailureHandler;
@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -30,12 +32,10 @@ public class LoginSecurityConfig {
     @Autowired
     MemberPrincipalDetailService memberPrincipalDetailService;
 
-    // in memory 방식으로 인증 처리를 진행 하기 위해 기존엔 Override 하여 구현했지만
-    // Spring Security 5.7.0 버전부터는 AuthenticationManagerBuilder를 직접 생성하여
-    // AuthenticationManager를 생성해야 한다.
-    @Autowired
-    public void configure(AuthenticationManagerBuilder auth) throws Exception{
-        auth.authenticationProvider(memberAuthenticatorProvider);
+    // AuthenticationManager를 생성
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
 
     @Bean

@@ -1,7 +1,7 @@
 package io.codebuddy.closetbuddy.domain.account.signup.controller;
 
-import io.codebuddy.closetbuddy.domain.account.common.model.entity.LoginMember;
-import io.codebuddy.closetbuddy.domain.account.common.model.dto.UserReqDTO;
+import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
+import io.codebuddy.closetbuddy.domain.account.signup.dto.UserReqDTO;
 import io.codebuddy.closetbuddy.domain.account.signup.service.SignService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,8 +18,8 @@ public class SignController {
     //회원가입
     @PostMapping("/authc")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<LoginMember> create(@RequestBody UserReqDTO userReqDTO) {
-        LoginMember saved = signService.create(userReqDTO);
+    public ResponseEntity<Member> create(@RequestBody UserReqDTO userReqDTO) {
+        Member saved = signService.create(userReqDTO);
         return ResponseEntity.status(
                 HttpStatus.CREATED
         ).body(saved);

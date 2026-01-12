@@ -1,8 +1,8 @@
 package io.codebuddy.closetbuddy.domain.account.signup.service;
 
-import io.codebuddy.closetbuddy.domain.account.common.model.entity.LoginMember;
-import io.codebuddy.closetbuddy.domain.account.common.repository.LoginRepository;
-import io.codebuddy.closetbuddy.domain.account.common.model.dto.UserReqDTO;
+import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
+import io.codebuddy.closetbuddy.domain.account.repository.LoginRepository;
+import io.codebuddy.closetbuddy.domain.account.signup.dto.UserReqDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,9 +14,9 @@ public class SignService {
     private final PasswordEncoder passwordEncoder;
 
 
-    public LoginMember create(UserReqDTO userReqDTO) {
+    public Member create(UserReqDTO userReqDTO) {
 
-        LoginMember loginmember = LoginMember.builder()
+        Member loginmember = Member.builder()
                 .username(userReqDTO.getUsername())
                 .userid(userReqDTO.getUserid())
                 .email(userReqDTO.getEmail())

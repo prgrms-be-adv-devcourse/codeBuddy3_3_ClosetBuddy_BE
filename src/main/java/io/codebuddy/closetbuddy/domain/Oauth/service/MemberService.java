@@ -1,9 +1,9 @@
 package io.codebuddy.closetbuddy.domain.Oauth.service;
 
-import io.codebuddy.closetbuddy.domain.Oauth.Entity.Member ;
 import io.codebuddy.closetbuddy.domain.Oauth.dto.MemberDetails;
 import io.codebuddy.closetbuddy.domain.Oauth.app.MemberDetailsFactory ;
 import io.codebuddy.closetbuddy.domain.Oauth.repository.MemberRepository ;
+import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -36,8 +36,8 @@ public class MemberService extends DefaultOAuth2UserService {
 
         Member findMember = memberOptional.orElseGet(() -> {
             Member member = Member.builder()
-                    .member_name(memberDetails.getName())
-                    .member_email(memberDetails.getEmail())
+                    .username(memberDetails.getName())
+                    .email(memberDetails.getEmail())
                     .build();
             return memberRepository.save(member);
         });

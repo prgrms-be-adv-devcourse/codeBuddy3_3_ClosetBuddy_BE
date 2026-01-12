@@ -1,6 +1,6 @@
 package io.codebuddy.closetbuddy.domain.Oauth.dto;
 
-import io.codebuddy.closetbuddy.domain.Oauth.Entity.Member ;
+import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,6 +10,8 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
+import io.codebuddy.closetbuddy.domain.common.model.dto.Role;
 
 /*Authentication에는 User(사용자)정보가 있어야 한다.
 MemberDetails 클래스는 Spring Security의 UserDetails 인터페이스를 구현한 사용자 세부 정보 클래스이다. 그래서 이 클래스는 사용자 인증과 관련된 정보를 제공하는 역할을 한다.
@@ -51,6 +53,7 @@ public class MemberDetails implements OAuth2User {
         memberDetails.id = member.getId();
 
         memberDetails.email = member.getEmail();
+
         memberDetails.role = member.getRole();
 
         return memberDetails;

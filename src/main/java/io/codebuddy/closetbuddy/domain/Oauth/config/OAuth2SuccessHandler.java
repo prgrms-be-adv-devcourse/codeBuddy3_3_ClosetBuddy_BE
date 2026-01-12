@@ -1,11 +1,11 @@
 package io.codebuddy.closetbuddy.domain.Oauth.config;
 
-import io.codebuddy.closetbuddy.domain.Oauth.Entity.Member;
 import io.codebuddy.closetbuddy.domain.Oauth.dto.MemberDetails ;
 import io.codebuddy.closetbuddy.domain.Oauth.dto.TokenPair ;
 import io.codebuddy.closetbuddy.domain.Oauth.app.JwtTokenProvider ;
 import io.codebuddy.closetbuddy.domain.Oauth.service.MemberService ;
 import io.codebuddy.closetbuddy.domain.Oauth.Entity.RefreshToken ;
+import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

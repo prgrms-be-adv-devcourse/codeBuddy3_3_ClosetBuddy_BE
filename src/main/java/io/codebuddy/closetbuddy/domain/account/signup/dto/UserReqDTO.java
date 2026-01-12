@@ -1,6 +1,6 @@
-package io.codebuddy.closetbuddy.domain.account.common.model.dto;
+package io.codebuddy.closetbuddy.domain.account.signup.dto;
 
-import io.codebuddy.closetbuddy.domain.account.common.model.dto.Role;
+import io.codebuddy.closetbuddy.domain.common.model.dto.Role;
 import lombok.Getter;
 
 @Getter

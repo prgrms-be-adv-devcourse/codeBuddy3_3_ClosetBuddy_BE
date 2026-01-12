@@ -1,6 +1,6 @@
-package io.codebuddy.closetbuddy.domain.account.common.model.entity;
+package io.codebuddy.closetbuddy.domain.common.model.entity;
 
-import io.codebuddy.closetbuddy.domain.account.common.model.dto.Role;
+import io.codebuddy.closetbuddy.domain.common.model.dto.Role;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "MEMBER")
-public class LoginMember {
+public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,13 +38,12 @@ public class LoginMember {
     private Role role;
 
     @Builder
-    public LoginMember(String username, String userid, String email, String password, String address, String phone, Role role) {
+    public Member(String username, String userid, String email, String password, String address, String phone, Role role) {
         this.username = username;
         this.userid = userid;
         this.email = email;
         this.password = password;
         this.address = address;
         this.phone = phone;
-        this.role = role;
     }
 }
