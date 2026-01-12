@@ -19,23 +19,19 @@ public class CartItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id", nullable = false)
     private Cart cart;
+//
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "product_id", nullable = false)
+//    private Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
-
-    @Column(name = "cart_stock", nullable = false)
-    private Integer cartStock;
+    @Column(name = "cart_count", nullable = false)
+    private Integer cartCount;
 
     @Column(name = "cart_price", nullable = false)
     private Integer cartPrice;
 
-    public void addCount(Integer count) {
-        this.cartCount += count;
-    }
-
-    public void updateStock(Integer cartStock) {
-        this.cartStock += count;
+    public void updateCount(Integer cartCount) {
+        this.cartCount += cartCount;
     }
 
 }

@@ -28,16 +28,16 @@ public class OrderItem {
 
     private Long orderId; // 주문 번호
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_id")
-    private Product product;
-
-    private String productName; // 상품 이름 가져오기
-    private Long producPrice; // 상품 가격 가져오기
-
-
-    private createOrderItem(){
-
-    }
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "product_id")
+//    private Product product;
+//
+//    private String productName; // 상품 이름 가져오기
+//    private Long producPrice; // 상품 가격 가져오기
+//
+//
+//    private createOrderItem(){
+//
+//    }
 
 }

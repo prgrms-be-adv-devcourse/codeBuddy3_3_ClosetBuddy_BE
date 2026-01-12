@@ -1,4 +1,4 @@
-package io.codebuddy.closetbuddy.domain.carts.Dto;
+package io.codebuddy.closetbuddy.domain.carts.Dto.request;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

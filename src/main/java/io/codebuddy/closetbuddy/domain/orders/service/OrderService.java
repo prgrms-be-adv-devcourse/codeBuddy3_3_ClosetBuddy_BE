@@ -1,10 +1,10 @@
 package io.codebuddy.closetbuddy.domain.orders.service;
 
-import io.codebuddy.closetbuddy.domain.orders.dto.OrderItemDto;
+import io.codebuddy.closetbuddy.domain.orders.dto.response.OrderItemDto;
 import io.codebuddy.closetbuddy.domain.orders.entity.OrderItem;
-import io.codebuddy.closetbuddy.domain.orders.dto.OrderResponseDto;
+import io.codebuddy.closetbuddy.domain.orders.dto.response.OrderResponseDto;
 import io.codebuddy.closetbuddy.global.config.enumfile.OrderStatus;
-import io.codebuddy.closetbuddy.domain.orders.dto.OrderRequestDto;
+import io.codebuddy.closetbuddy.domain.orders.dto.request.OrderRequestDto;
 import io.codebuddy.closetbuddy.domain.orders.entity.Order;
 import io.codebuddy.closetbuddy.domain.orders.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderService {
 
-    private final MemberRepository memberRepository;
-    private final ProductRepository productRepository;
+//    private final MemberRepository memberRepository;
+//    private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
 
     @Transactional
@@ -54,7 +54,6 @@ public class OrderService {
                 .map(order -> {
                     OrderResponseDto orderResponseDto = new OrderResponseDto();
                     orderResponseDto.setOrderId(order.getOrderId());
-                    orderResponseDto.setOrderStatus(order.getOrderStatus());
                     return orderResponseDto;
                 })
                 .collect(Collectors.toList());
