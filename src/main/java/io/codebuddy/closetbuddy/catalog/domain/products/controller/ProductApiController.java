@@ -23,9 +23,11 @@ public class ProductApiController {
     @PostMapping("/products")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Product> create(
+            //RequestParam은 member 기능 개발 완료 시 @AuthenticationPrincipal로 교체하여 사용
+            @RequestParam Long memberId,
             @RequestBody UpsertProductRequest request
     ) {
-        Product saved = productService.save(request);
+        Product saved = productService.save(request, memberId);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 

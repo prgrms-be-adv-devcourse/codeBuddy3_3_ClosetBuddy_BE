@@ -16,22 +16,22 @@ public class Seller {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "seller_id")
     private Long sellerId;
-    @Column(name = "id", nullable = false)
-    private Long id;
+    @Column(name = "id", nullable = false, unique = true)
+    private Long memberId;
     @Column(name = "seller_name")
     private String sellerName;
 
     @Builder
-    public Seller(Long sellerId, Long id, String sellerName) {
+    public Seller(Long sellerId, Long memberId, String sellerName) {
         this.sellerId = sellerId;
-        this.id = id;
+        this.memberId = memberId;
         this.sellerName = sellerName;
     }
 
     //update 메서드 로직
-    public void update(Long sellerId, Long id, String sellerName) {
+    public void update(Long sellerId, Long memberId, String sellerName) {
         this.sellerId = sellerId;
-        this.id = id;
+        this.memberId = memberId;
         this.sellerName = sellerName;
     }
 }
