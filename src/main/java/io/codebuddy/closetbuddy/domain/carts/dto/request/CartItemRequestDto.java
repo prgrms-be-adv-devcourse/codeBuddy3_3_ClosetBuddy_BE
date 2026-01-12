@@ -1,4 +1,4 @@
-package io.codebuddy.closetbuddy.domain.carts.Dto.request;
+package io.codebuddy.closetbuddy.domain.carts.dto.request;
 
 public record CartItemRequestDto(
         Integer cartCount

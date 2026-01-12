@@ -43,3 +43,6 @@ application-*.yml
 ### VS Code ###
 .vscode/
 src/main/resources/application.yml
+
+db_data/
+*.dblwr
