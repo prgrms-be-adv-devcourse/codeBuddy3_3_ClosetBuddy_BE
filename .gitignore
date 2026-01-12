@@ -37,6 +37,6 @@ out/
 .vscode/
 
 ### settings ###
-#/src/main/resources/application.yml
+/src/main/resources/application.yml
 docker-compose.yml
 /mysql/init/data.sql
