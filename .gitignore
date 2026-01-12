@@ -38,4 +38,5 @@ out/
 
 ### settings ###
 #/src/main/resources/application.yml
+docker-compose.yml
 /mysql/init/data.sql
