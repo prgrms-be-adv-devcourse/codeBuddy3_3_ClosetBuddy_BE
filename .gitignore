@@ -34,6 +34,8 @@ out/
 /.nb-gradle/
 
 # Spring Boot config
+application.yml
+
 
 ### VS Code ###
 .vscode/
