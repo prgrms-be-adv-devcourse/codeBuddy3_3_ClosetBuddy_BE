@@ -1,6 +1,6 @@
 package io.codebuddy.closetbuddy.domain.orders.service;
 
-import io.codebuddy.closetbuddy.domain.Oauth.repository.MemberRepository;
+import io.codebuddy.closetbuddy.domain.oauth.repository.MemberRepository;
 import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import io.codebuddy.closetbuddy.domain.orders.dto.response.OrderItemDto;
 import io.codebuddy.closetbuddy.domain.orders.entity.OrderItem;
