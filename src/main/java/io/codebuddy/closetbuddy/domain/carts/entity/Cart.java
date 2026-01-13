@@ -1,6 +1,6 @@
 package io.codebuddy.closetbuddy.domain.carts.entity;
 
-import io.codebuddy.closetbuddy.domain.member.entity.Member;
+import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

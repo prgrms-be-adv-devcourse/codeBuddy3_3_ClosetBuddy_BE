@@ -1,12 +1,14 @@
 package io.codebuddy.closetbuddy.domain.carts.service;
 
+import io.codebuddy.closetbuddy.domain.Oauth.repository.MemberRepository;
 import io.codebuddy.closetbuddy.domain.carts.dto.request.CartAddRequestDto;
 import io.codebuddy.closetbuddy.domain.carts.dto.response.CartResponseDto;
 import io.codebuddy.closetbuddy.domain.carts.entity.Cart;
 import io.codebuddy.closetbuddy.domain.carts.entity.CartItem;
 import io.codebuddy.closetbuddy.domain.carts.repository.CartItemRepository;
 import io.codebuddy.closetbuddy.domain.carts.repository.CartRepository;
-import io.codebuddy.closetbuddy.domain.member.entity.Member;
+
+import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import io.codebuddy.closetbuddy.domain.products.model.entity.Product;
 import io.codebuddy.closetbuddy.domain.products.repository.ProductJpaRepository;
 import lombok.RequiredArgsConstructor;
