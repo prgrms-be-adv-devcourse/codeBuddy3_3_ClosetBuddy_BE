@@ -1,6 +1,7 @@
 package io.codebuddy.closetbuddy.domain.products.model.entity;
 
 import io.codebuddy.closetbuddy.domain.products.model.dto.Category;
+import io.codebuddy.closetbuddy.domain.stores.model.entity.Store;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -24,8 +25,10 @@ public class Product {
     private Long productPrice;
     @Column(name = "product_stock", nullable = false)
     private int  productStock;
-    @Column(name = "store_id", nullable = false)
-    private Long storeId;
+    //store 엔티티의 store_id를 fk로 가짐
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "store_id", nullable = false)
+    private Store storeId;
     @Column(name = "image_url")
     private String imageUrl;
     @Column(name = "category")
@@ -33,7 +36,7 @@ public class Product {
     private Category category;
 
     @Builder
-    public Product(Long productId, String productName, Long productPrice, int productStock, Long storeId, String imageUrl, Category category) {
+    public Product(Long productId, String productName, Long productPrice, int productStock, Store storeId, String imageUrl, Category category) {
         this.productId = productId;
         this.productName = productName;
         this.productPrice = productPrice;
@@ -45,7 +48,7 @@ public class Product {
     }
 
     //update 비지니스 로직을 담은 메서드
-    public void update(String productName, Long productPrice, int productStock, Long storeId, String imageUrl, Category category) {
+    public void update(String productName, Long productPrice, int productStock, Store storeId, String imageUrl, Category category) {
         this.productName = productName;
         this.productPrice = productPrice;
         this.productStock = productStock;

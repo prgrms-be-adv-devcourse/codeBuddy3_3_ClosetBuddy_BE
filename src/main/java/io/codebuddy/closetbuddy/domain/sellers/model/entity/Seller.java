@@ -1,5 +1,6 @@
 package io.codebuddy.closetbuddy.domain.sellers.model.entity;
 
+import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,22 +17,23 @@ public class Seller {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "seller_id")
     private Long sellerId;
-    @Column(name = "id", nullable = false, unique = true)
-    private Long memberId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id", nullable = false)
+    private Member member;
     @Column(name = "seller_name")
     private String sellerName;
 
     @Builder
-    public Seller(Long sellerId, Long memberId, String sellerName) {
+    public Seller(Long sellerId, Member member, String sellerName) {
         this.sellerId = sellerId;
-        this.memberId = memberId;
+        this.member = member;
         this.sellerName = sellerName;
     }
 
     //update 메서드 로직
-    public void update(Long sellerId, Long memberId, String sellerName) {
+    public void update(Long sellerId, Member member, String sellerName) {
         this.sellerId = sellerId;
-        this.memberId = memberId;
+        this.member = member;
         this.sellerName = sellerName;
     }
 }
