@@ -1,15 +1,21 @@
 package io.codebuddy.closetbuddy.domain.carts.service;
 
+import io.codebuddy.closetbuddy.domain.Oauth.repository.MemberRepository;
 import io.codebuddy.closetbuddy.domain.carts.dto.request.CartAddRequestDto;
 import io.codebuddy.closetbuddy.domain.carts.dto.response.CartResponseDto;
 import io.codebuddy.closetbuddy.domain.carts.entity.Cart;
 import io.codebuddy.closetbuddy.domain.carts.entity.CartItem;
 import io.codebuddy.closetbuddy.domain.carts.repository.CartItemRepository;
 import io.codebuddy.closetbuddy.domain.carts.repository.CartRepository;
+
+import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
+import io.codebuddy.closetbuddy.domain.products.model.entity.Product;
+import io.codebuddy.closetbuddy.domain.products.repository.ProductJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +26,7 @@ public class CartService {
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
     private final MemberRepository memberRepository;
-    private final ProductRepository productRepository;
+    private final ProductJpaRepository productRepository;
 
     @Transactional
     public Long createCart(Long memberId, CartAddRequestDto request) {

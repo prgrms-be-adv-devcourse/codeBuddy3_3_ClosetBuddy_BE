@@ -1,5 +1,6 @@
 package io.codebuddy.closetbuddy.domain.carts.entity;
 
+import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Getter
-@Table(name = "carts")
+@Table(name = "cart")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Cart {
 

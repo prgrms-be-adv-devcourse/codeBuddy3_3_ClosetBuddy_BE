@@ -53,3 +53,6 @@ src/main/resources/application.yml
 
 db_data/
 *.dblwr
+
+#env
+.env
