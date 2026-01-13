@@ -2,15 +2,13 @@ package io.codebuddy.closetbuddy.domain.orders.entity;
 
 import io.codebuddy.closetbuddy.domain.products.model.entity.Product;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderItem {
 
@@ -35,5 +33,15 @@ public class OrderItem {
 
     private String productName; // 상품 이름 가져오기
     private Long productPrice; // 상품 가격 가져오기
+
+    public static OrderItem createOrderItem(Product product, Long productPrice, Integer integer) {
+
+
+
+    }
+
+    protected void setOrder(Order order) {
+        this.order = order;
+    }
 
 }

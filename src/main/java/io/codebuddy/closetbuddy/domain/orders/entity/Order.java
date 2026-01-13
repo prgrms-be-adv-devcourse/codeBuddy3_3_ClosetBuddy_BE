@@ -45,7 +45,7 @@ public class Order {
     public static Order createOrder(Member member, List<OrderItem> orderItems){
         Order order = new Order();
 
-        order.setMember(member);
+        order.SetMember(member);
         order.orderStatus = OrderStatus.CREATED;
         order.createdAt = LocalDateTime.now();
 

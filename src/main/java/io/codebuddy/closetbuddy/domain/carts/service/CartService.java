@@ -1,6 +1,6 @@
 package io.codebuddy.closetbuddy.domain.carts.service;
 
-import io.codebuddy.closetbuddy.domain.Oauth.repository.MemberRepository;
+import io.codebuddy.closetbuddy.domain.oauth.repository.MemberRepository;
 import io.codebuddy.closetbuddy.domain.carts.dto.request.CartAddRequestDto;
 import io.codebuddy.closetbuddy.domain.carts.dto.response.CartResponseDto;
 import io.codebuddy.closetbuddy.domain.carts.entity.Cart;

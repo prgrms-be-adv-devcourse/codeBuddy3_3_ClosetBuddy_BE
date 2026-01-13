@@ -1,10 +1,15 @@
 package io.codebuddy.closetbuddy.domain.carts.controller;
 
+import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberPrincipalDetails;
 import io.codebuddy.closetbuddy.domain.carts.dto.request.CartAddRequestDto;
+import io.codebuddy.closetbuddy.domain.carts.dto.response.CartResponseDto;
 import io.codebuddy.closetbuddy.domain.carts.service.CartService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/carts")
@@ -18,12 +23,11 @@ public class CartController {
 
     @PostMapping
     public ResponseEntity<Long> createCart(
-            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipal,
             @Valid @RequestBody CartAddRequestDto request
-            )
-    {
+    ) {
         Long cartItemId = cartService.createCart(
-                userPrincipal.getMember().getId(),
+                memberPrincipal.getMember().getId(),
                 request
         );
         return ResponseEntity.ok(cartItemId);
@@ -31,10 +35,9 @@ public class CartController {
 
     @GetMapping
     public ResponseEntity<List<CartResponseDto>> getCart(
-            @AuthenticationPrincipal UserPrincipal userPrincipal
-    )
-    {
-        Long memberId = userPrincipal.getMember().getId();
+            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipal
+    ) {
+        Long memberId = memberPrincipal.getMember().getId();
         List<CartResponseDto> cartList = cartService.getCartList(memberId);
 
         return ResponseEntity.ok(cartList);
@@ -42,13 +45,12 @@ public class CartController {
 
     @PatchMapping("/items/{cartItemId}")
     public ResponseEntity<Void> updateCartItem(
-            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipal,
             @PathVariable Long cartItemId,
             @RequestBody CartItemUpdateDto request
-    )
-    {
+    ) {
         cartService.updateCartItemCount(
-                userPrincipal.getMember().getId(),
+                memberPrincipal.getMember().getId(),
                 cartItemId,
                 request.count()
         );
@@ -57,12 +59,11 @@ public class CartController {
 
     @DeleteMapping("/items/{cartItemId}")
     public ResponseEntity<Void> deleteCartItem(
-            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipal,
             @PathVariable Long cartItemId
-    )
-    {
+    ) {
         cartService.deleteCartItem(
-                userPrincipal.getMember().getId(),
+                memberPrincipal.getMember().getId(),
                 cartItemId);
         return ResponseEntity.noContent().build();
     }
