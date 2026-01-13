@@ -1,8 +1,11 @@
 package io.codebuddy.closetbuddy.domain.orders.service;
 
+import io.codebuddy.closetbuddy.domain.member.entity.Member;
 import io.codebuddy.closetbuddy.domain.orders.dto.response.OrderItemDto;
 import io.codebuddy.closetbuddy.domain.orders.entity.OrderItem;
 import io.codebuddy.closetbuddy.domain.orders.dto.response.OrderResponseDto;
+import io.codebuddy.closetbuddy.domain.products.model.entity.Product;
+import io.codebuddy.closetbuddy.domain.products.repository.ProductJpaRepository;
 import io.codebuddy.closetbuddy.global.config.enumfile.OrderStatus;
 import io.codebuddy.closetbuddy.domain.orders.dto.request.OrderRequestDto;
 import io.codebuddy.closetbuddy.domain.orders.entity.Order;
@@ -20,7 +23,7 @@ import java.util.stream.Collectors;
 public class OrderService {
 
     private final MemberRepository memberRepository;
-    private final ProductRepository productRepository;
+    private final ProductJpaRepository productJpaRepository;
     private final OrderRepository orderRepository;
 
     @Transactional
@@ -32,7 +35,7 @@ public class OrderService {
         List<OrderItem> orderItems = new ArrayList<>();
 
         for(OrderItemDto itemDto : request.getItems()){
-            Product product = productRepository.findById(itemDto.getProductId())
+            Product product = productJpaRepository.findById(itemDto.getProductId())
                     .orElseThrow(()->new IllegalArgumentException("회원이 존재하지 않습니다."));
 
             OrderItem orderItem = OrderItem.createOrderItem(product, product.getPrice(), itemDto.getCount());

@@ -6,10 +6,13 @@ import io.codebuddy.closetbuddy.domain.carts.entity.Cart;
 import io.codebuddy.closetbuddy.domain.carts.entity.CartItem;
 import io.codebuddy.closetbuddy.domain.carts.repository.CartItemRepository;
 import io.codebuddy.closetbuddy.domain.carts.repository.CartRepository;
+import io.codebuddy.closetbuddy.domain.member.entity.Member;
+import io.codebuddy.closetbuddy.domain.products.model.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
