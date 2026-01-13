@@ -1,0 +1,15 @@
+package io.codebuddy.closetbuddy.domain.common.model.dto;
+
+import lombok.Getter;
+
+@Getter
+public class UserReqDTO {
+
+    private String username;
+    private String userid;
+    private String email;
+    private String password;
+    private String address;
+    private String phone;
+
+}
