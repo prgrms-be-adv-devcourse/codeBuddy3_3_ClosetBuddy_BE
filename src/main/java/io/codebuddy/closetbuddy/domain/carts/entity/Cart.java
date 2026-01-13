@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Getter
-@Table(name = "carts")
+@Table(name = "cart")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Cart {
 

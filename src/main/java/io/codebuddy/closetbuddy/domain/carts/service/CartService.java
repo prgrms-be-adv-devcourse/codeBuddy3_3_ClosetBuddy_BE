@@ -8,6 +8,7 @@ import io.codebuddy.closetbuddy.domain.carts.repository.CartItemRepository;
 import io.codebuddy.closetbuddy.domain.carts.repository.CartRepository;
 import io.codebuddy.closetbuddy.domain.member.entity.Member;
 import io.codebuddy.closetbuddy.domain.products.model.entity.Product;
+import io.codebuddy.closetbuddy.domain.products.repository.ProductJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +24,7 @@ public class CartService {
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
     private final MemberRepository memberRepository;
-    private final ProductRepository productRepository;
+    private final ProductJpaRepository productRepository;
 
     @Transactional
     public Long createCart(Long memberId, CartAddRequestDto request) {
