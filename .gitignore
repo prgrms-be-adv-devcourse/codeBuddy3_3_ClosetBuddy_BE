@@ -41,3 +41,6 @@ application.yml
 .vscode/
 
 .env
+
+# docker-compose
+docker-compose.yml

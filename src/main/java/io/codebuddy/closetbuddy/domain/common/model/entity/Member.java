@@ -38,12 +38,13 @@ public class Member {
     private Role role;
 
     @Builder
-    public Member(String username, String userid, String email, String password, String address, String phone, Role role) {
+    public Member(String username, String userid, String email, String password, String address, String phone,  Role role) {
         this.username = username;
         this.userid = userid;
         this.email = email;
         this.password = password;
         this.address = address;
         this.phone = phone;
+        this.role = role;
     }
 }

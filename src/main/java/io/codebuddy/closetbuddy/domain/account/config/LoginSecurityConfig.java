@@ -39,15 +39,16 @@ public class LoginSecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain LoginsecurityFilterChain(HttpSecurity http) throws Exception {
         // 생성해둔 MemberAuthenticatorProvider를 주입받는다.
         // 해당 클래스로 MemberPrincipalDetailsService 내부 로직을 수행하며
         // 인증 처리도 같이 진행된다
 
 
         http
-                .authorizeHttpRequests((requests) -> requests //authorizeHttpRequests: 권한을 설정해주는 메소드
-                        .requestMatchers("/", "/api/v1/authc","/api/v1/auth/login").permitAll()// requestMatchers: 요청 타입에 따라 URL 패턴을 지정하여 해당 요청 타입에 대한 보안 설정을 할 때 사용됩니다.
+                .securityMatcher("/api/**","/api/v1/**")
+                .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers("/api/v1/**").permitAll() // 회원가입/로그인/토큰재발급 등
                         .anyRequest().authenticated() //그외에는 인증 필요
                 )
                 .csrf(csrf -> csrf.disable())

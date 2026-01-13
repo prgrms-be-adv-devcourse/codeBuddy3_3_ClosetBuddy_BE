@@ -1,6 +1,5 @@
-package io.codebuddy.closetbuddy.domain.account.signup.dto;
+package io.codebuddy.closetbuddy.domain.common.model.dto;
 
-import io.codebuddy.closetbuddy.domain.common.model.dto.Role;
 import lombok.Getter;
 
 @Getter
@@ -12,6 +11,5 @@ public class UserReqDTO {
     private String password;
     private String address;
     private String phone;
-    private Role role;
 
 }

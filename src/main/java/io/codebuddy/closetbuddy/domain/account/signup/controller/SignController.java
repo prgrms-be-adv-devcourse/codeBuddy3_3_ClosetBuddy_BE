@@ -1,7 +1,7 @@
 package io.codebuddy.closetbuddy.domain.account.signup.controller;
 
 import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
-import io.codebuddy.closetbuddy.domain.account.signup.dto.UserReqDTO;
+import io.codebuddy.closetbuddy.domain.common.model.dto.UserReqDTO;
 import io.codebuddy.closetbuddy.domain.account.signup.service.SignService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

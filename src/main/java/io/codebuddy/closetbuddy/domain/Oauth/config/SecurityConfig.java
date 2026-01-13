@@ -3,6 +3,7 @@ package io.codebuddy.closetbuddy.domain.Oauth.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -14,16 +15,17 @@ import org.springframework.web.cors.CorsUtils;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     //1. SecurityFilterChain 빈으로 OAuth2 로그인과 JWT 필터 등록.
 
     /* Spring Security 설정을 통해 기존 인증 방식을 비활성화하고 API 엔드포인트에 대해 JWT 기반의 상태
     비저장 보안을 사용하는 OAuth2 로그인을 설정*/
-    @Bean("oauthSecurityFilterChain")
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+                .securityMatcher("/oauth2/**","login/oauth2/**")
                 .httpBasic(httpB -> httpB.disable())
                 .csrf(csrf -> csrf.disable())
                 .cors( cors -> cors.disable())
@@ -39,9 +41,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                         // 특정 경로는 모든 권한을 필요로 함
-                        .requestMatchers("/api/v1/auth/login")
-                        .hasAnyAuthority("MEMBER")
-                        //그 외 모든 요청은 인증을 요구합니다.
+                        .requestMatchers("/member").hasAnyAuthority("MEMBER") //특정 경로일 경우 MEMBER 권한을 부여한다.(이건 추후에 수정 가능)
+                        .requestMatchers("/admin").hasAnyAuthority("ADMIN") //특정 경로일 때 ADMIN 권한 부여
+                        .requestMatchers("/guest").hasAnyAuthority("GUEST") //특정 경로일 때 GUEST 권한 부여.
+                        //위에서 정의한 규칙 외 모든 엔드포인트 요청은 인증을 필요로 함.
                         .anyRequest()
                         .authenticated()
                     )

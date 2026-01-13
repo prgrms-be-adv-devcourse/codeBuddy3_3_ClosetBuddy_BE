@@ -1,9 +1,7 @@
 package io.codebuddy.closetbuddy.domain.account.Login.controller;
 
-import io.codebuddy.closetbuddy.domain.account.signup.dto.UserReqDTO;
-import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
+import io.codebuddy.closetbuddy.domain.common.model.dto.UserReqDTO;
 import io.codebuddy.closetbuddy.domain.account.Login.security.auth.MemberPrincipalDetails;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -47,7 +42,7 @@ public class LoginController {
 
         try {
             Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(userReqDTO.getUsername(), userReqDTO.getPassword())
+                    new UsernamePasswordAuthenticationToken(userReqDTO.getUserid(), userReqDTO.getPassword())
             );
 
             MemberPrincipalDetails userDetails = (MemberPrincipalDetails) auth.getPrincipal(); //UserDetails를 구현한 객체가 가지고 있는 정보들을 가지고 옴

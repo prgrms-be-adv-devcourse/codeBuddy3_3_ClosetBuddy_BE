@@ -1,8 +1,9 @@
 package io.codebuddy.closetbuddy.domain.account.signup.service;
 
+import io.codebuddy.closetbuddy.domain.common.model.dto.Role;
 import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import io.codebuddy.closetbuddy.domain.account.repository.LoginRepository;
-import io.codebuddy.closetbuddy.domain.account.signup.dto.UserReqDTO;
+import io.codebuddy.closetbuddy.domain.common.model.dto.UserReqDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class SignService {
                 .password(passwordEncoder.encode(userReqDTO.getPassword()))
                 .address(userReqDTO.getAddress())
                 .phone(userReqDTO.getPhone())
+                .role(Role.member)
                 .build();
 
 
