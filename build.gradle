@@ -31,13 +31,22 @@ dependencies {
     //spring jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     //lombok
-    implementation 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
     //validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+    //swagger-ui
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6'
+
+    // redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
     //mysql 드라이버
+
     runtimeOnly 'com.mysql:mysql-connector-j'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
@@ -55,6 +64,8 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
+    //swagger-ui
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6'
 }
 dependencyManagement {
     imports {
