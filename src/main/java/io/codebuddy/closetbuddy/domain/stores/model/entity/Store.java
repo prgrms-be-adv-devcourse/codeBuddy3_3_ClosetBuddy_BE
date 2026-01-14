@@ -1,10 +1,15 @@
 package io.codebuddy.closetbuddy.domain.stores.model.entity;
 
+import io.codebuddy.closetbuddy.domain.products.model.entity.Product;
+import io.codebuddy.closetbuddy.domain.sellers.model.entity.Seller;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -17,13 +22,16 @@ public class Store {
     private Long storeId;
     @Column(name = "store_name", nullable = false, length = 100)
     private String storeName;
-    @Column(name = "seller_id", nullable = false)
-    private Long sellerId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seller_id", nullable = false)
+    private Seller seller;
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Product> products = new ArrayList<>();
 
     @Builder
-    public Store(Long storeId, Long sellerId, String storeName) {
+    public Store(Long storeId, Seller seller, String storeName) {
         this.storeId = storeId;
-        this.sellerId = sellerId;
+        this.seller = seller;
         this.storeName = storeName;
     }
 

@@ -24,7 +24,7 @@ public class SignService {
                 .password(passwordEncoder.encode(userReqDTO.getPassword()))
                 .address(userReqDTO.getAddress())
                 .phone(userReqDTO.getPhone())
-                .role(Role.member)
+                .role(Role.MEMBER)
                 .build();
 
 

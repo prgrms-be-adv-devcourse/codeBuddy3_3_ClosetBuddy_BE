@@ -4,7 +4,7 @@ import io.codebuddy.closetbuddy.domain.stores.model.entity.Store;
 
 public record StoreResponse(
         Long storeId,
-        Long sellerId,
+        String SellerName,
         String storeName
 ) {
 
@@ -12,7 +12,7 @@ public record StoreResponse(
     public static StoreResponse from(Store store) {
         return new StoreResponse(
                 store.getStoreId(),
-                store.getSellerId(),
+                store.getSeller().getSellerName(),
                 store.getStoreName()
         );
     }

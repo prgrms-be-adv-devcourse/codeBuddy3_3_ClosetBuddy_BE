@@ -1,6 +1,7 @@
 package io.codebuddy.closetbuddy.domain.stores.contorller;
 
 
+import io.codebuddy.closetbuddy.domain.oauth.dto.MemberDetails;
 import io.codebuddy.closetbuddy.domain.stores.model.dto.StoreResponse;
 import io.codebuddy.closetbuddy.domain.stores.model.dto.UpdateStoreRequest;
 import io.codebuddy.closetbuddy.domain.stores.model.dto.UpsertStoreRequest;
@@ -9,10 +10,14 @@ import io.codebuddy.closetbuddy.domain.stores.service.StoreService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -42,14 +47,15 @@ public class StoreApiController {
     })
     @PostMapping("/stores")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Store> create(
-            @RequestBody UpsertStoreRequest request
+    public ResponseEntity<Long> create(
+            @AuthenticationPrincipal MemberDetails memberDetails,
+            @RequestBody @Valid UpsertStoreRequest request
             ) {
-        Store saved = storeService.save(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+        Long storeId = storeService.createStore(memberDetails.getId(), request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(storeId);
     }
 
-    //내 가게 조회
+    //내 가게 조회(단건)
     @Operation(
             summary = "가게 조회",
             description = "가게를 조회합니다."
@@ -65,10 +71,28 @@ public class StoreApiController {
             )
     })
     @GetMapping("/stores/{store_id}")
-    public ResponseEntity<StoreResponse> getStore(
+    public ResponseEntity<StoreResponse> getOneStore(
             @PathVariable Long store_id
     ) {
         StoreResponse response = storeService.getStore(store_id);
+        return ResponseEntity.ok(response);
+    }
+
+    // 내 상점 목록 조회 (로그인 필수)
+    // /stores/me
+    @GetMapping("/me")
+    public ResponseEntity<List<StoreResponse>> getMyStores(
+            @AuthenticationPrincipal MemberDetails memberDetails
+    ) {
+        List<StoreResponse> response = storeService.getMyStores(memberDetails.getId());
+        return ResponseEntity.ok(response);
+    }
+
+    // 전체 상점 목록 조회 (로그인 불필요)
+    // /stores
+    @GetMapping
+    public ResponseEntity<List<StoreResponse>> getAllStores() {
+        List<StoreResponse> response = storeService.getAllStores();
         return ResponseEntity.ok(response);
     }
 
@@ -98,11 +122,12 @@ public class StoreApiController {
     })
     @PutMapping("stores/{store_id}")
     public ResponseEntity<StoreResponse> updateStore(
+            @AuthenticationPrincipal MemberDetails memberDetails,
             @PathVariable Long store_id,
-            @RequestBody UpdateStoreRequest request
+            @RequestBody @Valid UpdateStoreRequest request
             ) {
-        StoreResponse response = storeService.updateStore(store_id, request);
-        return ResponseEntity.ok(response);
+        storeService.updateStore(memberDetails.getId(), store_id, request);
+        return ResponseEntity.ok().build();
     }
 
     //내 가게 삭제(폐점)
@@ -122,8 +147,11 @@ public class StoreApiController {
     })
     @DeleteMapping("stores/{store_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> deleteStore(@PathVariable Long store_id) {
-        storeService.deleteStore(store_id);
+    public ResponseEntity<Void> deleteStore(
+            @AuthenticationPrincipal MemberDetails memberDetails,
+            @PathVariable Long store_id
+    ) {
+        storeService.deleteStore(memberDetails.getId(), store_id);
         return ResponseEntity.noContent().build();
     }
 }

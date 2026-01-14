@@ -2,7 +2,7 @@ package io.codebuddy.closetbuddy.domain.products.service;
 
 import io.codebuddy.closetbuddy.domain.products.model.dto.ProductResponse;
 import io.codebuddy.closetbuddy.domain.products.model.dto.UpdateProductRequest;
-import io.codebuddy.closetbuddy.domain.products.model.dto.UpsertProductRequest;
+import io.codebuddy.closetbuddy.domain.products.model.dto.ProductCreateRequest;
 import io.codebuddy.closetbuddy.domain.products.model.entity.Product;
 import io.codebuddy.closetbuddy.domain.products.repository.ProductJpaRepository;
 
@@ -28,35 +28,38 @@ public class ProductService {
 
     //상품 등록
     @Transactional
-    public Product save(UpsertProductRequest request, Long memberId) {
-        // 가게 조회
-        Store store = storeJpaRepository.findById(request.storeId())
-                .orElseThrow(() -> new IllegalArgumentException("Store not found"));
+    public Long createProduct(Long memberId, Long storeId, ProductCreateRequest request) {
+        Store store = storeJpaRepository.findById(storeId)
+                .orElseThrow(() -> new IllegalArgumentException("상점이 존재하지 않습니다."));
 
-        //판매자 조회 (id -> seller_id)
-        Seller seller = sellerJpaRepository.findByMemberId(memberId)
-                .orElseThrow( () -> new IllegalArgumentException("This member is not seller."));
+        //검증 로직(로그인 한 사람이 이 상품을 올릴 상점 주인이 맞는지?
+        validateStoreOwner(memberId, store);
 
-        //주인 확인
-        if (!store.getSellerId().equals(seller.getSellerId())) {
-            throw new IllegalArgumentException("This store is not your store.");
-        }
+        //상품 생성
+        Product product = request.toEntity(store);
+        return productJpaRepository.save(product).getProductId();
+    }
 
-        Product product = Product.builder()
-                .productId(request.productId())
-                .productName(request.productName())
-                .productPrice(request.productPrice())
-                .productStock(request.productStock())
-                .storeId(request.storeId())
-                .imageUrl(request.imageUrl())
-                .category(request.category())
-                .build();
+    //상품 수정
+    @Transactional
+    public void updateProduct(Long memberId, Long productId, UpdateProductRequest request) {
+        Product product = productJpaRepository.findById(productId)
+                .orElseThrow( () -> new IllegalArgumentException(productId + "상품이 존재하지 않습니다."));
 
-        return productJpaRepository.save(product);
+        validateProductOwner(memberId, product);
+
+        product.update(
+                request.productName(),
+                request.productPrice(),
+                request.productStock(),
+                product.getStore(),
+                request.imageUrl(),
+                product.getCategory()
+        );
     }
 
     //상품 상세조회(단건)
-    @Transactional
+    @Transactional(readOnly = true)
     public ProductResponse getProduct(Long productId) {
         Product product = productJpaRepository.findById(productId)
                 .orElseThrow( () -> new IllegalArgumentException("상품을 찾을 수 없습니다."));
@@ -64,8 +67,8 @@ public class ProductService {
         return ProductResponse.from(product);
     }
 
-    //특정 가게의 상품 목록 조회
-    @Transactional
+    //특정 가게의 상품 목록 조회 (상점 페이지)
+    @Transactional(readOnly = true)
     public List<ProductResponse> getProductByStoreId(Long storeId) {
         return productJpaRepository.findByStoreId(storeId).stream()
                 .map(ProductResponse::from)
@@ -73,30 +76,35 @@ public class ProductService {
     }
 
     //전체 상품목록 조회
-    @Transactional
+    @Transactional(readOnly = true)
     public List<ProductResponse> getAllProducts() {
         return productJpaRepository.findAll().stream()
                 .map(ProductResponse::from)
                 .toList();
     }
 
-    //상품 수정
-    @Transactional
-    public ProductResponse updateProduct(Long productId, UpdateProductRequest request) {
-        Product product = productJpaRepository.findById(productId)
-                .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다. ID : " + productId));
-
-        product.update(request.productName(),  request.productPrice(), request.productStock(), request.storeId(), request.imageUrl(),request.category());
-        return ProductResponse.from(product);
-    }
-
     //상품 삭제
     @Transactional
-    public void deleteProduct(Long productId) {
-        if(!productJpaRepository.existsById(productId)) {
-            throw new IllegalArgumentException("상품을 찾을 수 없습니다. ID : " + productId);
-        }
-        productJpaRepository.deleteById(productId);
+    public void deleteProduct(Long memberId, Long productId) {
+        Product product = productJpaRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException(productId + " 상품이 존재하지 않습니다."));
+
+        validateProductOwner(memberId, product);
+        productJpaRepository.delete(product);
     }
 
+    // (상점 주인 확인용) 검증 로직
+    private void validateStoreOwner(Long memberId, Store store) {
+        if (!store.getSeller().getMember().getId().equals(memberId)) {
+            throw new IllegalStateException("본인의 상점에만 상품을 등록할 수 있습니다.");
+        }
+    }
+
+    // (상품 주인 확인용) 검증로직
+    private void validateProductOwner(Long memberId, Product product) {
+        Long ownerId = product.getStore().getSeller().getMember().getId();
+        if (!ownerId.equals(memberId)) {
+            throw new IllegalStateException("본인의 상품만 관리할 수 있습니다.");
+        }
+    }
 }
