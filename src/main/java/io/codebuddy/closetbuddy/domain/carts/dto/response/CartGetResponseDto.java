@@ -2,16 +2,14 @@ package io.codebuddy.closetbuddy.domain.carts.dto.response;
 
 import io.codebuddy.closetbuddy.domain.carts.entity.CartItem;
 
-public record CartResponseDto(
+public record CartGetResponseDto(
         String productName,
         Integer cartCount
-
-){
-    public CartResponseDto(CartItem entity){
+) {
+    public CartGetResponseDto(CartItem entity) {
         this(
                 entity.getProduct().getProductName(),
-                entity.getCartStock()
+                entity.getCartCount()
         );
     }
-
 }

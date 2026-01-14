@@ -1,15 +1,18 @@
 package io.codebuddy.closetbuddy.domain.sellers.controller;
 
 
-import io.codebuddy.closetbuddy.domain.sellers.model.dto.UpsertSellerRequest;
-import io.codebuddy.closetbuddy.domain.sellers.model.entity.Seller;
+import io.codebuddy.closetbuddy.domain.oauth.dto.MemberPrincipalDetails;
+import io.codebuddy.closetbuddy.domain.sellers.model.dto.SellerResponse;
+import io.codebuddy.closetbuddy.domain.sellers.model.dto.SellerUpsertRequest;
 import io.codebuddy.closetbuddy.domain.sellers.service.SellerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,6 +22,7 @@ public class SellerApiController {
 
     private final SellerService sellerService;
 
+    //member 도메인에서 처리할 api
     //판매자 등록
     @Operation(
             summary = "판매자 등록",
@@ -40,12 +44,82 @@ public class SellerApiController {
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Seller> create(
-            @RequestBody UpsertSellerRequest request
-            ) {
-        Seller saved = sellerService.save(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+    public ResponseEntity<Long> register(
+            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipalDetails,
+            @RequestBody @Valid SellerUpsertRequest request
+    ) {
+        Long sellerId = sellerService.registerSeller(memberPrincipalDetails.getId(), request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(sellerId);
     }
 
+    //내 정보 조회
+    @Operation(
+            summary = "판매자 정보 조회",
+            description = "판매자 정보를 조회합니다."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "판매자 정보 조회 완료."
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "잘못된 요청"
+            )
+    })
+    @GetMapping("/me")
+    public ResponseEntity<SellerResponse> getMyInfo(
+            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipalDetails
+    ) {
+        SellerResponse response = sellerService.getSellerInfo(memberPrincipalDetails.getId());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    //내 정보 수정
+    @Operation(
+            summary = "판매자 정보 수정",
+            description = "판매자 정보를 수정합니다."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "판매자 정보 수정 완료"
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "잘못된 요청"
+            )
+    })
+    @PutMapping("/me")
+    public ResponseEntity<Void> update(
+            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipalDetails,
+            @RequestBody @Valid SellerUpsertRequest request
+    ) {
+        sellerService.updateSeller(memberPrincipalDetails.getId(), request);
+        return ResponseEntity.ok().build();
+    }
+
+    //등록 해제
+    @Operation(
+            summary = "판매자 등록 해제",
+            description = "판매자 등록을 해제합니다."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "판매자 등록 해제 완료"
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "잘못된 요청"
+            )
+    })
+    @DeleteMapping("/me")
+    public ResponseEntity<Void> unregister(
+            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipalDetails
+    ) {
+        sellerService.unregisterSeller(memberPrincipalDetails.getId());
+        return ResponseEntity.noContent().build();
+    }
 
 }

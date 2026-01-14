@@ -21,7 +21,7 @@ public class MemberPrincipalDetailService implements UserDetailsService {
         // 넘겨받은 id 로 DB 에서 회원 정보를 찾음
         Member member = loginRepository.findByUserid(username);
         System.out.println("username : " + username);
-        System.out.println("member : " + member);
+        System.out.println("id : " + member);
 
         // 없을경우 에러 발생
         if(member == null)

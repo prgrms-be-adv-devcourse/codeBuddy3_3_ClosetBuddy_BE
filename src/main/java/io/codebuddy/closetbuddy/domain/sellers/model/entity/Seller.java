@@ -1,9 +1,14 @@
 package io.codebuddy.closetbuddy.domain.sellers.model.entity;
 
+import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
+import io.codebuddy.closetbuddy.domain.stores.model.entity.Store;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -16,22 +21,24 @@ public class Seller {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "seller_id")
     private Long sellerId;
-    @Column(name = "id", nullable = false, unique = true)
-    private Long memberId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id", nullable = false)
+    private Member member;
     @Column(name = "seller_name")
     private String sellerName;
+    //연속 cascade 추후 구현
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Store> stores = new ArrayList<>();
 
     @Builder
-    public Seller(Long sellerId, Long memberId, String sellerName) {
+    public Seller(Long sellerId, Member member, String sellerName) {
         this.sellerId = sellerId;
-        this.memberId = memberId;
+        this.member = member;
         this.sellerName = sellerName;
     }
 
     //update 메서드 로직
-    public void update(Long sellerId, Long memberId, String sellerName) {
-        this.sellerId = sellerId;
-        this.memberId = memberId;
+    public void update(String sellerName) {
         this.sellerName = sellerName;
     }
 }
