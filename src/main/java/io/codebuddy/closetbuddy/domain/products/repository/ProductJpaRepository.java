@@ -11,5 +11,5 @@ public interface ProductJpaRepository extends JpaRepository<Product, Long> {
     List<Product> findByStoreId(Long productId);
 
     //판매자가 가진 모든 가게의 상품을 조회하는 메서드
-    //List<Product> findAllByStoreIdIn(List<Long> storeIds);
+    List<Product> findAllByStoreId(Long storeId);
 }

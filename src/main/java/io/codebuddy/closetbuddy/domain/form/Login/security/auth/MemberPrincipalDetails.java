@@ -13,7 +13,7 @@ import java.util.List;
 // Spring Security 에 있는 UserDetails 를 구현한 클래스,
 // 이 클래스를 통해 Spring Security 에서 사용자의 정보를 담아둠
 public class MemberPrincipalDetails implements UserDetails {
-    // member 패키지에 선언해놓은 member 엔티티를 사용하기 위해 선언
+    // id 패키지에 선언해놓은 id 엔티티를 사용하기 위해 선언
     private final Member member;
 
     public MemberPrincipalDetails(Member member) {
@@ -25,7 +25,7 @@ public class MemberPrincipalDetails implements UserDetails {
         return member;
     }
 
-    // member 계정의 권한을 담아두기위해
+    // id 계정의 권한을 담아두기위해
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
@@ -33,13 +33,13 @@ public class MemberPrincipalDetails implements UserDetails {
         return authorities;
     }
 
-    // member 계정의 비밀번호를 담아두기 위해
+    // id 계정의 비밀번호를 담아두기 위해
     @Override
     public String getPassword() {
         return member.getPassword();
     }
 
-    // member 계정의 아이디를 담아두기 위해
+    // id 계정의 아이디를 담아두기 위해
     @Override
     public String getUsername() {
         return member.getUserid();

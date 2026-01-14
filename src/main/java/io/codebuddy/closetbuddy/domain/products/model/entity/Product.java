@@ -3,11 +3,9 @@ package io.codebuddy.closetbuddy.domain.products.model.entity;
 import io.codebuddy.closetbuddy.domain.products.model.dto.Category;
 import io.codebuddy.closetbuddy.domain.stores.model.entity.Store;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@Setter
 @Getter
 @Entity
 @Table(name = "product")
@@ -26,9 +24,9 @@ public class Product {
     @Column(name = "product_stock", nullable = false)
     private int  productStock;
     //store 엔티티의 store_id를 fk로 가짐
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
-    private Store storeId;
+    private Store store;
     @Column(name = "image_url")
     private String imageUrl;
     @Column(name = "category")
@@ -36,23 +34,23 @@ public class Product {
     private Category category;
 
     @Builder
-    public Product(Long productId, String productName, Long productPrice, int productStock, Store storeId, String imageUrl, Category category) {
+    public Product(Long productId, String productName, Long productPrice, int productStock, Store store, String imageUrl, Category category) {
         this.productId = productId;
         this.productName = productName;
         this.productPrice = productPrice;
         this.productStock = productStock;
-        this.storeId = storeId;
+        this.store = store;
         this.imageUrl = imageUrl;
         //카테고리는 분류가 안되어 있을 수 있음(null 허용)
         this.category = category;
     }
 
     //update 비지니스 로직을 담은 메서드
-    public void update(String productName, Long productPrice, int productStock, Store storeId, String imageUrl, Category category) {
+    public void update(String productName, Long productPrice, int productStock, Store store, String imageUrl, Category category) {
         this.productName = productName;
         this.productPrice = productPrice;
         this.productStock = productStock;
-        this.storeId = storeId;
+        this.store = store;
         this.imageUrl = imageUrl;
         this.category = category;
     }
