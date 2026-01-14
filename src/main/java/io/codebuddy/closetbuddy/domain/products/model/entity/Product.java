@@ -7,6 +7,7 @@ import lombok.*;
 
 @Setter
 @Getter
+@Setter
 @Entity
 @Table(name = "product")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -54,5 +55,4 @@ public class Product {
         this.imageUrl = imageUrl;
         this.category = category;
     }
-
 }
