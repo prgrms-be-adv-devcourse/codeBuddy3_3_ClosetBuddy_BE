@@ -6,7 +6,6 @@ import io.codebuddy.closetbuddy.domain.products.model.dto.ProductCreateRequest;
 import io.codebuddy.closetbuddy.domain.products.model.entity.Product;
 import io.codebuddy.closetbuddy.domain.products.repository.ProductJpaRepository;
 
-import io.codebuddy.closetbuddy.domain.sellers.model.entity.Seller;
 import io.codebuddy.closetbuddy.domain.sellers.repository.SellerJpaRepository;
 import io.codebuddy.closetbuddy.domain.sellers.service.SellerService;
 import io.codebuddy.closetbuddy.domain.stores.model.entity.Store;
@@ -89,6 +88,7 @@ public class ProductService {
         Product product = productJpaRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException(productId + " 상품이 존재하지 않습니다."));
 
+        //상품을 삭제할 권한이 있는 회원인지 검증
         validateProductOwner(memberId, product);
         productJpaRepository.delete(product);
     }

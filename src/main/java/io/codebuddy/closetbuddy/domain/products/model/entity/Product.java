@@ -17,18 +17,24 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private Long productId;
+
     @Column(name = "product_name", length = 200)
     private String productName;
+
     @Column(name = "product_price", nullable = false)
     private Long productPrice;
+
     @Column(name = "product_stock", nullable = false)
     private int  productStock;
+
     //store 엔티티의 store_id를 fk로 가짐
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
+
     @Column(name = "image_url")
     private String imageUrl;
+
     @Column(name = "category")
     @Enumerated(EnumType.STRING)
     private Category category;
