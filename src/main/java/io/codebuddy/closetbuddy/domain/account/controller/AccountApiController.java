@@ -1,12 +1,11 @@
 package io.codebuddy.closetbuddy.domain.account.controller;
 
 import io.codebuddy.closetbuddy.domain.account.model.dto.AccountCommand;
-import io.codebuddy.closetbuddy.domain.account.model.vo.AccountChargeResponse;
-import io.codebuddy.closetbuddy.domain.account.model.vo.AccountHistoryResponse;
-import io.codebuddy.closetbuddy.domain.account.model.vo.AccountResponse;
-import io.codebuddy.closetbuddy.domain.account.model.vo.PaymentConfirmRequest;
+import io.codebuddy.closetbuddy.domain.account.model.vo.*;
+import io.codebuddy.closetbuddy.domain.account.service.AccountService;
 import io.codebuddy.closetbuddy.domain.account.service.AccountServiceImpl;
 import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberPrincipalDetails;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AccountApiController {
 
-    private final AccountServiceImpl accountService;
+    private final AccountService accountService;
 
     //예치금 조회
     @GetMapping("/me")
@@ -81,7 +80,24 @@ public class AccountApiController {
         return ResponseEntity.ok(response);
     }
 
+    // 예치 내역 삭제 (환불)
+    /*
+    DeleteMapping을 사용할 경우 일부 환경에서 body 무시 위험
+    + 토스 api 사용 및 환불 사유 기록 로직을 수행하기 때문에 PostMapping 사용
+     */
+    @PostMapping("/history/{accountHistoryId}/cancel")
+    public ResponseEntity<Void> cancelHistory(
+            @AuthenticationPrincipal MemberPrincipalDetails principal,
+            @PathVariable Long accountHistoryId,
+            @RequestBody @Valid TossCancelRequest request
+    ) {
 
+        Long memberId = principal.getMember().getId();
+
+        accountService.deleteHistory(memberId, accountHistoryId, request.cancelReason());
+
+        return ResponseEntity.ok().build();
+    }
 
 
 }

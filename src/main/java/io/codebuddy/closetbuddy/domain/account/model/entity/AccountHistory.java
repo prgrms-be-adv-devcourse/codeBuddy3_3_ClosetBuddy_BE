@@ -51,5 +51,9 @@ public class AccountHistory {
         this.accountStatus = accountStatus;
     }
 
+    public void cancel() {
+        this.accountStatus = AccountStatus.CANCELED;
+    }
+
 }
 

@@ -17,5 +17,7 @@ public interface AccountService {
     List<AccountHistoryResponse> getHistoryAll(Long memberId);
 
     AccountHistoryResponse getHistory(Long memberId, Long historyId);
-    
+
+    void deleteHistory(Long memberId, Long historyId, String reason);
+
 }

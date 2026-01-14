@@ -16,5 +16,4 @@ public class TossPaymentResponse {
     private Long totalAmount;
     private String approvedAt;
 
-    // 필요한 경우 balanceAmount 등 다른 필드 추가 가능
 }
