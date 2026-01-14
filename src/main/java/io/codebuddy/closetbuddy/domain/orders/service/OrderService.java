@@ -4,6 +4,7 @@ import io.codebuddy.closetbuddy.domain.oauth.repository.MemberRepository;
 import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import io.codebuddy.closetbuddy.domain.orders.dto.response.OrderDetailResponseDto;
 import io.codebuddy.closetbuddy.domain.orders.dto.response.OrderItemDto;
+import io.codebuddy.closetbuddy.domain.orders.dto.response.OrderResponseDto;
 import io.codebuddy.closetbuddy.domain.orders.entity.OrderItem;
 import io.codebuddy.closetbuddy.domain.products.model.entity.Product;
 import io.codebuddy.closetbuddy.domain.products.repository.ProductJpaRepository;
@@ -76,8 +77,23 @@ public class OrderService {
      * @param memberId
      * @return
      */
-    public List<Order> getOrder(Long memberId) {
-        return orderRepository.findAllByMemberId(memberId);
+    public List<OrderResponseDto> getOrder(Long memberId) {
+        List<Order> order = orderRepository.findAllByMemberId(memberId);
+        return order.stream()
+                .map(o -> {
+
+                    List<OrderItem> orderItems = o.getOrderItem();
+
+                    return new OrderResponseDto(o.getOrderId(),
+                            orderItems.stream()
+                                    .map(oi -> oi.getProduct().getProductName())
+                                    .toList()
+                            ,
+                            orderItems.stream()
+                                    .mapToLong(oi -> oi.getProduct().getProductPrice())
+                                    .sum());
+                })
+                .toList();
     }
 
 
@@ -87,8 +103,7 @@ public class OrderService {
      * @param orderId
      * @return
      */
-    @Transactional(readOnly = true)
-    public List<OrderDetailResponseDto> getDetailOrder(Long orderId) {
+    public OrderDetailResponseDto getDetailOrder(Long orderId) {
 
         /**
          * 주문을 조회하고 없으면 예외를 발생시킵니다.
@@ -97,9 +112,9 @@ public class OrderService {
                 .orElseThrow(() -> new IllegalArgumentException("주문이 없습니다."));
 
         /**
-         * OrderDetailResponseDto에 주문 상품들의 상세 내역을 넣어 반환해줍니다.
+         * OrderItemDto에 주문 상품들의 상세 내역을 넣어 반환해줍니다.
          */
-        List<OrderDetailResponseDto> itemDto = order.getOrderItem().stream()
+        OrderItemDto itemDto = order.getOrderItem().stream()
                 .map(orderItem -> new OrderItemDto(
                         orderItem.getProduct().getStoreName(),
                         orderItem.getProductName(),
@@ -118,7 +133,7 @@ public class OrderService {
 
 
         /**
-         * Dto 로 변환해줍니다.
+         * 최종적으로 orderDetailResponseDto 로 변환해줍니다.
          */
         return new OrderDetailResponseDto(
                 order.getOrderId(),
@@ -131,7 +146,6 @@ public class OrderService {
 
     /**
      * 주문을 삭제합니다.
-     *
      * @param orderId 주문을 삭제하지만 실질적으로 상태값만 바뀜
      *                -> 정산할때 주문 내역을 취소 포함해서 보여줘야하기 때문에
      */

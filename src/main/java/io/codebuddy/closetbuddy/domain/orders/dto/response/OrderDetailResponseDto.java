@@ -6,7 +6,7 @@ import java.util.List;
 public record OrderDetailResponseDto(
         Long orderId,
         String storeName,
-        LocalDateTime orderDate,
+        LocalDateTime createdAt,
         List<OrderItemDto> orderItems
 ) {
 }

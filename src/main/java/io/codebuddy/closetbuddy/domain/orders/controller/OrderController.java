@@ -53,11 +53,12 @@ public class OrderController {
      * @return
      */
     @GetMapping("/{orderId}")
-    public ResponseEntity<List<OrderDetailResponseDto>> getDetailOrder(
+    public OrderDetailResponseDto getDetailOrder(
             @PathVariable Long orderId
     ){
         OrderDetailResponseDto response = orderService.getDetailOrder(orderId);
-        return ResponseEntity(response);
+
+        return response;
     }
 
 

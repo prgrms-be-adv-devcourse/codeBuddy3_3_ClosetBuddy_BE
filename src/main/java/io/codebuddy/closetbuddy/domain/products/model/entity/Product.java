@@ -2,12 +2,10 @@ package io.codebuddy.closetbuddy.domain.products.model.entity;
 
 import io.codebuddy.closetbuddy.domain.products.model.dto.Category;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
+@Setter
 @Entity
 @Table(name = "product")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
