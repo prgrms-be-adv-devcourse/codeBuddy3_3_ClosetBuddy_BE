@@ -8,6 +8,6 @@ public record OrderItemDto(
         String storeName,
         String productName,
         Integer orderCount,
-        BigDecimal orderPrice
+        Long orderPrice
 ) {
 }

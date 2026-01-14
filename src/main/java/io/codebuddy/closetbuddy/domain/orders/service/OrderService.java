@@ -114,9 +114,10 @@ public class OrderService {
         /**
          * OrderItemDto에 주문 상품들의 상세 내역을 넣어 반환해줍니다.
          */
-        OrderItemDto itemDto = order.getOrderItem().stream()
+        List<OrderItemDto> itemDto = order.getOrderItem().stream()
                 .map(orderItem -> new OrderItemDto(
-                        orderItem.getProduct().getStoreName(),
+                        orderItem.getId(),
+                        orderItem.getProduct().getStore().getStoreName(),
                         orderItem.getProductName(),
                         orderItem.getOrderCount(),
                         orderItem.getOrderPrice()
@@ -139,7 +140,7 @@ public class OrderService {
                 order.getOrderId(),
                 storeName,
                 order.getCreatedAt(),
-                order.getOrderItem()
+                itemDto
         );
 
     }
