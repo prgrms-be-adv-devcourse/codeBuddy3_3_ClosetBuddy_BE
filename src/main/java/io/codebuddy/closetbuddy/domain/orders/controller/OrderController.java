@@ -19,6 +19,11 @@ public class OrderController {
 
     private final OrderService orderService;
 
+    /**
+     *
+     * @param request
+     * @return
+     */
     @PostMapping
     public ResponseEntity<OrderRequestDto> createOrder(
             @RequestBody OrderRequestDto request
@@ -26,6 +31,11 @@ public class OrderController {
         return ResponseEntity.ok(request);
     }
 
+    /**
+     *
+     * @param memberPrincipal
+     * @return
+     */
     @GetMapping("/orderList")
     public ResponseEntity<List<OrderResponseDto>> getOrder(
             @AuthenticationPrincipal MemberPrincipalDetails memberPrincipal
@@ -36,14 +46,26 @@ public class OrderController {
         return ResponseEntity.ok(orderResponseDto);
     }
 
+
+    /**
+     *
+     * @param orderId
+     * @return
+     */
     @GetMapping("/{orderId}")
-    public ResponseEntity<OrderDetailResponseDto> getDetailOrder(
+    public ResponseEntity<List<OrderDetailResponseDto>> getDetailOrder(
             @PathVariable Long orderId
     ){
         OrderDetailResponseDto response = orderService.getDetailOrder(orderId);
-        return ResponseEntity.ok(response);
+        return ResponseEntity(response);
     }
 
+
+    /**
+     *
+     * @param orderId
+     * @return
+     */
     @PatchMapping("/{orderId}/status")
     public ResponseEntity<Void> canceledOrder(
             @PathVariable Long orderId

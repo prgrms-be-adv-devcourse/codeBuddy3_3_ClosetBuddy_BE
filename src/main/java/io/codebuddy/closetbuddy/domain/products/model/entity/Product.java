@@ -53,5 +53,4 @@ public class Product {
         this.imageUrl = imageUrl;
         this.category = category;
     }
-
 }

@@ -33,12 +33,13 @@ public class OrderItem {
 
     private String productName; // 상품 이름 가져오기
     private Long productPrice; // 상품 가격 가져오기
+    private Long storeName; // 가게 이름 가져오기
 
     public static OrderItem createOrderItem(Product product, Long productPrice, Integer integer) {
 
 
-
     }
+
 
     protected void setOrder(Order order) {
         this.order = order;

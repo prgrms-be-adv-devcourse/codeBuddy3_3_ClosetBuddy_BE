@@ -41,34 +41,37 @@ public class Order {
     private LocalDateTime updatedAt;
 
 
-    // 주문 생성
-    public static Order createOrder(Member member, List<OrderItem> orderItems){
+    // 주문하면 주문 상품(orderItem) 값이 들어간다.
+    public static Order createOrder(Member member, List<OrderItem> orderItems) {
+
+        // 주문 객체 생성
         Order order = new Order();
 
+        // 주문 회원 설정
         order.SetMember(member);
         order.orderStatus = OrderStatus.CREATED;
         order.createdAt = LocalDateTime.now();
 
-        for(OrderItem orderItem : orderItems) {
-            order.addOrderItem(orderItems);
+        // 주문 상품 리스트를 생성한다.
+        for (OrderItem orderItem : orderItems) {
+            order.addOrderItem(orderItem);
         }
         return order;
     }
 
-    public void changeStatus(OrderStatus newStatus) {
-        this.orderStatus = newStatus;
-    }
-
+    // 회원 생성용
     private void SetMember(Member member) {
         this.member = member;
     }
 
-    public void addOrderItem(List<OrderItem> orderItems) {
-        this.orderItem.addAll(orderItems);
+    // 주문 아이템 추가 로직
+    public void addOrderItem(OrderItem orderItem) {
+        this.orderItem.add(orderItem);
         orderItem.setOrder(this);
     }
 
-    public Long getId() {
-        return null;
+    // 주문 삭제용 -> 실제로 삭제 하지 않으니 상태값만 Cancelled로 변경한다.
+    public void changeStatus(OrderStatus newStatus) {
+        this.orderStatus = newStatus;
     }
 }

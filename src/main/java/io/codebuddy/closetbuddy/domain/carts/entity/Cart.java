@@ -3,6 +3,7 @@ package io.codebuddy.closetbuddy.domain.carts.entity;
 import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,6 +29,7 @@ public class Cart {
     private List<CartItem> cartItems = new ArrayList<>();
 
     // 생성자
+    @Builder
     public static Cart createCart(Member member) {
         Cart cart = new Cart();
         cart.member = member;
