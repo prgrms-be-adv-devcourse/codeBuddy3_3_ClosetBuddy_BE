@@ -2,9 +2,11 @@ package io.codebuddy.closetbuddy.domain.products.repository;
 
 import io.codebuddy.closetbuddy.domain.products.model.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface ProductJpaRepository extends JpaRepository<Product, Long> {
 
     //특정 store의 상품 목록 조회
