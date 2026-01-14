@@ -25,9 +25,6 @@ public class AccountApiController {
     public ResponseEntity<AccountResponse> getAccountBalance(
             @AuthenticationPrincipal MemberPrincipalDetails principal
     ){
-        if (principal == null) {
-            throw new IllegalStateException("로그인이 필요합니다.");
-        }
         // principal에서 Member 객체를 꺼내고 -> ID를 가져옴
         Long memberId = principal.getMember().getId();
         AccountResponse accountResponse = accountService.getAccountBalance(memberId);

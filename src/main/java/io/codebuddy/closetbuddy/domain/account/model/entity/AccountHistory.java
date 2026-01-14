@@ -27,7 +27,7 @@ public class AccountHistory {
     @Column(name = "payment_key")
     private String paymentKey;
 
-    @Column(name = "order_id")
+    @Column(name = "order_id", nullable = false, unique = true)
     private String orderId;
 
     @Column(name = "account_amount")
