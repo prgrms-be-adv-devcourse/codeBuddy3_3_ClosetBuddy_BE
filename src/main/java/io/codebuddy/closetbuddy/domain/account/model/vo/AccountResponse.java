@@ -9,6 +9,7 @@ public record AccountResponse(
 
         @NotNull
         Long balance,
+
         String message
 ) {
 }

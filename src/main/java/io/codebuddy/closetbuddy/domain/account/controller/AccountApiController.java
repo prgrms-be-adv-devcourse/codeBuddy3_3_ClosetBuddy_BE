@@ -1,6 +1,8 @@
 package io.codebuddy.closetbuddy.domain.account.controller;
 
 import io.codebuddy.closetbuddy.domain.account.model.dto.AccountCommand;
+import io.codebuddy.closetbuddy.domain.account.model.vo.AccountChargeResponse;
+import io.codebuddy.closetbuddy.domain.account.model.vo.AccountHistoryResponse;
 import io.codebuddy.closetbuddy.domain.account.model.vo.AccountResponse;
 import io.codebuddy.closetbuddy.domain.account.model.vo.PaymentConfirmRequest;
 import io.codebuddy.closetbuddy.domain.account.service.AccountServiceImpl;
@@ -9,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/account")
@@ -33,7 +37,7 @@ public class AccountApiController {
 
     //예치금 등록
     @PostMapping("/charge")
-    public ResponseEntity<AccountResponse> chargeDeposit(
+    public ResponseEntity<AccountChargeResponse> chargeAccount(
             @AuthenticationPrincipal MemberPrincipalDetails principal,
             @RequestBody PaymentConfirmRequest request
     ) {
@@ -46,7 +50,33 @@ public class AccountApiController {
                 request.orderId(),
                 request.paymentKey()
         );
-        AccountResponse response = accountService.charge(command);
+        AccountChargeResponse response = accountService.charge(command);
+
+        return ResponseEntity.ok(response);
+    }
+
+    // 예치 내역 전체 조회
+    @GetMapping("/history")
+    public ResponseEntity<List<AccountHistoryResponse>> getAccountHistory(
+            @AuthenticationPrincipal MemberPrincipalDetails principal
+    ) {
+        Long memberId = principal.getMember().getId();
+
+        List<AccountHistoryResponse> historyList = accountService.getHistoryAll(memberId);
+
+        return ResponseEntity.ok(historyList);
+    }
+
+    // 예치금 내역 상세(단건) 조회
+    @GetMapping("/history/{accountHistoryId}")
+    public ResponseEntity<AccountHistoryResponse> getAccountHistoryDetail(
+            @AuthenticationPrincipal MemberPrincipalDetails principal,
+            @PathVariable Long accountHistoryId
+    ) {
+
+        Long memberId = principal.getMember().getId();
+
+        AccountHistoryResponse response = accountService.getHistory(memberId, accountHistoryId);
 
         return ResponseEntity.ok(response);
     }

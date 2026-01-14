@@ -8,10 +8,7 @@ import io.codebuddy.closetbuddy.domain.account.model.dto.TossPaymentResponse;
 import io.codebuddy.closetbuddy.domain.account.model.entity.Account;
 import io.codebuddy.closetbuddy.domain.account.model.entity.AccountHistory;
 import io.codebuddy.closetbuddy.domain.account.model.mapper.AccountMapper;
-import io.codebuddy.closetbuddy.domain.account.model.vo.AccountChargeResponse;
-import io.codebuddy.closetbuddy.domain.account.model.vo.AccountResponse;
-import io.codebuddy.closetbuddy.domain.account.model.vo.AccountStatus;
-import io.codebuddy.closetbuddy.domain.account.model.vo.TossPaymentConfirm;
+import io.codebuddy.closetbuddy.domain.account.model.vo.*;
 import io.codebuddy.closetbuddy.domain.account.repository.AccountHistoryRepository;
 import io.codebuddy.closetbuddy.domain.account.repository.AccountRepository;
 import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
@@ -28,6 +25,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -74,7 +73,7 @@ public class AccountServiceImpl implements AccountService{
      * @param command(meberId, 예치할 금액,paymentKey,orderId)
      * @return accountChargeResponse(예치한 금액,총 예치된 금액, 예치 일시, 예치 상태)
      *
-     * 1. PG 결제 승인 요청
+     * 1. PG 결제 승인 요청 (먼저 수행하여 실패 시 db 접근 차단)
      * 2. 금액 검증
      * 3. 회원 검증
      * 4. 계좌 조회
@@ -87,7 +86,7 @@ public class AccountServiceImpl implements AccountService{
     public AccountChargeResponse charge(AccountCommand command) {
 
         // PG 결제 승인 요청
-        PaymentSuccessDto paymentSuccessDto = processTossPayment(command);
+        PaymentSuccessDto paymentSuccessDto = confirmTossPayment(command);
 
         // 금액 검증
         // 요청한 금액과 실제 결제된 금액이 다르면 예외 발생
@@ -124,10 +123,77 @@ public class AccountServiceImpl implements AccountService{
         return AccountMapper.toChargeResponse(paymentSuccessDto,account,accountHistory);
     }
 
+    /**
+     * 예치 내역 전체 조회
+     * @param memberId
+     * @return 예치 내역 전체 리스트(예치한 금액, 예치한 시각, 예치 상태)
+     *
+     * 1. 멤버 조회
+     * 2. 계좌 조회
+     * 3. 예치 내역 전체 조회 (최신순)
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<AccountHistoryResponse> getHistoryAll(Long memberId) {
+        Optional<Member> memberOptional=memberRepository.findById(memberId);
+
+        Member foundMember=memberOptional.orElseThrow(
+                ()->new IllegalArgumentException("존재하지 않는 회원입니다.")
+        );
+
+        // 계좌 조회
+        // 계좌가 아예 없다면 -> 내역도 없음 -> 빈 리스트 반환
+        Account account = accountRepository.findByMember(foundMember)
+                .orElse(null);
+
+        if (account == null) {
+            return Collections.emptyList();
+        }
+
+        // 예치 내역 전체 조회 (최신순)
+        List<AccountHistory> historyList = accountHistoryRepository.findAllByAccountOrderByAccountedAtDesc(account);
+
+        return AccountMapper.toHistoryResponseList(historyList);
+    }
+
+
+    /**
+     *
+     * 예치 내역 단건 조회
+     * @param memberId
+     * @param historyId
+     * @return 예치 내역 (예치한 금액, 예치한 시각, 예치 상태)
+     *
+     * 1. 멤버 검증
+     * 2. 계좌 조회
+     * 3. 예치 내역 단건 조회
+     *
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public AccountHistoryResponse getHistory(Long memberId, Long historyId) {
+
+        // 1. 멤버 검증
+        Member foundMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+
+        // 2. 계좌 조회
+        Account account = accountRepository.findByMember(foundMember)
+                .orElseThrow(() -> new IllegalArgumentException("계좌가 존재하지 않습니다."));
+
+        // 3. 내역 단건 조회
+        // 계좌 객체(account)를 조건으로 넣어서, 남의 내역을 조회하는 것을 차단
+        AccountHistory history = accountHistoryRepository.findByAccountAndAccountHistoryId(account, historyId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않거나 본인의 내역이 아닙니다."));
+
+        return AccountMapper.toHistoryResponse(history);
+    }
+
+
 
 
     // PG 결제 검증
-    private PaymentSuccessDto processTossPayment(AccountCommand command) {
+    private PaymentSuccessDto confirmTossPayment(AccountCommand command) {
         try {
             // 1. 시크릿 키 인코딩
             String authorization = "Basic " + Base64.getEncoder()
