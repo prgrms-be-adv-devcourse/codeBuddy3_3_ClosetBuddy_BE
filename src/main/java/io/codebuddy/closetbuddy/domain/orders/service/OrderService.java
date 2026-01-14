@@ -127,7 +127,7 @@ public class OrderService {
          * 모든 가게 이름을 끌어옵니다. 가게 이름은 주문 -> 주문 상품 -> 가게 이름으로 연결되어있습니다.
          */
         String storeName = order.getOrderItem().stream()
-                .map(orderItem -> orderItem.getProduct().getStoreName())
+                .map(orderItem -> orderItem.getProduct().getStore().getStoreName())
                 .distinct()
                 .collect(Collectors.joining(", "));
 
@@ -137,7 +137,7 @@ public class OrderService {
          */
         return new OrderDetailResponseDto(
                 order.getOrderId(),
-                order.getStoreName(),
+                storeName,
                 order.getCreatedAt(),
                 order.getOrderItem()
         );

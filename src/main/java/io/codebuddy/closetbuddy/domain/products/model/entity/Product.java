@@ -5,7 +5,6 @@ import io.codebuddy.closetbuddy.domain.stores.model.entity.Store;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Setter
 @Getter
 @Setter
 @Entity
