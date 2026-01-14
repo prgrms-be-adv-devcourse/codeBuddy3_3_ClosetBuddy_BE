@@ -8,9 +8,9 @@ import io.codebuddy.closetbuddy.domain.account.model.dto.TossPaymentResponse;
 import io.codebuddy.closetbuddy.domain.account.model.entity.Account;
 import io.codebuddy.closetbuddy.domain.account.model.entity.AccountHistory;
 import io.codebuddy.closetbuddy.domain.account.model.mapper.AccountMapper;
+import io.codebuddy.closetbuddy.domain.account.model.vo.AccountChargeResponse;
 import io.codebuddy.closetbuddy.domain.account.model.vo.AccountResponse;
 import io.codebuddy.closetbuddy.domain.account.model.vo.AccountStatus;
-import io.codebuddy.closetbuddy.domain.account.model.vo.PaymentConfirmRequest;
 import io.codebuddy.closetbuddy.domain.account.model.vo.TossPaymentConfirm;
 import io.codebuddy.closetbuddy.domain.account.repository.AccountHistoryRepository;
 import io.codebuddy.closetbuddy.domain.account.repository.AccountRepository;
@@ -43,16 +43,16 @@ public class AccountServiceImpl implements AccountService{
     @Value("${custom.payments.toss.secrets}")
     private String tossPaymentSecrets;
 
-    @Value("${custom.payments.toss.confirm-url}")
-    private String tossPaymentConfirmUrl;
+    @Value("${custom.payments.toss.url}")
+    private String tossPaymentUrl;
 
-    //예치금 조회
-    /*
-        1. 회원 조회
-        2. 회원의 계좌 조회
-        3. 등록된 예치금 조회
-
-        account 생성에 대한 검증이 필요한지?
+    /**
+     * 예치금 조회
+     * @param memberId
+     * @return 회원 아이디와 조회된 예치금을 리턴합니다.
+     * 1. 회원 확인
+     * 2. 예치금 계좌 확인
+     * 3. 예치금 조회
      */
     @Override
     @Transactional(readOnly=true)
@@ -69,17 +69,22 @@ public class AccountServiceImpl implements AccountService{
 
     }
 
-    //예치금 등록
-    /*
-        1- PG 결제 검증 - 먼저 수행하여 실패 시 db 접근 x
-        2- 회원 검증
-        3- 예치금 등록
-        4- 예치금 내역에 저장
-        5-
+    /**
+     * 예치금 등록
+     * @param command(meberId, 예치할 금액,paymentKey,orderId)
+     * @return accountChargeResponse(예치한 금액,총 예치된 금액, 예치 일시, 예치 상태)
+     *
+     * 1. PG 결제 승인 요청
+     * 2. 금액 검증
+     * 3. 회원 검증
+     * 4. 계좌 조회
+     * 5. 예치금 충전
+     * 6. 예치금 내역 저장
+     *
      */
     @Override
     @Transactional
-    public AccountResponse charge(AccountCommand command) {
+    public AccountChargeResponse charge(AccountCommand command) {
 
         // PG 결제 승인 요청
         PaymentSuccessDto paymentSuccessDto = processTossPayment(command);
@@ -116,7 +121,7 @@ public class AccountServiceImpl implements AccountService{
 
         accountHistoryRepository.save(accountHistory);
 
-        return AccountMapper.toResponse(account, "충전이 완료되었습니다.");
+        return AccountMapper.toChargeResponse(paymentSuccessDto,account,accountHistory);
     }
 
 
@@ -140,7 +145,7 @@ public class AccountServiceImpl implements AccountService{
 
             // 4. 요청 생성
             HttpRequest httpRequest = HttpRequest.newBuilder()
-                    .uri(URI.create(tossPaymentConfirmUrl))
+                    .uri(URI.create(tossPaymentUrl+"/confirm"))
                     .header("Authorization", authorization)
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
