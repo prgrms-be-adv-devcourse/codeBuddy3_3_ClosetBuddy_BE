@@ -1,11 +1,10 @@
 package io.codebuddy.closetbuddy.domain.stores.contorller;
 
 
-import io.codebuddy.closetbuddy.domain.oauth.dto.MemberDetails;
+import io.codebuddy.closetbuddy.domain.oauth.dto.MemberPrincipalDetails;
 import io.codebuddy.closetbuddy.domain.stores.model.dto.StoreResponse;
 import io.codebuddy.closetbuddy.domain.stores.model.dto.UpdateStoreRequest;
 import io.codebuddy.closetbuddy.domain.stores.model.dto.UpsertStoreRequest;
-import io.codebuddy.closetbuddy.domain.stores.model.entity.Store;
 import io.codebuddy.closetbuddy.domain.stores.service.StoreService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -48,10 +47,10 @@ public class StoreApiController {
     @PostMapping("/stores")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Long> create(
-            @AuthenticationPrincipal MemberDetails memberDetails,
+            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipalDetails,
             @RequestBody @Valid UpsertStoreRequest request
             ) {
-        Long storeId = storeService.createStore(memberDetails.getId(), request);
+        Long storeId = storeService.createStore(memberPrincipalDetails.getId(), request);
         return ResponseEntity.status(HttpStatus.CREATED).body(storeId);
     }
 
@@ -82,9 +81,9 @@ public class StoreApiController {
     // /stores/me
     @GetMapping("/me")
     public ResponseEntity<List<StoreResponse>> getMyStores(
-            @AuthenticationPrincipal MemberDetails memberDetails
+            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipalDetails
     ) {
-        List<StoreResponse> response = storeService.getMyStores(memberDetails.getId());
+        List<StoreResponse> response = storeService.getMyStores(memberPrincipalDetails.getId());
         return ResponseEntity.ok(response);
     }
 
@@ -122,11 +121,11 @@ public class StoreApiController {
     })
     @PutMapping("stores/{store_id}")
     public ResponseEntity<StoreResponse> updateStore(
-            @AuthenticationPrincipal MemberDetails memberDetails,
+            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipalDetails,
             @PathVariable Long store_id,
             @RequestBody @Valid UpdateStoreRequest request
             ) {
-        storeService.updateStore(memberDetails.getId(), store_id, request);
+        storeService.updateStore(memberPrincipalDetails.getId(), store_id, request);
         return ResponseEntity.ok().build();
     }
 
@@ -148,10 +147,10 @@ public class StoreApiController {
     @DeleteMapping("stores/{store_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteStore(
-            @AuthenticationPrincipal MemberDetails memberDetails,
+            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipalDetails,
             @PathVariable Long store_id
     ) {
-        storeService.deleteStore(memberDetails.getId(), store_id);
+        storeService.deleteStore(memberPrincipalDetails.getId(), store_id);
         return ResponseEntity.noContent().build();
     }
 }

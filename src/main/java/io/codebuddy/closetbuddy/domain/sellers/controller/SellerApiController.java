@@ -1,7 +1,7 @@
 package io.codebuddy.closetbuddy.domain.sellers.controller;
 
 
-import io.codebuddy.closetbuddy.domain.oauth.dto.MemberDetails;
+import io.codebuddy.closetbuddy.domain.oauth.dto.MemberPrincipalDetails;
 import io.codebuddy.closetbuddy.domain.sellers.model.dto.SellerResponse;
 import io.codebuddy.closetbuddy.domain.sellers.model.dto.SellerUpsertRequest;
 import io.codebuddy.closetbuddy.domain.sellers.service.SellerService;
@@ -45,10 +45,10 @@ public class SellerApiController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Long> register(
-            @AuthenticationPrincipal MemberDetails memberDetails,
+            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipalDetails,
             @RequestBody @Valid SellerUpsertRequest request
     ) {
-        Long sellerId = sellerService.registerSeller(memberDetails.getId(), request);
+        Long sellerId = sellerService.registerSeller(memberPrincipalDetails.getId(), request);
         return ResponseEntity.status(HttpStatus.CREATED).body(sellerId);
     }
 
@@ -69,9 +69,9 @@ public class SellerApiController {
     })
     @GetMapping("/me")
     public ResponseEntity<SellerResponse> getMyInfo(
-            @AuthenticationPrincipal MemberDetails memberDetails
+            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipalDetails
     ) {
-        SellerResponse response = sellerService.getSellerInfo(memberDetails.getId());
+        SellerResponse response = sellerService.getSellerInfo(memberPrincipalDetails.getId());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -92,19 +92,33 @@ public class SellerApiController {
     })
     @PutMapping("/me")
     public ResponseEntity<Void> update(
-            @AuthenticationPrincipal MemberDetails memberDetails,
+            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipalDetails,
             @RequestBody @Valid SellerUpsertRequest request
     ) {
-        sellerService.updateSeller(memberDetails.getId(), request);
+        sellerService.updateSeller(memberPrincipalDetails.getId(), request);
         return ResponseEntity.ok().build();
     }
 
     //등록 해제
+    @Operation(
+            summary = "판매자 등록 해제",
+            description = "판매자 등록을 해제합니다."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "판매자 등록 해제 완료"
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "잘못된 요청"
+            )
+    })
     @DeleteMapping("/me")
     public ResponseEntity<Void> unregister(
-            @AuthenticationPrincipal MemberDetails memberDetails
+            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipalDetails
     ) {
-        sellerService.unregisterSeller(memberDetails.getId());
+        sellerService.unregisterSeller(memberPrincipalDetails.getId());
         return ResponseEntity.noContent().build();
     }
 
