@@ -33,7 +33,7 @@ public class StoreService {
 
         Store store = request.toEntity(seller);
 
-        return storeJpaRepository.save(store).getStoreId();
+        return storeJpaRepository.save(store).getId();
     }
 
     //가게 정보 조회(단건) - 누구나 가능

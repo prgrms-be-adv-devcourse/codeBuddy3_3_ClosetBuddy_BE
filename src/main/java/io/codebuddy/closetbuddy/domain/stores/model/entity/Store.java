@@ -19,7 +19,7 @@ public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "store_id")
-    private Long storeId;
+    private Long id;
     @Column(name = "store_name", nullable = false, length = 100)
     private String storeName;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -29,8 +29,8 @@ public class Store {
     private List<Product> products = new ArrayList<>();
 
     @Builder
-    public Store(Long storeId, Seller seller, String storeName) {
-        this.storeId = storeId;
+    public Store(Long id, Seller seller, String storeName) {
+        this.id = id;
         this.seller = seller;
         this.storeName = storeName;
     }
