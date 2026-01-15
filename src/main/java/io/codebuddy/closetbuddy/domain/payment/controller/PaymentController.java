@@ -38,7 +38,7 @@ public class PaymentController {
         return ResponseEntity.ok(paymentService.payCancel(memberId, request));
     }
 
-    // 결제 조회
+    // 결제 단건 조회
     @GetMapping("/{orderId}")
     public ResponseEntity<PaymentResponse> getPaymentDetail(
             @AuthenticationPrincipal MemberPrincipalDetails principal,
@@ -48,6 +48,7 @@ public class PaymentController {
         return ResponseEntity.ok(paymentService.getPayment(memberId, orderId));
     }
 
+    // 결제 내역 전체 조회
     @GetMapping
     public ResponseEntity<List<PaymentResponse>> getPaymentList(
             @AuthenticationPrincipal MemberPrincipalDetails principal
