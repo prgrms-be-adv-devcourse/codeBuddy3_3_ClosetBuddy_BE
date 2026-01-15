@@ -1,4 +1,4 @@
-package io.codebuddy.closetbuddy.domain.oauth.Entity;
+package io.codebuddy.closetbuddy.domain.common.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

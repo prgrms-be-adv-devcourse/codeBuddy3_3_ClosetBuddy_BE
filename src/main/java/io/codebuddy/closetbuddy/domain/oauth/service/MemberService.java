@@ -2,7 +2,7 @@ package io.codebuddy.closetbuddy.domain.oauth.service;
 
 import io.codebuddy.closetbuddy.domain.oauth.dto.MemberPrincipalDetails;
 import io.codebuddy.closetbuddy.domain.oauth.app.MemberDetailsFactory ;
-import io.codebuddy.closetbuddy.domain.oauth.repository.MemberRepository;
+import io.codebuddy.closetbuddy.domain.common.repository.MemberRepository;
 import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

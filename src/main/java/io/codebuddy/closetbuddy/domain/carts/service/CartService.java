@@ -1,6 +1,6 @@
 package io.codebuddy.closetbuddy.domain.carts.service;
 
-import io.codebuddy.closetbuddy.domain.oauth.repository.MemberRepository;
+import io.codebuddy.closetbuddy.domain.common.repository.MemberRepository;
 import io.codebuddy.closetbuddy.domain.carts.dto.request.CartCreateRequestDto;
 import io.codebuddy.closetbuddy.domain.carts.dto.response.CartGetResponseDto;
 import io.codebuddy.closetbuddy.domain.carts.entity.Cart;
@@ -12,8 +12,6 @@ import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import io.codebuddy.closetbuddy.domain.products.model.entity.Product;
 import io.codebuddy.closetbuddy.domain.products.repository.ProductJpaRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

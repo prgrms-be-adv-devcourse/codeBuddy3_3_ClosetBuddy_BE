@@ -1,9 +1,10 @@
-package io.codebuddy.closetbuddy.domain.oauth.config;
+package io.codebuddy.closetbuddy.domain.common.config;
 
 import io.codebuddy.closetbuddy.domain.form.Login.security.config.MemberAuthFailureHandler;
 import io.codebuddy.closetbuddy.domain.form.Login.security.config.MemberAuthSuccessHandler;
 import io.codebuddy.closetbuddy.domain.form.Logout.config.ApiLogoutSuccessHandler;
 import io.codebuddy.closetbuddy.domain.form.Logout.config.JwtLogoutHandler;
+import io.codebuddy.closetbuddy.domain.oauth.config.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -52,7 +53,8 @@ public class SecurityConfig {
                 .securityMatcher("/oauth2/**","login/oauth2/**", "/api/**","/api/v1/**")
                 .authorizeHttpRequests((request) -> request
                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                        .requestMatchers("/api/v1/**").permitAll()
+                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/authc/**").permitAll()
                         .requestMatchers("/login", "/", "/signUp").permitAll()
                         .requestMatchers("/member").hasAnyAuthority("MEMBER")
                         .requestMatchers("/admin").hasAnyAuthority("ADMIN")

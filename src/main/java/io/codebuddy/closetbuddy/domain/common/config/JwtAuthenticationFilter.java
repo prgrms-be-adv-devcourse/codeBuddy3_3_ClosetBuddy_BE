@@ -1,8 +1,8 @@
-package io.codebuddy.closetbuddy.domain.oauth.config;
+package io.codebuddy.closetbuddy.domain.common.config;
 
 import io.codebuddy.closetbuddy.domain.oauth.dto.MemberPrincipalDetails;
-import io.codebuddy.closetbuddy.domain.oauth.dto.TokenBody ;
-import io.codebuddy.closetbuddy.domain.oauth.app.JwtTokenProvider;
+import io.codebuddy.closetbuddy.domain.common.model.dto.TokenBody;
+import io.codebuddy.closetbuddy.domain.common.app.JwtTokenProvider;
 import io.codebuddy.closetbuddy.domain.oauth.service.MemberService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

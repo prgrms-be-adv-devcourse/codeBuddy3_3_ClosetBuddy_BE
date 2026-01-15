@@ -2,7 +2,7 @@ package io.codebuddy.closetbuddy.domain.form.signup.service;
 
 import io.codebuddy.closetbuddy.domain.common.model.dto.Role;
 import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
-import io.codebuddy.closetbuddy.domain.oauth.repository.MemberRepository;
+import io.codebuddy.closetbuddy.domain.common.repository.MemberRepository;
 import io.codebuddy.closetbuddy.domain.common.model.dto.UserReqDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
