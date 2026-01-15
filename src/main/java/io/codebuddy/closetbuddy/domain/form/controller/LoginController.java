@@ -1,6 +1,6 @@
 package io.codebuddy.closetbuddy.domain.form.controller;
 
-import io.codebuddy.closetbuddy.domain.oauth.app.JwtTokenProvider;
+import io.codebuddy.closetbuddy.domain.common.app.JwtTokenProvider;
 import io.codebuddy.closetbuddy.domain.common.model.dto.UserReqDTO;
 import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberPrincipalDetails;

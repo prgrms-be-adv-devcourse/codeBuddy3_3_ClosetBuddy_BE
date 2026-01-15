@@ -1,4 +1,4 @@
-package io.codebuddy.closetbuddy.domain.oauth.repository;
+package io.codebuddy.closetbuddy.domain.common.repository;
 
 import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;

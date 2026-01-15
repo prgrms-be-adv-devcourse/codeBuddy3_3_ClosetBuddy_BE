@@ -1,6 +1,5 @@
-package io.codebuddy.closetbuddy.domain.oauth.Entity;
+package io.codebuddy.closetbuddy.domain.common.model.entity;
 
-import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 

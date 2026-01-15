@@ -1,4 +1,4 @@
-package io.codebuddy.closetbuddy.domain.oauth.config;
+package io.codebuddy.closetbuddy.domain.common.config;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

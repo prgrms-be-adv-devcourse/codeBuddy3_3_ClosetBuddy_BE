@@ -1,6 +1,6 @@
 package io.codebuddy.closetbuddy.domain.orders.service;
 
-import io.codebuddy.closetbuddy.domain.oauth.repository.MemberRepository;
+import io.codebuddy.closetbuddy.domain.common.repository.MemberRepository;
 import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import io.codebuddy.closetbuddy.domain.orders.dto.response.OrderDetailResponseDto;
 import io.codebuddy.closetbuddy.domain.orders.dto.response.OrderItemDto;
@@ -12,7 +12,6 @@ import io.codebuddy.closetbuddy.global.config.enumfile.OrderStatus;
 import io.codebuddy.closetbuddy.domain.orders.dto.request.OrderRequestDto;
 import io.codebuddy.closetbuddy.domain.orders.entity.Order;
 import io.codebuddy.closetbuddy.domain.orders.repository.OrderRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
