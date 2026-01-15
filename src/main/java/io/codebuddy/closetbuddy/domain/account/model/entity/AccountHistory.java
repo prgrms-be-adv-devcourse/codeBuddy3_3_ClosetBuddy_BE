@@ -1,6 +1,7 @@
 package io.codebuddy.closetbuddy.domain.account.model.entity;
 
 import io.codebuddy.closetbuddy.domain.account.model.vo.AccountStatus;
+import io.codebuddy.closetbuddy.domain.account.model.vo.TransactionType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -24,36 +25,37 @@ public class AccountHistory {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @Column(name = "payment_key")
-    private String paymentKey;
-
-    @Column(name = "order_id", nullable = false, unique = true)
-    private String orderId;
-
-    @Column(name = "account_amount")
-    private Long accountAmount;
-
-    @Column(name = "accounted_at")
-    private LocalDateTime accountedAt;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "account_status")
-    private AccountStatus accountStatus=AccountStatus.READY;
+    private TransactionType type;
+
+    @Column(name = "account_amount")
+    private Long amount;
+
+    @Column(name = "balance_snapshot")
+    private Long balanceSnapshot; //변동 후 잔액
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+
+    @Column(name = "ref_id")
+    private Long refId;           // paymentKey 대신 논리적 ID 저장
+    // CHARGE면 deposit_charge.id
+    // USE면 payment.id
+
 
     @Builder
-    public AccountHistory(Long accountHistoryId, Account account, String paymentKey, String orderId, Long accountAmount, LocalDateTime accountedAt, AccountStatus accountStatus) {
+    public AccountHistory(Long accountHistoryId, Account account, TransactionType type, Long amount, Long balanceSnapshot, LocalDateTime createdAt, Long refId) {
         this.accountHistoryId = accountHistoryId;
-        this.account=account;
-        this.paymentKey = paymentKey;
-        this.orderId = orderId;
-        this.accountAmount = accountAmount;
-        this.accountedAt = accountedAt;
-        this.accountStatus = accountStatus;
-    }
-
-    public void cancel() {
-        this.accountStatus = AccountStatus.CANCELED;
+        this.account = account;
+        this.type = type;
+        this.amount = amount;
+        this.balanceSnapshot=balanceSnapshot;
+        this.createdAt = createdAt;
+        this.refId = refId;
     }
 
 }
+
 

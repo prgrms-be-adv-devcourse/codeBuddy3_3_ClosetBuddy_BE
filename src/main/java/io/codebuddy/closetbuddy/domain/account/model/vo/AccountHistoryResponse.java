@@ -10,9 +10,12 @@ public record AccountHistoryResponse(
         Long accountAmount, //예치한 금액
 
         @NotNull
-        LocalDateTime accountedAt,
+        LocalDateTime createdAt,
 
         @NotNull
-        AccountStatus accountStatus
+        TransactionType type,
+
+        @NotNull
+        Long balanceSnapshot
 ) {
 }

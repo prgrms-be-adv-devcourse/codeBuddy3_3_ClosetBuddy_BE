@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface AccountHistoryRepository extends JpaRepository<AccountHistory,Long> {
 
-    List<AccountHistory> findAllByAccountOrderByAccountedAtDesc(Account account);
+    List<AccountHistory> OrderByCreatedAtDesc(Account account);
 
     Optional<AccountHistory> findByAccountAndAccountHistoryId(Account account, Long accountHistoryId);
 }

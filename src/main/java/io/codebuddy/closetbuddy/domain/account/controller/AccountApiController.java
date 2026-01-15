@@ -33,7 +33,7 @@ public class AccountApiController {
 
     //예치금 등록
     @PostMapping("/charge")
-    public ResponseEntity<AccountChargeResponse> chargeAccount(
+    public ResponseEntity<AccountHistoryResponse> chargeAccount(
             @AuthenticationPrincipal MemberPrincipalDetails principal,
             @RequestBody PaymentConfirmRequest request
     ) {
@@ -46,7 +46,7 @@ public class AccountApiController {
                 request.orderId(),
                 request.paymentKey()
         );
-        AccountChargeResponse response = accountService.charge(command);
+        AccountHistoryResponse response = accountService.charge(command);
 
         return ResponseEntity.ok(response);
     }
@@ -77,13 +77,13 @@ public class AccountApiController {
         return ResponseEntity.ok(response);
     }
 
-    // 예치 내역 삭제 (환불)
+    // 예치 취소 (환불)
     /*
     DeleteMapping을 사용할 경우 일부 환경에서 body 무시 위험
     + 토스 api 사용 및 환불 사유 기록 로직을 수행하기 때문에 PostMapping 사용
      */
     @PostMapping("/history/{accountHistoryId}/cancel")
-    public ResponseEntity<Void> cancelHistory(
+    public ResponseEntity<AccountHistoryResponse> cancelHistory(
             @AuthenticationPrincipal MemberPrincipalDetails principal,
             @PathVariable Long accountHistoryId,
             @RequestBody @Valid TossCancelRequest request
@@ -91,9 +91,9 @@ public class AccountApiController {
 
         Long memberId = principal.getMember().getId();
 
-        accountService.deleteHistory(memberId, accountHistoryId, request.cancelReason());
+        AccountHistoryResponse response=accountService.deleteHistory(memberId, accountHistoryId, request.cancelReason());
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(response);
     }
 
 

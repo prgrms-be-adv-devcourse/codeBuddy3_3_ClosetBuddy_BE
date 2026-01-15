@@ -12,12 +12,12 @@ public interface AccountService {
 
     AccountResponse getAccountBalance(Long memberId);
 
-    AccountChargeResponse charge(AccountCommand command);
+    AccountHistoryResponse charge(AccountCommand command);
 
     List<AccountHistoryResponse> getHistoryAll(Long memberId);
 
     AccountHistoryResponse getHistory(Long memberId, Long historyId);
 
-    void deleteHistory(Long memberId, Long historyId, String reason);
+    AccountHistoryResponse deleteHistory(Long memberId, Long historyId, String reason);
 
 }

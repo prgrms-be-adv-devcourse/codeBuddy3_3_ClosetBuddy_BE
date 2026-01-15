@@ -24,21 +24,13 @@ public class AccountMapper {
     }
 
 
-    public static AccountChargeResponse toChargeResponse(PaymentSuccessDto paymentSuccessDto, Account account, AccountHistory accountHistory){
-        return new AccountChargeResponse(
-                paymentSuccessDto.getTotalAmount(),
-                account.getBalance(),
-                accountHistory.getAccountedAt(),
-                accountHistory.getAccountStatus()
-        );
-    }
-
     // AccountHistory(Entity) -> AccountHistoryResponse(DTO)
     public static AccountHistoryResponse toHistoryResponse(AccountHistory history) {
         return new AccountHistoryResponse(
-                history.getAccountAmount(),
-                history.getAccountedAt(),
-                history.getAccountStatus()
+                history.getAmount(),
+                history.getCreatedAt(),
+                history.getType(),
+                history.getBalanceSnapshot()
         );
     }
 
