@@ -1,17 +1,27 @@
-package io.codebuddy.closetbuddy.domain.form.Login.controller;
+package io.codebuddy.closetbuddy.domain.form.controller;
 
+import io.codebuddy.closetbuddy.domain.common.app.JwtTokenProvider;
+import io.codebuddy.closetbuddy.domain.common.model.dto.TokenPair;
 import io.codebuddy.closetbuddy.domain.common.model.dto.UserReqDTO;
+import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberPrincipalDetails;
+import io.codebuddy.closetbuddy.domain.form.service.SignService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.*;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,22 +31,24 @@ import java.util.Map;
 @RequestMapping("/api/v1")
 public class LoginController {
 
+    private final SignService signService;
+
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    private final JwtTokenProvider jwtTokenProvider;
 
-//    //SecurityContext 에서 인증 세부 정보를 가져 와서 사용자가 로그인했는지 확인(웹 사이트에서 사용자가 이미 로그인 한 상태에서 로그인 페이지를 방문하지 못하도록 하기 위함)
-//    private boolean isAuthenticated() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); //SecurityContext에서 현재 인증 객체를 가져옴
-//        if (authentication == null || AnonymousAuthenticationToken.class. //AnonymousAuthenticationToken이면 익명 사용자(로그인 안함)
-//                isAssignableFrom(authentication.getClass())) {
-//            return false;
-//        }
-//        return authentication.isAuthenticated(); //isAuthenticated() 메서드는 항상 true를 반환
-//    }
+    //회원가입
+    @PostMapping("/authc")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Member> create(@RequestBody UserReqDTO userReqDTO) {
+        Member saved = signService.create(userReqDTO);
+        return ResponseEntity.status(
+                HttpStatus.CREATED
+        ).body(saved);
+    }
 
-
-
+    //로그인
     @PostMapping("/auth/login")
     public ResponseEntity<?> login(HttpSession session, @RequestBody UserReqDTO userReqDTO) {
 
@@ -68,5 +80,4 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
         }
     }
-
 }

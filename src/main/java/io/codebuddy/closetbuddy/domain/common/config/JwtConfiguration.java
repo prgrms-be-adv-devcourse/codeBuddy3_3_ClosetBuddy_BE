@@ -1,4 +1,4 @@
-package io.codebuddy.closetbuddy.domain.oauth.config;
+package io.codebuddy.closetbuddy.domain.common.config;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -15,15 +15,15 @@ public class JwtConfiguration {
     @Getter
     @RequiredArgsConstructor
     public static class Validation {
-        private final Long access; //Access 토큰 만료시간 (밀리초)
-        private final Long refresh; //Refresh 토큰 만료시간 (밀리초)
+        private final Long access;
+        private final Long refresh;
     }
 
     @Getter
     @RequiredArgsConstructor
     public static class Secrets {
-        private final String originKey; //CORS origin 허용 키 (미사용으로 보임)
-        private final String appKey; //JWT 서명 비밀키
+        private final String originKey;
+        private final String appKey;
     }
 
 

@@ -13,19 +13,16 @@ import java.util.List;
 // Spring Security 에 있는 UserDetails 를 구현한 클래스,
 // 이 클래스를 통해 Spring Security 에서 사용자의 정보를 담아둠
 public class MemberPrincipalDetails implements UserDetails {
-    // member 패키지에 선언해놓은 member 엔티티를 사용하기 위해 선언
     private final Member member;
 
     public MemberPrincipalDetails(Member member) {
         this.member = member;
     }
 
-    // 생성자
     public Member getMember() {
         return member;
     }
 
-    // member 계정의 권한을 담아두기위해
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
@@ -45,7 +42,7 @@ public class MemberPrincipalDetails implements UserDetails {
         return member.getUserid();
     }
 
-    // 계정이 만료되지 않았는지를 담아두기 위해 (true: 만료안됨) -> 사용자 계정의 유효성을 종합적으로 검증하기 위함
+    // 계정이 만료되지 않았는지를 담아두기 위해 (true: 만료안됨)
     @Override
     public boolean isAccountNonExpired() {
         return true;

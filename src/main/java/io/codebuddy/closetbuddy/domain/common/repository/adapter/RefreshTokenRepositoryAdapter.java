@@ -1,10 +1,10 @@
-package io.codebuddy.closetbuddy.domain.oauth.repository.adapter;
+package io.codebuddy.closetbuddy.domain.common.repository.adapter;
 
-import io.codebuddy.closetbuddy.domain.oauth.Entity.RefreshTokenBlackList ;
-import io.codebuddy.closetbuddy.domain.oauth.Entity.RefreshToken ;
-import io.codebuddy.closetbuddy.domain.oauth.repository.RefreshTokenBlackListRepository ;
-import io.codebuddy.closetbuddy.domain.oauth.repository.RefreshTokenRepository ;
-import io.codebuddy.closetbuddy.domain.oauth.repository.TokenRepository ;
+import io.codebuddy.closetbuddy.domain.common.model.entity.RefreshTokenBlackList;
+import io.codebuddy.closetbuddy.domain.common.model.entity.RefreshToken;
+import io.codebuddy.closetbuddy.domain.common.repository.RefreshTokenBlackListRepository;
+import io.codebuddy.closetbuddy.domain.common.repository.RefreshTokenRepository;
+import io.codebuddy.closetbuddy.domain.common.repository.TokenRepository;
 import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -47,9 +47,16 @@ public class RefreshTokenRepositoryAdapter implements TokenRepository {
         return entityManager.createQuery(
                         "select rf from RefreshToken rf left join RefreshTokenBlackList rtb on rtb.refreshToken = rf where rf.member.id = :memberId and rtb.id is null" //EntityManager로 JPQL 쿼리 생성 시작
                         , RefreshToken.class)
-                .setParameter("memberId", memberId) //파라미터 바인딩(SQL 인젝션 방지)
+                .setParameter("memberId", memberId)
                 .getResultStream()
-                .findFirst(); //첫번째 유효한 토큰만 Optional로 반환
+                .findFirst();
     }
+
+    // refreshToken을 삭제하는 메서드
+    @Override
+    public void delete(RefreshToken refreshToken) {
+        refreshTokenRepository.delete(refreshToken);
+    }
+
 
 }

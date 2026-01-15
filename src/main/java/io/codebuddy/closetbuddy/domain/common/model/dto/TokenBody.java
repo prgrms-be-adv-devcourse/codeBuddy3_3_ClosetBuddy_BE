@@ -1,6 +1,5 @@
-package io.codebuddy.closetbuddy.domain.oauth.dto;
+package io.codebuddy.closetbuddy.domain.common.model.dto;
 
-import io.codebuddy.closetbuddy.domain.common.model.dto.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
