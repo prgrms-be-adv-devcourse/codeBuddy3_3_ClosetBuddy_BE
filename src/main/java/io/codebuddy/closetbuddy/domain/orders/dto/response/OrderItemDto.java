@@ -1,7 +1,10 @@
 package io.codebuddy.closetbuddy.domain.orders.dto.response;
 
+
+import java.math.BigDecimal;
+
 public record OrderItemDto(
-        Long orderId,
+        Long productId,
         String storeName,
         String productName,
         Integer orderCount,

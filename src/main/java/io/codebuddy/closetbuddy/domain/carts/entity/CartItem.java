@@ -2,9 +2,7 @@ package io.codebuddy.closetbuddy.domain.carts.entity;
 
 import io.codebuddy.closetbuddy.domain.products.model.entity.Product;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
@@ -30,6 +28,14 @@ public class CartItem {
     @Column(name = "cart_price", nullable = false)
     private Long cartPrice;
 
+
+    @Builder
+    public CartItem(Cart cart, Product product, Integer cartCount, Long cartPrice) {
+        this.cart = cart;
+        this.product = product;
+        this.cartCount = cartCount;
+        this.cartPrice = cartPrice;
+    }
 
     public void updateCount(Integer cartCount) {
         this.cartCount += cartCount;

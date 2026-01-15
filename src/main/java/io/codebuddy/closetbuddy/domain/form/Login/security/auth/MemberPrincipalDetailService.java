@@ -20,7 +20,7 @@ public class MemberPrincipalDetailService implements UserDetailsService {
         Member member = memberRepository.findByUserid(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
         System.out.println("username : " + username);
-        System.out.println("member : " + member);
+        System.out.println("id : " + member);
 
         return new MemberPrincipalDetails(member);
     }
