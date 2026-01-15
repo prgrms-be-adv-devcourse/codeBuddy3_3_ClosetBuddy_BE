@@ -95,6 +95,20 @@ CREATE TABLE IF NOT EXISTS `account` (
     UNIQUE KEY uk_account_member (member_id)
     );
 
+CREATE TABLE IF NOT EXISTS `account_history` (
+                                                 account_history_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+                                                 account_id         BIGINT UNSIGNED NOT NULL,
+                                                 payment_key        VARCHAR(255) NOT NULL,
+    order_id           VARCHAR(255) NOT NULL,
+    account_amount     BIGINT NOT NULL,
+    accounted_at       DATETIME NOT NULL,
+    account_status     VARCHAR(50) NOT NULL,
+    PRIMARY KEY (account_history_id),
+    UNIQUE KEY uk_payment_key (payment_key),
+    UNIQUE KEY uk_order_id (order_id),
+    KEY idx_history_account (account_id)
+    );
+
 CREATE TABLE IF NOT EXISTS `settlement` (
                                             settle_id         BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
                                             fee_amount        BIGINT NOT NULL,
@@ -108,3 +122,4 @@ CREATE TABLE IF NOT EXISTS `settlement` (
     KEY idx_settlement_store_date (store_id, settlement_date),
     KEY idx_settlement_status_date (settle_status, settlement_date)
     );
+

@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name="member_name", nullable = false) //nullable = false : 데이터베이스의 해당 컬럼 값이 null이 아니어야한다는 조건
