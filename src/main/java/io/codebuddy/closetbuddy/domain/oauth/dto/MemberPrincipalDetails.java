@@ -18,7 +18,7 @@ MemberDetails 클래스는 Spring Security의 OAuth2User 인터페이스를 구�
 @Getter
 @Accessors(chain = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberDetails implements OAuth2User {
+public class MemberPrincipalDetails implements OAuth2User {
 
     @Setter
     private Long id;
@@ -37,21 +37,21 @@ public class MemberDetails implements OAuth2User {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
-    public static MemberDetails from(Member member) {
-        MemberDetails memberDetails = new MemberDetails();
+    public static MemberPrincipalDetails from(Member member) {
+        MemberPrincipalDetails memberPrincipalDetails = new MemberPrincipalDetails();
 
-        memberDetails.id = member.getId();
+        memberPrincipalDetails.id = member.getId();
 
-        memberDetails.email = member.getEmail();
+        memberPrincipalDetails.email = member.getEmail();
 
-        memberDetails.role = member.getRole();
+        memberPrincipalDetails.role = member.getRole();
 
-        return memberDetails;
+        return memberPrincipalDetails;
     }
 
 
     @Builder
-    public MemberDetails(String name,String email, Map<String, Object> attributes) {
+    public MemberPrincipalDetails(String name, String email, Map<String, Object> attributes) {
         this.name = name;
         this.email = email;
         this.attributes = attributes;

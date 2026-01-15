@@ -1,8 +1,8 @@
-package io.codebuddy.closetbuddy.domain.common.config;
+package io.codebuddy.closetbuddy.domain.oauth.config;
 
-import io.codebuddy.closetbuddy.domain.oauth.dto.MemberDetails;
-import io.codebuddy.closetbuddy.domain.common.model.dto.TokenBody;
-import io.codebuddy.closetbuddy.domain.common.app.JwtTokenProvider;
+import io.codebuddy.closetbuddy.domain.oauth.dto.MemberPrincipalDetails;
+import io.codebuddy.closetbuddy.domain.oauth.dto.TokenBody;
+import io.codebuddy.closetbuddy.domain.oauth.app.JwtTokenProvider;
 import io.codebuddy.closetbuddy.domain.oauth.service.MemberService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -35,10 +35,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if ( token != null && jwtTokenProvider.validate(token) ) {
 
             TokenBody tokenBody = jwtTokenProvider.parseJwt(token);
-            MemberDetails memberDetails = memberService.getMemberDetailsById(tokenBody.getMemberId());
+            MemberPrincipalDetails memberPrincipalDetails = memberService.getMemberDetailsById(tokenBody.getMemberId());
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(
-                    memberDetails, token, memberDetails.getAuthorities()
+                    memberPrincipalDetails, token, memberPrincipalDetails.getAuthorities()
             );
 
             SecurityContextHolder.getContext().setAuthentication(authentication); //SecurityContextHolder에 인증 저장

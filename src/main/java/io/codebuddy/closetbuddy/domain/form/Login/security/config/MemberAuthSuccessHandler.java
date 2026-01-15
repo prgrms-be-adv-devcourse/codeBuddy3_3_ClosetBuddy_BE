@@ -1,8 +1,8 @@
 package io.codebuddy.closetbuddy.domain.form.Login.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.codebuddy.closetbuddy.domain.common.app.JwtTokenProvider;
-import io.codebuddy.closetbuddy.domain.common.model.dto.TokenPair;
+import io.codebuddy.closetbuddy.domain.oauth.app.JwtTokenProvider;
+import io.codebuddy.closetbuddy.domain.oauth.dto.TokenPair;
 import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberPrincipalDetails;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

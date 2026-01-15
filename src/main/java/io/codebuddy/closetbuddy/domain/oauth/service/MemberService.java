@@ -1,8 +1,8 @@
 package io.codebuddy.closetbuddy.domain.oauth.service;
 
-import io.codebuddy.closetbuddy.domain.oauth.dto.MemberDetails;
+import io.codebuddy.closetbuddy.domain.oauth.dto.MemberPrincipalDetails;
 import io.codebuddy.closetbuddy.domain.oauth.app.MemberDetailsFactory ;
-import io.codebuddy.closetbuddy.domain.common.repository.MemberRepository;
+import io.codebuddy.closetbuddy.domain.oauth.repository.MemberRepository;
 import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,18 +30,18 @@ public class MemberService extends DefaultOAuth2UserService {
         OAuth2User oAuth2User = super.loadUser(userRequest);
         log.info("oAuth2User = {}", oAuth2User);
 
-        MemberDetails memberDetails = MemberDetailsFactory.fromGoogle(oAuth2User);
+        MemberPrincipalDetails memberPrincipalDetails = MemberDetailsFactory.fromGoogle(oAuth2User);
 
-        Optional<Member> memberOptional = memberRepository.findByEmail(memberDetails.getEmail());
+        Optional<Member> memberOptional = memberRepository.findByEmail(memberPrincipalDetails.getEmail());
 
         Member findMember = memberOptional.orElseGet(() -> {
             Member member = Member.builder()
-                    .username(memberDetails.getName())
-                    .email(memberDetails.getEmail())
+                    .username(memberPrincipalDetails.getName())
+                    .email(memberPrincipalDetails.getEmail())
                     .build();
             return memberRepository.save(member);
         });
-        return memberDetails.setId(findMember.getId()).setRole(findMember.getRole());
+        return memberPrincipalDetails.setId(findMember.getId()).setRole(findMember.getRole());
     }
 
     public Optional<Member> findById(Long id) {
@@ -55,9 +55,9 @@ public class MemberService extends DefaultOAuth2UserService {
                 );
     }
 
-    public MemberDetails getMemberDetailsById(Long id) {
+    public MemberPrincipalDetails getMemberDetailsById(Long id) {
         Member findMember = getById(id);
-        return MemberDetails.from(findMember);
+        return MemberPrincipalDetails.from(findMember);
     }
 
 

@@ -1,5 +1,5 @@
-package io.codebuddy.closetbuddy.domain.common.repository;
-import io.codebuddy.closetbuddy.domain.common.model.entity.RefreshToken;
+package io.codebuddy.closetbuddy.domain.oauth.repository;
+import io.codebuddy.closetbuddy.domain.oauth.Entity.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

@@ -1,7 +1,7 @@
 package io.codebuddy.closetbuddy.domain.form.Login.security.auth;
 
 import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
-import io.codebuddy.closetbuddy.domain.common.repository.MemberRepository;
+import io.codebuddy.closetbuddy.domain.oauth.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

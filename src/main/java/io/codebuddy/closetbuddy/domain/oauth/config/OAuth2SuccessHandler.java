@@ -1,10 +1,10 @@
 package io.codebuddy.closetbuddy.domain.oauth.config;
 
-import io.codebuddy.closetbuddy.domain.oauth.dto.MemberDetails ;
-import io.codebuddy.closetbuddy.domain.common.model.dto.TokenPair;
-import io.codebuddy.closetbuddy.domain.common.app.JwtTokenProvider;
+import io.codebuddy.closetbuddy.domain.oauth.dto.MemberPrincipalDetails;
+import io.codebuddy.closetbuddy.domain.oauth.dto.TokenPair;
+import io.codebuddy.closetbuddy.domain.oauth.app.JwtTokenProvider;
 import io.codebuddy.closetbuddy.domain.oauth.service.MemberService ;
-import io.codebuddy.closetbuddy.domain.common.model.entity.RefreshToken;
+import io.codebuddy.closetbuddy.domain.oauth.Entity.RefreshToken;
 import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,7 +37,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
 
-        MemberDetails principal = (MemberDetails) authentication.getPrincipal();
+        MemberPrincipalDetails principal = (MemberPrincipalDetails) authentication.getPrincipal();
         Member findMember = memberService.getById(principal.getId());
 
         HashMap<String, String> params = new HashMap<>();

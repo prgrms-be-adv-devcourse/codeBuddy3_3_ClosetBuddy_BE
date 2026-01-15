@@ -1,10 +1,9 @@
-package io.codebuddy.closetbuddy.domain.common.config;
+package io.codebuddy.closetbuddy.domain.oauth.config;
 
 import io.codebuddy.closetbuddy.domain.form.Login.security.config.MemberAuthFailureHandler;
 import io.codebuddy.closetbuddy.domain.form.Login.security.config.MemberAuthSuccessHandler;
 import io.codebuddy.closetbuddy.domain.form.Logout.config.ApiLogoutSuccessHandler;
 import io.codebuddy.closetbuddy.domain.form.Logout.config.JwtLogoutHandler;
-import io.codebuddy.closetbuddy.domain.oauth.config.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
