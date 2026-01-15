@@ -12,7 +12,7 @@ import io.codebuddy.closetbuddy.domain.account.model.vo.*;
 import io.codebuddy.closetbuddy.domain.account.repository.AccountHistoryRepository;
 import io.codebuddy.closetbuddy.domain.account.repository.AccountRepository;
 import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
-import io.codebuddy.closetbuddy.domain.oauth.repository.MemberRepository;
+import io.codebuddy.closetbuddy.domain.common.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,7 +68,6 @@ public class AccountServiceImpl implements AccountService{
         Account account = accountRepository.findByMember(foundMember).orElse(Account.createAccount(foundMember));
 
         return AccountMapper.toResponse(account, "조회가 완료되었습니다.");
-
     }
 
     /**
