@@ -1,15 +1,23 @@
 package io.codebuddy.closetbuddy.domain.oauth.config;
 
+import io.codebuddy.closetbuddy.domain.form.Login.security.config.MemberAuthFailureHandler;
+import io.codebuddy.closetbuddy.domain.form.Login.security.config.MemberAuthSuccessHandler;
+import io.codebuddy.closetbuddy.domain.form.Logout.config.ApiLogoutSuccessHandler;
+import io.codebuddy.closetbuddy.domain.form.Logout.config.JwtLogoutHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsUtils;
 
-//Spring Security의 보안 필터 체인을 정의하는 설정 클래스입니다. OAuth2 로그인을 활성화하고 모든 요청에 인증을 요구하는 기본 보안 정책을 설정합니다.
+//Spring Security의 보안 필터 체인을 정의하는 설정 클래스
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -17,38 +25,75 @@ public class SecurityConfig {
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+
+    private final MemberAuthSuccessHandler memberAuthSuccessHandler;
+    private final MemberAuthFailureHandler memberAuthFailureHandler;
+    private final JwtLogoutHandler jwtLogoutHandler;
+
+    private final ApiLogoutSuccessHandler apiLogoutSuccessHandler;
+
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration authenticationConfiguration
+    ) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
     //1. SecurityFilterChain 빈으로 OAuth2 로그인과 JWT 필터 등록.
 
     /* Spring Security 설정을 통해 기존 인증 방식을 비활성화하고 API 엔드포인트에 대해 JWT 기반의 상태
     비저장 보안을 사용하는 OAuth2 로그인을 설정*/
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+
+
         return http
-                .securityMatcher("/oauth2/**","login/oauth2/**")
-                .httpBasic(httpB -> httpB.disable())
+                .securityMatcher("/oauth2/**","login/oauth2/**", "/api/**","/api/v1/**")
+                .authorizeHttpRequests((request) -> request
+                        .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                        .requestMatchers("/api/v1/**").permitAll()
+                        .requestMatchers("/login", "/", "/signUp").permitAll()
+                        .requestMatchers("/member").hasAnyAuthority("MEMBER")
+                        .requestMatchers("/admin").hasAnyAuthority("ADMIN")
+                        .requestMatchers("/guest").hasAnyAuthority("GUEST")
+                        .requestMatchers("/api/v1/**").permitAll() // 회원가입/로그인/토큰재발급 등
+                        .anyRequest().authenticated() //그외에는 인증 필요
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(csrf -> csrf.disable())
                 .cors( cors -> cors.disable())
-                .formLogin(form -> form.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .oauth2Login(Customizer.withDefaults())
+                .httpBasic(httpB -> httpB.disable())
 
-                /*Spring의 OAuth2 필터가 활성화되어 내장 세션 저장소 없이도 권한 부여 코드 교환, 사용자 정보 검색 및 인증을 처리할 수 있습니다.
-                 */
+                //로그인
+                .formLogin(form -> form
+                        .loginProcessingUrl("/api/v1/auth/login")
+                        .successHandler(memberAuthSuccessHandler)
+                        .failureHandler(memberAuthFailureHandler)
+                        .usernameParameter("userid")
+                        .passwordParameter("password")
+                        .permitAll()
+                )
+
+                .logout(logout -> logout
+                        .logoutUrl("/api/v1/auth/logout") // 로그아웃 처리 URL
+                        .logoutSuccessUrl("/api/v1/auth/loginForm?logout=1") // 로그아웃 성공 후 이동페이지
+                        .deleteCookies("JSESSIONID") // 로그아웃 후 쿠키 삭제
+                        .addLogoutHandler(jwtLogoutHandler)
+                        .logoutSuccessHandler(apiLogoutSuccessHandler)
+                )
+
+                //OAuth2 로그인 활성화
                 .oauth2Login(oauth -> {
                     oauth.successHandler(oAuth2SuccessHandler);
-                }) //OAuth2 로그인 활성화
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                        // 특정 경로는 모든 권한을 필요로 함
-                        .requestMatchers("/member").hasAnyAuthority("MEMBER") //특정 경로일 경우 MEMBER 권한을 부여한다.(이건 추후에 수정 가능)
-                        .requestMatchers("/admin").hasAnyAuthority("ADMIN") //특정 경로일 때 ADMIN 권한 부여
-                        .requestMatchers("/guest").hasAnyAuthority("GUEST") //특정 경로일 때 GUEST 권한 부여.
-                        //위에서 정의한 규칙 외 모든 엔드포인트 요청은 인증을 필요로 함.
-                        .anyRequest()
-                        .authenticated()
-                    )
-                // 사용자 정의 코드가 모든 요청의 헤더에서 JWT 토큰을 검증합니다. 폼 로그인이 비활성화되어 있으므로 사용자 이름/비밀번호 확인 단계를 건너뜁니다.
+                })
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();// 필터 체인 빌드
+
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 }

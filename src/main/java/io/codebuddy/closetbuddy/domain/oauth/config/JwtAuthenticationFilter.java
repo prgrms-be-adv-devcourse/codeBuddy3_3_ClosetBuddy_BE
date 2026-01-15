@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-// 4. 요청마다 토큰 검증
+//요청마다 토큰 검증 (헤더 이용)
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -59,6 +59,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         return null;
 
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getServletPath();
+        return path.equals("/api/v1/auth/login")
+                || path.equals("/api/v1/auth/signup");
     }
 
 
