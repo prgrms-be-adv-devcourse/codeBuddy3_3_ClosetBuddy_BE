@@ -50,9 +50,6 @@ dependencies {
     runtimeOnly 'com.mysql:mysql-connector-j'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-    //h2
-    runtimeOnly 'com.h2database:h2'
-
     //jjwt
     implementation 'io.jsonwebtoken:jjwt-api:0.13.0'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.13.0'
