@@ -5,7 +5,7 @@ import io.codebuddy.closetbuddy.domain.common.model.entity.RefreshToken;
 import io.codebuddy.closetbuddy.domain.common.repository.RefreshTokenBlackListRepository;
 import io.codebuddy.closetbuddy.domain.common.repository.TokenRepository;
 import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
-import io.codebuddy.closetbuddy.domain.oauth.repository.RefreshTokenRepository;
+import io.codebuddy.closetbuddy.domain.common.repository.RefreshTokenRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

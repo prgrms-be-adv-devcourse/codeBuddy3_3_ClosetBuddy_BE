@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.Map;
 
-// 로그아웃 성공 후 핸들러
+// 로그아웃 성공 시 JSON 응답을 내려주기 위한 핸들러
 @Component
 @RequiredArgsConstructor
 public class ApiLogoutSuccessHandler implements LogoutSuccessHandler {

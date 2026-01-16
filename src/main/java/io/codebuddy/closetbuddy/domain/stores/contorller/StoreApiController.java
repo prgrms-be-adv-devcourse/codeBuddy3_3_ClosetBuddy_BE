@@ -1,7 +1,7 @@
 package io.codebuddy.closetbuddy.domain.stores.contorller;
 
 
-import io.codebuddy.closetbuddy.domain.oauth.dto.MemberPrincipalDetails;
+import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberDetails;
 import io.codebuddy.closetbuddy.domain.stores.model.dto.StoreResponse;
 import io.codebuddy.closetbuddy.domain.stores.model.dto.UpdateStoreRequest;
 import io.codebuddy.closetbuddy.domain.stores.model.dto.UpsertStoreRequest;
@@ -47,7 +47,7 @@ public class StoreApiController {
     @PostMapping("/stores")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Long> create(
-            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipalDetails,
+            @AuthenticationPrincipal MemberDetails memberPrincipalDetails,
             @RequestBody @Valid UpsertStoreRequest request
             ) {
         Long storeId = storeService.createStore(memberPrincipalDetails.getId(), request);
@@ -81,7 +81,7 @@ public class StoreApiController {
     // /stores/me
     @GetMapping("/me")
     public ResponseEntity<List<StoreResponse>> getMyStores(
-            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipalDetails
+            @AuthenticationPrincipal MemberDetails memberPrincipalDetails
     ) {
         List<StoreResponse> response = storeService.getMyStores(memberPrincipalDetails.getId());
         return ResponseEntity.ok(response);
@@ -121,7 +121,7 @@ public class StoreApiController {
     })
     @PutMapping("stores/{store_id}")
     public ResponseEntity<StoreResponse> updateStore(
-            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipalDetails,
+            @AuthenticationPrincipal MemberDetails memberPrincipalDetails,
             @PathVariable Long store_id,
             @RequestBody @Valid UpdateStoreRequest request
             ) {
@@ -147,7 +147,7 @@ public class StoreApiController {
     @DeleteMapping("stores/{store_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteStore(
-            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipalDetails,
+            @AuthenticationPrincipal MemberDetails memberPrincipalDetails,
             @PathVariable Long store_id
     ) {
         storeService.deleteStore(memberPrincipalDetails.getId(), store_id);
