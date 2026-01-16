@@ -1,9 +1,9 @@
 package io.codebuddy.closetbuddy.domain.carts.controller;
 
-import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberPrincipalDetails;
 import io.codebuddy.closetbuddy.domain.carts.dto.request.CartCreateRequestDto;
 import io.codebuddy.closetbuddy.domain.carts.dto.response.CartGetResponseDto;
 import io.codebuddy.closetbuddy.domain.carts.service.CartService;
+import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberDetails;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +32,7 @@ public class CartController {
      */
     @PostMapping
     public ResponseEntity<Long> createCart(
-            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipalDetails,
+            @AuthenticationPrincipal MemberDetails memberPrincipalDetails,
             @Valid @RequestBody CartCreateRequestDto request
     ) {
         Long cartItemId = cartService.createCart(memberPrincipalDetails.getMember().getId(), request);
@@ -47,7 +47,7 @@ public class CartController {
      */
     @GetMapping
     public ResponseEntity<List<CartGetResponseDto>> getCart(
-            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipalDetails
+            @AuthenticationPrincipal MemberDetails memberPrincipalDetails
     ) {
         Long memberId = memberPrincipalDetails.getMember().getId();
         List<CartGetResponseDto> cartList = cartService.getCartList(memberId);
@@ -66,7 +66,7 @@ public class CartController {
      */
     @PatchMapping("/items/{cartItemId}")
     public ResponseEntity<Void> updateCartItem(
-            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipal,
+            @AuthenticationPrincipal MemberDetails memberPrincipal,
             @PathVariable Long cartItemId,
             @RequestParam Integer cartCount
     ) {
@@ -85,7 +85,7 @@ public class CartController {
 
     @DeleteMapping("/items/{cartItemId}")
     public ResponseEntity<Void> deleteCartItem(
-            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipal,
+            @AuthenticationPrincipal MemberDetails memberPrincipal,
             @PathVariable Long cartItemId
     ) {
         Long memberId = memberPrincipal.getMember().getId();

@@ -6,7 +6,7 @@ import io.codebuddy.closetbuddy.domain.common.repository.MemberRepository;
 import io.codebuddy.closetbuddy.domain.findmember.dto.MemberResponse;
 import io.codebuddy.closetbuddy.domain.findmember.dto.MemberUpdateRequest;
 import io.codebuddy.closetbuddy.domain.findmember.dto.SellerRegisterRequest;
-import io.codebuddy.closetbuddy.domain.oauth.repository.RefreshTokenRepository;
+import io.codebuddy.closetbuddy.domain.common.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

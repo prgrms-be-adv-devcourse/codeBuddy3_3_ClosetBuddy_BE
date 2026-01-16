@@ -103,6 +103,9 @@ public class JwtTokenProvider {
     }
 
     //토큰 내부 정보를 파싱해서 사용자 ID (sub)와 역할 (role)을 꺼내는 메서드
+    /*
+        파싱: 문자열로 된 토큰을 프로그램이 다룰 수 있는 구조화된 데이터로 해석해서 꺼내는 과정
+     */
     public TokenBody parseJwt(String token) {
 
         Jws<Claims> parsed = Jwts.parser()
@@ -115,7 +118,7 @@ public class JwtTokenProvider {
 
         return new TokenBody(
                 Long.parseLong(sub)
-                // role이라는 커스텀 Claim을 가져온다.
+                // role이라는 커스텀 Claim를 가져온다.
                 , Role.valueOf(role)
         );
 

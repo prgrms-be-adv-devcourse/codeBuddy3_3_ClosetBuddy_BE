@@ -1,7 +1,7 @@
 package io.codebuddy.closetbuddy.domain.form.Logout.config;
 
 import io.codebuddy.closetbuddy.domain.common.repository.TokenRepository;
-import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberPrincipalDetails;
+import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberDetails;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -19,14 +19,15 @@ public class JwtLogoutHandler implements LogoutHandler {
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication){
 
-        // 1. refresh token을 "헤더"로 받는 경우
-        if (authentication == null || !(authentication.getPrincipal() instanceof MemberPrincipalDetails memberPrincipalDetails)) {
+        //refresh token을 "헤더"로 받는 경우
+        if (authentication == null || !(authentication.getPrincipal() instanceof MemberDetails memberPrincipalDetails)) {
             return;
         }
 
-        Long memberId = memberPrincipalDetails.getMember().getId();
+        Long memberId = memberPrincipalDetails.getMember().getId(); //현재 로그인한 사용자(주체)의 DB id를 꺼냄.
         tokenRepository.findValidRefToken(memberId).ifPresent(rt -> {tokenRepository.addBlackList(rt);
         tokenRepository.delete(rt);
+        // 이 사용자에게 아직 유효한 refresh token이 저장돼 있으면 refresh token을 블랙리스트에 넣고 저장소에서는 삭제
         });
     }
 }
