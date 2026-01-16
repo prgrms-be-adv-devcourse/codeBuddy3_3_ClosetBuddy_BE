@@ -1,0 +1,32 @@
+name: ClosetBuddy CI 스크립트
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+
+jobs:
+
+  code-test:
+
+    name: 코드 테스트
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 체크아웃
+        uses: actions/checkout@v5
+
+      - name: Settings for JDK
+        uses: actions/setup-java@v5
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: gradlew 권한 변경
+        run: chmod +x ./gradlew
+
+      - name: 코드 테스트 수행
+        run: ./gradlew test --no-daemon
+
+
