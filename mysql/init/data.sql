@@ -98,16 +98,44 @@ CREATE TABLE IF NOT EXISTS `account` (
 CREATE TABLE IF NOT EXISTS `account_history` (
                                                  account_history_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
                                                  account_id         BIGINT UNSIGNED NOT NULL,
-                                                 payment_key        VARCHAR(255) NOT NULL,
-    order_id           VARCHAR(255) NOT NULL,
+                                                 transaction_type ENUM('USE', 'CHARGE', 'REFUND', 'CANCEL') NOT NULL,
     account_amount     BIGINT NOT NULL,
-    accounted_at       DATETIME NOT NULL,
-    account_status     VARCHAR(50) NOT NULL,
+    created_at       DATETIME NOT NULL,
+    updated_at       DATETIME NOT NULL,
+    balance_snapshot BIGINT NOT NULL,
+    ref_id          BIGINT UNSIGNED NULL,
     PRIMARY KEY (account_history_id),
-    UNIQUE KEY uk_payment_key (payment_key),
-    UNIQUE KEY uk_order_id (order_id),
     KEY idx_history_account (account_id)
     );
+
+CREATE TABLE IF NOT EXISTS `deposit_charge` (
+                                                charge_id        BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+                                                member_id        BIGINT UNSIGNED NOT NULL,
+                                                pg_payment_key   VARCHAR(255) NOT NULL,
+    pg_order_id      VARCHAR(255) NOT NULL, -- PG사에 보낸 우리측 고유 ID
+    charge_amount    BIGINT NOT NULL,       -- 충전 금액
+    charge_status    ENUM('READY', 'DONE', 'CANCELED') NOT NULL DEFAULT 'READY',
+    approved_at      DATETIME(6) NULL,      -- PG 승인 시간
+    created_at       DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+    PRIMARY KEY (charge_id),
+    UNIQUE KEY uk_pg_payment_key (pg_payment_key),
+    KEY idx_charge_member (member_id)
+    );
+
+CREATE TABLE IF NOT EXISTS `payment` (
+                                         payment_id      BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+                                         order_id        BIGINT UNSIGNED NOT NULL,
+                                         member_id       BIGINT UNSIGNED NOT NULL,
+                                         payment_amount  BIGINT NOT NULL,
+                                         payment_status  ENUM('PENDING', 'APPROVED', 'CANCELED') NOT NULL DEFAULT 'PENDING',
+    created_at      DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+    approved_at         DATETIME(6) DEFAULT NULL,
+    updated_at      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+    PRIMARY KEY (payment_id),
+    UNIQUE KEY uk_payment_order (order_id),
+    KEY idx_payment_member (member_id)
+    );
+
 
 CREATE TABLE IF NOT EXISTS `settlement` (
                                             settle_id         BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,

@@ -12,12 +12,12 @@ public record AccountChargeResponse(
 
         @NotNull
         @Positive
-        Long balance, //총 예치 금액
+        Long balanceSnapshot, //변동 후 잔액
 
         @NotBlank
-        LocalDateTime accountedAt,
+        LocalDateTime createdAt,
 
         @NotBlank
-        AccountStatus accountStatus
+        TransactionType type
 ) {
 }

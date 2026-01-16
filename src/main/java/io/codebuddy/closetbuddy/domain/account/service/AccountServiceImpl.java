@@ -7,10 +7,12 @@ import io.codebuddy.closetbuddy.domain.account.model.dto.PaymentSuccessDto;
 import io.codebuddy.closetbuddy.domain.account.model.dto.TossPaymentResponse;
 import io.codebuddy.closetbuddy.domain.account.model.entity.Account;
 import io.codebuddy.closetbuddy.domain.account.model.entity.AccountHistory;
+import io.codebuddy.closetbuddy.domain.account.model.entity.DepositCharge;
 import io.codebuddy.closetbuddy.domain.account.model.mapper.AccountMapper;
 import io.codebuddy.closetbuddy.domain.account.model.vo.*;
 import io.codebuddy.closetbuddy.domain.account.repository.AccountHistoryRepository;
 import io.codebuddy.closetbuddy.domain.account.repository.AccountRepository;
+import io.codebuddy.closetbuddy.domain.account.repository.DepositChargeRepository;
 import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import io.codebuddy.closetbuddy.domain.common.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +42,7 @@ public class AccountServiceImpl implements AccountService{
     private final MemberRepository memberRepository;
     private final AccountRepository accountRepository;
     private final AccountHistoryRepository accountHistoryRepository;
+    private final DepositChargeRepository depositChargeRepository;
 
     @Value("${custom.payments.toss.secrets}")
     private String tossPaymentSecrets;
@@ -80,12 +83,13 @@ public class AccountServiceImpl implements AccountService{
      * 3. 회원 검증
      * 4. 계좌 조회
      * 5. 예치금 충전
-     * 6. 예치금 내역 저장
+     * 6. pg 결제 내역 저장
+     * 7. 예치금 내역 저장
      *
      */
     @Override
     @Transactional
-    public AccountChargeResponse charge(AccountCommand command) {
+    public AccountHistoryResponse charge(AccountCommand command) {
 
         // PG 결제 승인 요청
         PaymentSuccessDto paymentSuccessDto = confirmTossPayment(command);
@@ -116,19 +120,29 @@ public class AccountServiceImpl implements AccountService{
         LocalDateTime approvedAt = OffsetDateTime.parse(paymentSuccessDto.getApprovedAt())
                 .toLocalDateTime();
 
+        //pg 결제 내역 저장
+        DepositCharge charge = DepositCharge.builder()
+                .member(foundMember)
+                .pgPaymentKey(paymentSuccessDto.getPaymentKey())
+                .pgOrderId(command.getOrderId())
+                .chargeAmount(command.getAmount())
+                .status(ChargeStatus.DONE)
+                .build();
+        depositChargeRepository.save(charge);
+
         // 예치금 내역 저장
-        AccountHistory accountHistory = AccountHistory.builder()
+        AccountHistory history = AccountHistory.builder()
                 .account(account)
-                .paymentKey(paymentSuccessDto.getPaymentKey())
-                .orderId(command.getOrderId())
-                .accountAmount(command.getAmount())
-                .accountStatus(AccountStatus.DONE)
-                .accountedAt(approvedAt)
+                .type(TransactionType.CHARGE)
+                .amount(command.getAmount())
+                .balanceSnapshot(account.getBalance())
+                .refId(charge.getChargeId()) // DepositCharge의 ID를 저장
+                .createdAt(LocalDateTime.now())
                 .build();
 
-        accountHistoryRepository.save(accountHistory);
+        accountHistoryRepository.save(history);
 
-        return AccountMapper.toChargeResponse(paymentSuccessDto,account,accountHistory);
+        return AccountMapper.toHistoryResponse(history);
     }
 
     /**
@@ -159,7 +173,7 @@ public class AccountServiceImpl implements AccountService{
         }
 
         // 예치 내역 전체 조회 (최신순)
-        List<AccountHistory> historyList = accountHistoryRepository.findAllByAccountOrderByAccountedAtDesc(account);
+        List<AccountHistory> historyList = accountHistoryRepository.OrderByCreatedAtDesc(account);
 
         return AccountMapper.toHistoryResponseList(historyList);
     }
@@ -204,6 +218,7 @@ public class AccountServiceImpl implements AccountService{
      * 1. 멤버 검증
      * 2. 계좌 검증
      * 3. 내역 조회
+     * 4. pg 결제 내역 조회
      * 4. 이미 취소된 내역인지 검증
      * 5. 잔액 검증
      * 6. 계좌 잔액 차감
@@ -213,7 +228,7 @@ public class AccountServiceImpl implements AccountService{
      */
     @Override
     @Transactional
-    public void deleteHistory(Long memberId, Long historyId,String reason) {
+    public AccountHistoryResponse deleteHistory(Long memberId, Long historyId,String reason) {
         // 멤버 검증
         Member foundMember = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
@@ -226,24 +241,45 @@ public class AccountServiceImpl implements AccountService{
         AccountHistory history = accountHistoryRepository.findByAccountAndAccountHistoryId(account, historyId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않거나 본인의 내역이 아닙니다."));
 
+        // 충전 건인지 확인
+        if (history.getType() != TransactionType.CHARGE) {
+            throw new IllegalStateException("충전 내역만 취소 가능합니다.");
+        }
+
+        // pg 결제 내역 조회
+        DepositCharge depositCharge = depositChargeRepository.findById(history.getRefId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 예치 내역입니다."));
+
         // 이미 취소된 내역인지 검증
-        if (history.getAccountStatus() == AccountStatus.CANCELED) {
+        if (depositCharge.getStatus() == ChargeStatus.CANCEL) {
             throw new IllegalStateException("이미 취소된 내역입니다.");
         }
 
         // 잔액 검증
-        if (account.getBalance() < history.getAccountAmount()) {
+        if (account.getBalance() < history.getAmount()) {
             throw new IllegalStateException("잔액이 부족하여 취소할 수 없습니다.");
         }
 
         // 계좌 잔액 차감
-        account.withdraw(history.getAccountAmount());
+        account.withdraw(history.getAmount());
 
-        // 예치 내역 상태 변경(취소)
-        history.cancel();
-        
-        // 토스 환불 진행
-        cancelTossPayment(history.getPaymentKey(), reason);
+        // DepositCharge 상태 변경
+        depositCharge.cancel();
+
+        // AccountHistory 취소 내역 추가.
+        AccountHistory refundHistory = AccountHistory.builder()
+                .account(account)
+                .type(TransactionType.CANCEL)
+                .amount(-history.getAmount()) // 음수 처리
+                .balanceSnapshot(account.getBalance())
+                .refId(depositCharge.getChargeId())
+                .build();
+        accountHistoryRepository.save(refundHistory);
+
+        // 토스 환불 요청
+        cancelTossPayment(depositCharge.getPgPaymentKey(), reason);
+
+        return AccountMapper.toHistoryResponse(history);
     }
 
     // 토스 결제 취소

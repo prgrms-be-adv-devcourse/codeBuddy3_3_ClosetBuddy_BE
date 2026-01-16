@@ -1,7 +1,7 @@
 package io.codebuddy.closetbuddy.domain.account.model.vo;
 
-public enum AccountStatus {
+public enum ChargeStatus {
     READY,
     DONE,
-    CANCELED
+    CANCEL
 }
