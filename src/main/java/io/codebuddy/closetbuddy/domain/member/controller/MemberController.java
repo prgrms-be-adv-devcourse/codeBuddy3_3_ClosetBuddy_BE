@@ -1,10 +1,10 @@
-package io.codebuddy.closetbuddy.domain.findmember.controller;
+package io.codebuddy.closetbuddy.domain.member.controller;
 
-import io.codebuddy.closetbuddy.domain.findmember.dto.MemberResponse;
-import io.codebuddy.closetbuddy.domain.findmember.dto.MemberUpdateRequest;
-import io.codebuddy.closetbuddy.domain.findmember.dto.SellerRegisterRequest;
-import io.codebuddy.closetbuddy.domain.findmember.service.findService;
-import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberDetails;
+import io.codebuddy.closetbuddy.domain.member.model.dto.MemberResponse;
+import io.codebuddy.closetbuddy.domain.member.model.dto.MemberUpdateRequest;
+import io.codebuddy.closetbuddy.domain.member.model.dto.SellerRegisterRequest;
+import io.codebuddy.closetbuddy.domain.member.service.MemberService;
+import io.codebuddy.closetbuddy.domain.common.security.auth.MemberDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class MemberController {
 
-    private final findService memberCommandService;
+    private final MemberService memberCommandService;
 
     //회원 정보 조회
     @GetMapping("/me")

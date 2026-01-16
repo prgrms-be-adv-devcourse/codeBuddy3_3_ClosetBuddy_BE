@@ -3,7 +3,7 @@ package io.codebuddy.closetbuddy.domain.carts.controller;
 import io.codebuddy.closetbuddy.domain.carts.dto.request.CartCreateRequestDto;
 import io.codebuddy.closetbuddy.domain.carts.dto.response.CartGetResponseDto;
 import io.codebuddy.closetbuddy.domain.carts.service.CartService;
-import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberDetails;
+import io.codebuddy.closetbuddy.domain.common.security.auth.MemberDetails;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

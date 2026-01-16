@@ -1,9 +1,9 @@
 package io.codebuddy.closetbuddy.domain.payment.controller;
 
-import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberPrincipalDetails;
 import io.codebuddy.closetbuddy.domain.payment.model.vo.PaymentRequest;
 import io.codebuddy.closetbuddy.domain.payment.model.vo.PaymentResponse;
 import io.codebuddy.closetbuddy.domain.payment.service.PaymentService;
+import io.codebuddy.closetbuddy.domain.common.security.auth.MemberDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,7 +21,7 @@ public class PaymentController {
     // 결제 수행
     @PostMapping
     public ResponseEntity<PaymentResponse> payOrder(
-            @AuthenticationPrincipal MemberPrincipalDetails principal,
+            @AuthenticationPrincipal MemberDetails principal,
             @RequestBody PaymentRequest request
     ) {
         Long memberId = principal.getMember().getId();
@@ -31,7 +31,7 @@ public class PaymentController {
     // 결제 취소
     @PostMapping("/cancel")
     public ResponseEntity<PaymentResponse> cancelPayment(
-            @AuthenticationPrincipal MemberPrincipalDetails principal,
+            @AuthenticationPrincipal MemberDetails principal,
             @RequestBody PaymentRequest request
     ) {
         Long memberId = principal.getMember().getId();
@@ -41,7 +41,7 @@ public class PaymentController {
     // 결제 단건 조회
     @GetMapping("/{orderId}")
     public ResponseEntity<PaymentResponse> getPaymentDetail(
-            @AuthenticationPrincipal MemberPrincipalDetails principal,
+            @AuthenticationPrincipal MemberDetails principal,
             @PathVariable Long orderId
     ) {
         Long memberId = principal.getMember().getId();
@@ -51,7 +51,7 @@ public class PaymentController {
     // 결제 내역 전체 조회
     @GetMapping
     public ResponseEntity<List<PaymentResponse>> getPaymentList(
-            @AuthenticationPrincipal MemberPrincipalDetails principal
+            @AuthenticationPrincipal MemberDetails principal
     ) {
         return ResponseEntity.ok(paymentService.getPayments(principal.getMember().getId()));
     }

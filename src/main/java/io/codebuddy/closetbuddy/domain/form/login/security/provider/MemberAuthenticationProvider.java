@@ -1,7 +1,7 @@
-package io.codebuddy.closetbuddy.domain.form.Login.security.provider;
+package io.codebuddy.closetbuddy.domain.form.login.security.provider;
 
-import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberDetails;
-import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberPrincipalDetailService;
+import io.codebuddy.closetbuddy.domain.common.security.auth.MemberDetails;
+import io.codebuddy.closetbuddy.domain.form.login.security.auth.MemberPrincipalDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;

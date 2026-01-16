@@ -1,9 +1,9 @@
-package io.codebuddy.closetbuddy.domain.form.Login.security.config;
+package io.codebuddy.closetbuddy.domain.form.login.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.codebuddy.closetbuddy.domain.common.app.JwtTokenProvider;
 import io.codebuddy.closetbuddy.domain.common.model.dto.TokenPair;
-import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberDetails;
+import io.codebuddy.closetbuddy.domain.common.security.auth.MemberDetails;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,7 +26,7 @@ public class MemberAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
         MemberDetails principal = (MemberDetails) authentication.getPrincipal();
-        TokenPair tokenPair = jwtTokenProvider.generateTokenPair(principal.getMember());
+        TokenPair tokenPair = jwtTokenProvider.generateTokenPair(principal.getMember()); //accessToken과 refreshToken을 둘 다 제공하는 것.
 
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/json;charset=UTF-8");

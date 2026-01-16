@@ -1,4 +1,4 @@
-package io.codebuddy.closetbuddy.domain.form.Login.security.auth;
+package io.codebuddy.closetbuddy.domain.common.security.auth;
 
 import io.codebuddy.closetbuddy.domain.common.model.dto.Role;
 import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
@@ -51,7 +51,7 @@ public class MemberDetails implements OAuth2User, UserDetails {
     //UserDetails 에서 사용자 식별하기 위한 메서드
     @Override
     public String getUsername() {
-        return member.getUserid();
+        return member.getMemberId();
     }
 
     // Oauth2 로그인 부분에서 Google에서 가져온 정보들

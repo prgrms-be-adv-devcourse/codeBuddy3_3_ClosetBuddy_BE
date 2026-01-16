@@ -1,11 +1,11 @@
-package io.codebuddy.closetbuddy.domain.findmember.service;
+package io.codebuddy.closetbuddy.domain.member.service;
 
 import io.codebuddy.closetbuddy.domain.common.model.dto.Role;
 import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import io.codebuddy.closetbuddy.domain.common.repository.MemberRepository;
-import io.codebuddy.closetbuddy.domain.findmember.dto.MemberResponse;
-import io.codebuddy.closetbuddy.domain.findmember.dto.MemberUpdateRequest;
-import io.codebuddy.closetbuddy.domain.findmember.dto.SellerRegisterRequest;
+import io.codebuddy.closetbuddy.domain.member.model.dto.MemberResponse;
+import io.codebuddy.closetbuddy.domain.member.model.dto.MemberUpdateRequest;
+import io.codebuddy.closetbuddy.domain.member.model.dto.SellerRegisterRequest;
 import io.codebuddy.closetbuddy.domain.common.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class findService {
+public class MemberService {
 
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
@@ -24,7 +24,7 @@ public class findService {
         Member m = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("member not found"));
         return new MemberResponse(m.getId(),
-                m.getUserid(),
+                m.getMemberId(),
                 m.getUsername(),
                 m.getEmail(),
                 m.getAddress(),
@@ -42,7 +42,7 @@ public class findService {
         if (req.address() != null) m.setAddress(req.address());
 
         return new MemberResponse(m.getId(),
-                m.getUserid(),
+                m.getMemberId(),
                 m.getUsername(),
                 m.getEmail(),
                 m.getAddress(),
@@ -51,7 +51,7 @@ public class findService {
     }
 
     public void deleteMe(Long memberId) {
-        refreshTokenRepository.deleteAllByMemberId(memberId); // 1) 자식 먼저 삭제
+        refreshTokenRepository.deleteAllByMember_Id(memberId); // 1) 자식 먼저 삭제
         memberRepository.deleteById(memberId); // 2) 부모 삭제
     }
 
@@ -63,7 +63,7 @@ public class findService {
         m.setRole(Role.SELLER);
 
         return new MemberResponse(m.getId(),
-                m.getUserid(),
+                m.getMemberId(),
                 m.getUsername(),
                 m.getEmail(),
                 m.getAddress(),

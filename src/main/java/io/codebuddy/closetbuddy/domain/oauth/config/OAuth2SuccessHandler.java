@@ -1,9 +1,9 @@
 package io.codebuddy.closetbuddy.domain.oauth.config;
 
-import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberDetails;
+import io.codebuddy.closetbuddy.domain.common.security.auth.MemberDetails;
 import io.codebuddy.closetbuddy.domain.common.model.dto.TokenPair;
 import io.codebuddy.closetbuddy.domain.common.app.JwtTokenProvider;
-import io.codebuddy.closetbuddy.domain.oauth.service.MemberService ;
+import io.codebuddy.closetbuddy.domain.oauth.service.OauthService;
 import io.codebuddy.closetbuddy.domain.common.model.entity.RefreshToken;
 import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import jakarta.servlet.ServletException;
@@ -30,15 +30,15 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     @Value("${custom.jwt.redirection.base}")
     private String baseUrl;
 
-    private final MemberService memberService;
+    private final OauthService oauthService;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
-            throws IOException, ServletException {
+            throws IOException {
 
         MemberDetails principal = (MemberDetails) authentication.getPrincipal();
-        Member findMember = memberService.getById(principal.getId());
+        Member findMember = oauthService.getById(principal.getId());
 
         HashMap<String, String> params = new HashMap<>();
         Optional<RefreshToken> refreshTokenOptional = jwtTokenProvider.findRefreshToken(principal.getId());

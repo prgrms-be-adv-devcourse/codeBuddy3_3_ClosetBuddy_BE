@@ -1,7 +1,7 @@
 package io.codebuddy.closetbuddy.domain.sellers.controller;
 
 
-import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberDetails;
+import io.codebuddy.closetbuddy.domain.common.security.auth.MemberDetails;
 import io.codebuddy.closetbuddy.domain.sellers.model.dto.SellerResponse;
 import io.codebuddy.closetbuddy.domain.sellers.model.dto.SellerUpsertRequest;
 import io.codebuddy.closetbuddy.domain.sellers.service.SellerService;
