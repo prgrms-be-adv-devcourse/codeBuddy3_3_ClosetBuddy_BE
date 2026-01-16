@@ -1,6 +1,6 @@
 package io.codebuddy.closetbuddy.domain.common.config;
 
-import io.codebuddy.closetbuddy.domain.oauth.dto.MemberPrincipalDetails;
+import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberDetails;
 import io.codebuddy.closetbuddy.domain.common.model.dto.TokenBody;
 import io.codebuddy.closetbuddy.domain.common.app.JwtTokenProvider;
 import io.codebuddy.closetbuddy.domain.oauth.service.MemberService;
@@ -17,7 +17,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-//요청마다 토큰 검증 (헤더 이용)
+/*
+    요청으로 들어온 JWT 문자열을 해석해서(파싱해서) 어떤 사용자 요청인지 알아낸 다음,
+    그 사용자 정보를 Spring Security가 이해하는 Authentication 객체로 만들어 주는 과정
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -35,7 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if ( token != null && jwtTokenProvider.validate(token) ) {
 
             TokenBody tokenBody = jwtTokenProvider.parseJwt(token);
-            MemberPrincipalDetails memberPrincipalDetails = memberService.getMemberDetailsById(tokenBody.getMemberId());
+            MemberDetails memberPrincipalDetails = memberService.getMemberDetailsById(tokenBody.getMemberId());
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     memberPrincipalDetails, token, memberPrincipalDetails.getAuthorities()

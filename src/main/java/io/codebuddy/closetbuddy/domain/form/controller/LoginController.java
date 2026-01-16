@@ -3,7 +3,7 @@ package io.codebuddy.closetbuddy.domain.form.controller;
 import io.codebuddy.closetbuddy.domain.common.app.JwtTokenProvider;
 import io.codebuddy.closetbuddy.domain.common.model.dto.UserReqDTO;
 import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
-import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberPrincipalDetails;
+import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberDetails;
 import io.codebuddy.closetbuddy.domain.form.signup.service.SignService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -56,7 +56,7 @@ public class LoginController {
                     new UsernamePasswordAuthenticationToken(userReqDTO.getUserid(), userReqDTO.getPassword())
             );
 
-            MemberPrincipalDetails userDetails = (MemberPrincipalDetails) auth.getPrincipal(); //UserDetails를 구현한 객체가 가지고 있는 정보들을 가지고 옴
+            MemberDetails userDetails = (MemberDetails) auth.getPrincipal(); //UserDetails를 구현한 객체가 가지고 있는 정보들을 가지고 옴
             session.setAttribute("loggedInUser", userDetails.getUsername());
             session.setAttribute("loginErrorMessage","");
 

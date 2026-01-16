@@ -1,7 +1,7 @@
 package io.codebuddy.closetbuddy.domain.form.Login.security.provider;
 
+import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberDetails;
 import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberPrincipalDetailService;
-import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberPrincipalDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -24,12 +24,12 @@ public class MemberAuthenticationProvider implements AuthenticationProvider {
         String username = authentication.getName();
         String password = (String) authentication.getCredentials();
 
-        MemberPrincipalDetails memberPrincipalDetails = (MemberPrincipalDetails) memberPrincipalDetailService.loadUserByUsername(username);
+        MemberDetails memberPrincipalDetails = (MemberDetails) memberPrincipalDetailService.loadUserByUsername(username);
 
         String dbPassword = memberPrincipalDetails.getPassword();
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        if(!passwordEncoder.matches(password, dbPassword)) {
+        if (!passwordEncoder.matches(password, dbPassword)) {
             System.out.println("[사용자] 비밀번호가 일치하지 않습니다.");
             throw new BadCredentialsException("[사용자] 아이디 또는 비밀번호가 일치하지 않습니다.");
         }

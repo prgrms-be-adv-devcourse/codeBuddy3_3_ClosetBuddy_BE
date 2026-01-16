@@ -1,7 +1,6 @@
 package io.codebuddy.closetbuddy.domain.oauth.service;
 
-import io.codebuddy.closetbuddy.domain.oauth.dto.MemberPrincipalDetails;
-import io.codebuddy.closetbuddy.domain.oauth.app.MemberDetailsFactory ;
+import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberDetails;
 import io.codebuddy.closetbuddy.domain.common.repository.MemberRepository;
 import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import lombok.RequiredArgsConstructor;
@@ -30,18 +29,24 @@ public class MemberService extends DefaultOAuth2UserService {
         OAuth2User oAuth2User = super.loadUser(userRequest);
         log.info("oAuth2User = {}", oAuth2User);
 
-        MemberPrincipalDetails memberPrincipalDetails = MemberDetailsFactory.fromGoogle(oAuth2User);
+        // Google 기준: email, name 키가 보통 이렇게 옴
+        String email = (String) oAuth2User.getAttributes().get("email");
+        String name  = (String) oAuth2User.getAttributes().get("name");
 
-        Optional<Member> memberOptional = memberRepository.findByEmail(memberPrincipalDetails.getEmail());
+        if (email == null) {
+            // email이 없으면 우리 시스템에서 회원 식별이 불가능하니 예외 처리
+            throw new OAuth2AuthenticationException("Email not found from OAuth2 provider");
+        }
 
-        Member findMember = memberOptional.orElseGet(() -> {
-            Member member = Member.builder()
-                    .username(memberPrincipalDetails.getName())
-                    .email(memberPrincipalDetails.getEmail())
-                    .build();
-            return memberRepository.save(member);
-        });
-        return memberPrincipalDetails.setId(findMember.getId()).setRole(findMember.getRole());
+        // 기존 회원이면 조회, 없으면 생성
+        Member member = memberRepository.findByEmail(email)
+                .orElseGet(() -> memberRepository.save(
+                        Member.builder()
+                                .username(name)
+                                .email(email)
+                                .build()
+                ));
+        return new MemberDetails(member, oAuth2User.getAttributes());
     }
 
     public Optional<Member> findById(Long id) {
@@ -50,14 +55,12 @@ public class MemberService extends DefaultOAuth2UserService {
 
     public Member getById(Long id) {
         return findById(id)
-                .orElseThrow(
-                        () -> new NoSuchElementException()
-                );
+                .orElseThrow(NoSuchElementException::new);
     }
 
-    public MemberPrincipalDetails getMemberDetailsById(Long id) {
+    public MemberDetails getMemberDetailsById(Long id) {
         Member findMember = getById(id);
-        return MemberPrincipalDetails.from(findMember);
+        return new MemberDetails(findMember);
     }
 
 

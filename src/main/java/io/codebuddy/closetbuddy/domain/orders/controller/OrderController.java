@@ -1,6 +1,6 @@
 package io.codebuddy.closetbuddy.domain.orders.controller;
 
-import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberPrincipalDetails;
+import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberDetails;
 import io.codebuddy.closetbuddy.domain.orders.dto.request.OrderRequestDto;
 import io.codebuddy.closetbuddy.domain.orders.dto.response.OrderDetailResponseDto;
 import io.codebuddy.closetbuddy.domain.orders.dto.response.OrderResponseDto;
@@ -38,7 +38,7 @@ public class OrderController {
      */
     @GetMapping("/orderList")
     public ResponseEntity<List<OrderResponseDto>> getOrder(
-            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipal
+            @AuthenticationPrincipal MemberDetails memberPrincipal
     ){
         Long memberId = memberPrincipal.getMember().getId();
         List<OrderResponseDto> orderResponseDto = orderService.getOrder(memberId);

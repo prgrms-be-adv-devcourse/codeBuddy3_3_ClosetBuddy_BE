@@ -1,6 +1,6 @@
 package io.codebuddy.closetbuddy.domain.products.controller;
 
-import io.codebuddy.closetbuddy.domain.oauth.dto.MemberPrincipalDetails;
+import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberDetails;
 import io.codebuddy.closetbuddy.domain.products.model.dto.ProductResponse;
 import io.codebuddy.closetbuddy.domain.products.model.dto.UpdateProductRequest;
 import io.codebuddy.closetbuddy.domain.products.model.dto.ProductCreateRequest;
@@ -46,7 +46,7 @@ public class ProductApiController {
     @PostMapping("/stores/{storeId}/products")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Long> create(
-            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipalDetails,
+            @AuthenticationPrincipal MemberDetails memberPrincipalDetails,
             @PathVariable Long storeId,
             @RequestBody @Valid ProductCreateRequest request
     ) {
@@ -121,7 +121,7 @@ public class ProductApiController {
     })
     @PutMapping("products/{productId}")
     public ResponseEntity<ProductResponse> updateProduct(
-            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipalDetails,
+            @AuthenticationPrincipal MemberDetails memberPrincipalDetails,
             @PathVariable Long productId,
             @RequestBody @Valid UpdateProductRequest request
     ) {
@@ -147,7 +147,7 @@ public class ProductApiController {
     @DeleteMapping("products/{productId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteProduct(
-            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipalDetails,
+            @AuthenticationPrincipal MemberDetails memberPrincipalDetails,
             @PathVariable Long productId
     ) {
         productService.deleteProduct(memberPrincipalDetails.getId(), productId);

@@ -3,7 +3,7 @@ package io.codebuddy.closetbuddy.domain.form.Login.security.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.codebuddy.closetbuddy.domain.common.app.JwtTokenProvider;
 import io.codebuddy.closetbuddy.domain.common.model.dto.TokenPair;
-import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberPrincipalDetails;
+import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberDetails;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,7 +25,7 @@ public class MemberAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
-        MemberPrincipalDetails principal = (MemberPrincipalDetails) authentication.getPrincipal();
+        MemberDetails principal = (MemberDetails) authentication.getPrincipal();
         TokenPair tokenPair = jwtTokenProvider.generateTokenPair(principal.getMember());
 
         response.setStatus(HttpServletResponse.SC_OK);

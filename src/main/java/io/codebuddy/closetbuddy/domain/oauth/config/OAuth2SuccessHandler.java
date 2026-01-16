@@ -1,6 +1,6 @@
 package io.codebuddy.closetbuddy.domain.oauth.config;
 
-import io.codebuddy.closetbuddy.domain.oauth.dto.MemberPrincipalDetails;
+import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberDetails;
 import io.codebuddy.closetbuddy.domain.common.model.dto.TokenPair;
 import io.codebuddy.closetbuddy.domain.common.app.JwtTokenProvider;
 import io.codebuddy.closetbuddy.domain.oauth.service.MemberService ;
@@ -37,7 +37,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
 
-        MemberPrincipalDetails principal = (MemberPrincipalDetails) authentication.getPrincipal();
+        MemberDetails principal = (MemberDetails) authentication.getPrincipal();
         Member findMember = memberService.getById(principal.getId());
 
         HashMap<String, String> params = new HashMap<>();

@@ -1,7 +1,7 @@
 package io.codebuddy.closetbuddy.domain.sellers.controller;
 
 
-import io.codebuddy.closetbuddy.domain.oauth.dto.MemberPrincipalDetails;
+import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberDetails;
 import io.codebuddy.closetbuddy.domain.sellers.model.dto.SellerResponse;
 import io.codebuddy.closetbuddy.domain.sellers.model.dto.SellerUpsertRequest;
 import io.codebuddy.closetbuddy.domain.sellers.service.SellerService;
@@ -45,7 +45,7 @@ public class SellerApiController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Long> register(
-            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipalDetails,
+            @AuthenticationPrincipal MemberDetails memberPrincipalDetails,
             @RequestBody @Valid SellerUpsertRequest request
     ) {
         Long sellerId = sellerService.registerSeller(memberPrincipalDetails.getId(), request);
@@ -69,7 +69,7 @@ public class SellerApiController {
     })
     @GetMapping("/me")
     public ResponseEntity<SellerResponse> getMyInfo(
-            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipalDetails
+            @AuthenticationPrincipal MemberDetails memberPrincipalDetails
     ) {
         SellerResponse response = sellerService.getSellerInfo(memberPrincipalDetails.getId());
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -92,7 +92,7 @@ public class SellerApiController {
     })
     @PutMapping("/me")
     public ResponseEntity<Void> update(
-            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipalDetails,
+            @AuthenticationPrincipal MemberDetails memberPrincipalDetails,
             @RequestBody @Valid SellerUpsertRequest request
     ) {
         sellerService.updateSeller(memberPrincipalDetails.getId(), request);
@@ -116,7 +116,7 @@ public class SellerApiController {
     })
     @DeleteMapping("/me")
     public ResponseEntity<Void> unregister(
-            @AuthenticationPrincipal MemberPrincipalDetails memberPrincipalDetails
+            @AuthenticationPrincipal MemberDetails memberPrincipalDetails
     ) {
         sellerService.unregisterSeller(memberPrincipalDetails.getId());
         return ResponseEntity.noContent().build();
