@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/catalog/sellers")
+@RequestMapping("/api/v1/catalog/sellers")
 public class SellerApiController {
 
     private final SellerService sellerService;
