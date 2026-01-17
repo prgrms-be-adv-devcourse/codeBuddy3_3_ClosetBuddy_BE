@@ -76,7 +76,7 @@ public class SecurityConfig {
                         .loginProcessingUrl("/api/v1/auth/login")
                         .successHandler(memberAuthSuccessHandler)
                         .failureHandler(memberAuthFailureHandler)
-                        .usernameParameter("userid")
+                        .usernameParameter("memberId")
                         .passwordParameter("password")
                         .permitAll()
                 )
