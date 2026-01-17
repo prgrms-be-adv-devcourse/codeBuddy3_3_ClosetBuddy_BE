@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/catalog")
+@RequestMapping("/api/v1/catalog")
 public class ProductApiController {
 
     private final ProductService productService;
@@ -92,7 +92,7 @@ public class ProductApiController {
             )
     })
     //특정 상점의 상품 목록 조회
-    @GetMapping("/stores/{storeId}/products")
+    @GetMapping("/products/{storeId}/products")
     public ResponseEntity<List<ProductResponse>> getProductsByStore(
             @PathVariable Long storeId
     ) {

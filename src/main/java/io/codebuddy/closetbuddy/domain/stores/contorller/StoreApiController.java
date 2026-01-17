@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/catalog")
+@RequestMapping("/api/v1/catalog")
 public class StoreApiController {
 
     private final StoreService storeService;
