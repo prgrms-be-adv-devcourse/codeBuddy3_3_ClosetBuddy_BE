@@ -1,6 +1,6 @@
 package io.codebuddy.closetbuddy.domain.payments.controller;
 
-import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberDetails;
+import io.codebuddy.closetbuddy.domain.common.security.auth.MemberDetails;
 import io.codebuddy.closetbuddy.domain.payments.model.vo.PaymentRequest;
 import io.codebuddy.closetbuddy.domain.payments.model.vo.PaymentResponse;
 import io.codebuddy.closetbuddy.domain.payments.service.PaymentService;

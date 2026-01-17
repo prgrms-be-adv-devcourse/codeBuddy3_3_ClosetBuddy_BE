@@ -1,7 +1,8 @@
-package io.codebuddy.closetbuddy.domain.form.Login.security.auth;
+package io.codebuddy.closetbuddy.domain.form.login.security.auth;
 
 import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import io.codebuddy.closetbuddy.domain.common.repository.MemberRepository;
+import io.codebuddy.closetbuddy.domain.common.security.auth.MemberDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,7 +19,7 @@ public class MemberPrincipalDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Member member = memberRepository.findByUserid(username)
+        Member member = memberRepository.findByMemberId(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
         System.out.println("username : " + username);
         System.out.println("id : " + member);

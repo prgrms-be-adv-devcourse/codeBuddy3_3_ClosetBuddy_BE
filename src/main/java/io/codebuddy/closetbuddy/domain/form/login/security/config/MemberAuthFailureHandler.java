@@ -1,4 +1,4 @@
-package io.codebuddy.closetbuddy.domain.form.Login.security.config;
+package io.codebuddy.closetbuddy.domain.form.login.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;

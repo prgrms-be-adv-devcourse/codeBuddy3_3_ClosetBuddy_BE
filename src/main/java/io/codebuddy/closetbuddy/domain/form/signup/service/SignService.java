@@ -19,7 +19,7 @@ public class SignService {
 
         Member loginmember = Member.builder()
                 .username(userReqDTO.getUsername())
-                .userid(userReqDTO.getUserid())
+                .memberId(userReqDTO.getMemberId())
                 .email(userReqDTO.getEmail())
                 .password(passwordEncoder.encode(userReqDTO.getPassword()))
                 .address(userReqDTO.getAddress())

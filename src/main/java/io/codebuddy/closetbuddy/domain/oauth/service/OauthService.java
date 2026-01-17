@@ -1,6 +1,7 @@
 package io.codebuddy.closetbuddy.domain.oauth.service;
 
-import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberDetails;
+import io.codebuddy.closetbuddy.domain.common.model.dto.Role;
+import io.codebuddy.closetbuddy.domain.common.security.auth.MemberDetails;
 import io.codebuddy.closetbuddy.domain.common.repository.MemberRepository;
 import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class MemberService extends DefaultOAuth2UserService {
+public class OauthService extends DefaultOAuth2UserService {
 
     private final MemberRepository memberRepository;
 
@@ -43,7 +44,10 @@ public class MemberService extends DefaultOAuth2UserService {
                 .orElseGet(() -> memberRepository.save(
                         Member.builder()
                                 .username(name)
+                                .memberId(email)
                                 .email(email)
+                                .password("OAUTH_USER")
+                                .role(Role.MEMBER)
                                 .build()
                 ));
         return new MemberDetails(member, oAuth2User.getAttributes());

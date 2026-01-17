@@ -6,7 +6,7 @@ import lombok.Getter;
 public class UserReqDTO {
 
     private String username;
-    private String userid;
+    private String memberId;
     private String email;
     private String password;
     private String address;

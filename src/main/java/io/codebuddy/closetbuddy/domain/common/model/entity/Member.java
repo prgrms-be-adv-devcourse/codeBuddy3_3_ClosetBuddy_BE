@@ -19,7 +19,7 @@ public class Member {
     private String username;
 
     @Column(name = "member_id", nullable = false, unique = true)
-    private String userid;
+    private String memberId;
 
     @Column(name="member_email")
     private String email;
@@ -37,9 +37,9 @@ public class Member {
     private Role role;
 
     @Builder
-    public Member(String username, String userid, String email, String password, String address, String phone,  Role role) {
+    public Member(String username, String memberId, String email, String password, String address, String phone,  Role role) {
         this.username = username;
-        this.userid = userid;
+        this.memberId = memberId;
         this.email = email;
         this.password = password;
         this.address = address;

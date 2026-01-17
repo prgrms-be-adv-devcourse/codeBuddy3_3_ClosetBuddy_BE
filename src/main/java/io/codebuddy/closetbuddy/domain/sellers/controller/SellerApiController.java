@@ -1,7 +1,7 @@
 package io.codebuddy.closetbuddy.domain.sellers.controller;
 
 
-import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberDetails;
+import io.codebuddy.closetbuddy.domain.common.security.auth.MemberDetails;
 import io.codebuddy.closetbuddy.domain.sellers.model.dto.SellerResponse;
 import io.codebuddy.closetbuddy.domain.sellers.model.dto.SellerUpsertRequest;
 import io.codebuddy.closetbuddy.domain.sellers.service.SellerService;
@@ -21,36 +21,6 @@ import org.springframework.web.bind.annotation.*;
 public class SellerApiController {
 
     private final SellerService sellerService;
-
-    //member 도메인에서 처리할 api
-    //판매자 등록
-    @Operation(
-            summary = "판매자 등록",
-            description = "판매자를 등록합니다."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "201",
-                    description = "판매자 등록 완료"
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "잘못된 요청"
-            ),
-            @ApiResponse(
-                    responseCode = "409",
-                    description = "중복된 판매자 데이터"
-            )
-    })
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Long> register(
-            @AuthenticationPrincipal MemberDetails memberPrincipalDetails,
-            @RequestBody @Valid SellerUpsertRequest request
-    ) {
-        Long sellerId = sellerService.registerSeller(memberPrincipalDetails.getId(), request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(sellerId);
-    }
 
     //내 정보 조회
     @Operation(
