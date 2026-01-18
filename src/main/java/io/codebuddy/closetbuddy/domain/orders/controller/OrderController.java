@@ -90,15 +90,16 @@ public class OrderController {
      * 주문 내역의 상세 정보를 조회합니다.
      * @param orderId
      * @return
+     * OrderDetailResponseDto 를 반환합니다.
      */
     @Operation(
-            summary = "주문 생성",
-            description = "사용자의 주문 내역을 생성합니다."
+            summary = "주문 상세 정보 조회",
+            description = "주문 내역의 상세 정보를 조회합니다."
     )
     @ApiResponses(value = {
             @ApiResponse(
-                    responseCode = "201",
-                    description = "주문 생성 성공"
+                    responseCode = "200",
+                    description = "주문 상세 조회 성공"
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -120,33 +121,34 @@ public class OrderController {
 
 
     /**
-     * 주문 내역을 삭제합니다.
+     * 주문 내역을 취소합니다.
      * @param orderId
      * @return
      */
     @Operation(
-            summary = "주문 생성",
-            description = "사용자의 주문 내역을 생성합니다."
+            summary = "주문 취소",
+            description = "사용자의 주문 내역을 취소합니다."
     )
     @ApiResponses(value = {
             @ApiResponse(
-                    responseCode = "201",
-                    description = "주문 생성 성공"
+                    responseCode = "204",
+                    description = "주문 취소 성공"
             ),
             @ApiResponse(
                     responseCode = "400",
                     description = "잘못된 요청"
             ),
             @ApiResponse(
-                    responseCode = "409",
-                    description = "중복된 상품 데이터"
+                    responseCode = "404",
+                    description = "대상을 찾을 수 없음"
             )
     })
     @PatchMapping("/{orderId}/status")
     public ResponseEntity<Void> canceledOrder(
-            @PathVariable Long orderId
+            @PathVariable Long orderId,
+            @PathVariable Long memberId
     ){
-        orderService.cancelledOrder(orderId);
+        orderService.cancelledOrder(memberId, orderId);
         return ResponseEntity.ok().build();
     }
 }
