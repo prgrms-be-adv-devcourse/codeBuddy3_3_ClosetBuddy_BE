@@ -17,28 +17,6 @@ public class SellerService {
     private final SellerJpaRepository sellerJpaRepository;
     private final MemberRepository memberRepository;
 
-    //판매자 등록 서비스 로직
-    @Transactional
-    public Long registerSeller(Long loginMemberId, SellerUpsertRequest sellerUpsertRequest) {
-
-        //검증 1: 이미 판매자로 등록된 회원인지 조회
-        if(sellerJpaRepository.existsByMemberId(loginMemberId)) {
-            throw new IllegalStateException("이미 판매자로 등록된 회원입니다.");
-        }
-
-        //검증 2: 실제로 존재하는 회원인지 조회
-        Member member = memberRepository.findById(loginMemberId)
-                .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
-
-        //등록 : Member 정보를 넣어 Seller 생성
-        Seller seller = Seller.builder()
-                .member(member)
-                .sellerName(sellerUpsertRequest.sellerName())
-                .build();
-
-        return sellerJpaRepository.save(seller).getSellerId();
-    }
-
     //판매자 정보 조회 (Read)
     @Transactional(readOnly = true)
     public SellerResponse getSellerInfo(Long loginMemberId) {

@@ -1,9 +1,10 @@
 package io.codebuddy.closetbuddy.domain.common.config;
 
-import io.codebuddy.closetbuddy.domain.form.Login.security.config.MemberAuthFailureHandler;
-import io.codebuddy.closetbuddy.domain.form.Login.security.config.MemberAuthSuccessHandler;
-import io.codebuddy.closetbuddy.domain.form.Logout.config.ApiLogoutSuccessHandler;
-import io.codebuddy.closetbuddy.domain.form.Logout.config.JwtLogoutHandler;
+
+import io.codebuddy.closetbuddy.domain.form.login.security.config.MemberAuthFailureHandler;
+import io.codebuddy.closetbuddy.domain.form.login.security.config.MemberAuthSuccessHandler;
+import io.codebuddy.closetbuddy.domain.form.logout.config.ApiLogoutSuccessHandler;
+import io.codebuddy.closetbuddy.domain.form.logout.config.JwtLogoutHandler;
 import io.codebuddy.closetbuddy.domain.oauth.config.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -50,16 +51,19 @@ public class SecurityConfig {
 
 
         return http
-                .securityMatcher("/oauth2/**","login/oauth2/**", "/api/**","/api/v1/**")
+                .securityMatcher("/oauth2/**","/login/oauth2/**", "/api/**","/api/v1/**")
                 .authorizeHttpRequests((request) -> request
                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/v1/authc/**").permitAll()
-                        .requestMatchers("/login", "/", "/signUp").permitAll()
-                        .requestMatchers("/member").hasAnyAuthority("MEMBER")
-                        .requestMatchers("/admin").hasAnyAuthority("ADMIN")
-                        .requestMatchers("/guest").hasAnyAuthority("GUEST")
-                        .requestMatchers("/api/v1/**").permitAll() // 회원가입/로그인/토큰재발급 등
+                        .requestMatchers("/api/v1/payments/**").hasAnyAuthority("MEMBER", "SELLER")
+                        .requestMatchers("/api/v1/account/**").hasAnyAuthority("MEMBER", "SELLER")
+                        .requestMatchers("/api/v1/catalog/sellers/**").hasAnyAuthority("SELLER")
+                        .requestMatchers("/api/v1/catalog/stores/**").hasAnyAuthority("SELLER")
+                        .requestMatchers("/api/v1/catalog/products/**").hasAnyAuthority("GUEST")
+                        .requestMatchers("/api/v1/orders").hasAnyAuthority("MEMBER")
+                        .requestMatchers("/api/v1/carts").hasAnyAuthority("MEMBER")
+                        .requestMatchers("/api/v1/auth/refresh").hasAnyAuthority("MEMBER","SELLER")
                         .anyRequest().authenticated() //그외에는 인증 필요
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -72,7 +76,7 @@ public class SecurityConfig {
                         .loginProcessingUrl("/api/v1/auth/login")
                         .successHandler(memberAuthSuccessHandler)
                         .failureHandler(memberAuthFailureHandler)
-                        .usernameParameter("userid")
+                        .usernameParameter("memberId")
                         .passwordParameter("password")
                         .permitAll()
                 )

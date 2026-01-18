@@ -2,8 +2,7 @@ package io.codebuddy.closetbuddy.domain.form.controller;
 
 import io.codebuddy.closetbuddy.domain.common.app.JwtTokenProvider;
 import io.codebuddy.closetbuddy.domain.common.model.dto.UserReqDTO;
-import io.codebuddy.closetbuddy.domain.common.model.entity.Member;
-import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberDetails;
+import io.codebuddy.closetbuddy.domain.common.security.auth.MemberDetails;
 import io.codebuddy.closetbuddy.domain.form.signup.service.SignService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -40,11 +39,11 @@ public class LoginController {
     //회원가입
     @PostMapping("/authc")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Member> create(@RequestBody UserReqDTO userReqDTO) {
-        Member saved = signService.create(userReqDTO);
+    public ResponseEntity<String> create(@RequestBody UserReqDTO userReqDTO) {
+        signService.create(userReqDTO);
         return ResponseEntity.status(
                 HttpStatus.CREATED
-        ).body(saved);
+        ).body("회원가입 성공");
     }
 
     //로그인
@@ -53,7 +52,7 @@ public class LoginController {
 
         try {
             Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(userReqDTO.getUserid(), userReqDTO.getPassword())
+                    new UsernamePasswordAuthenticationToken(userReqDTO.getMemberId(), userReqDTO.getPassword())
             );
 
             MemberDetails userDetails = (MemberDetails) auth.getPrincipal(); //UserDetails를 구현한 객체가 가지고 있는 정보들을 가지고 옴

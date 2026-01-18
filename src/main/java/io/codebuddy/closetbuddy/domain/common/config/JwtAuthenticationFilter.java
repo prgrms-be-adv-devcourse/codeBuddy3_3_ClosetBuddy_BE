@@ -1,9 +1,9 @@
 package io.codebuddy.closetbuddy.domain.common.config;
 
-import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberDetails;
+import io.codebuddy.closetbuddy.domain.common.security.auth.MemberDetails;
 import io.codebuddy.closetbuddy.domain.common.model.dto.TokenBody;
 import io.codebuddy.closetbuddy.domain.common.app.JwtTokenProvider;
-import io.codebuddy.closetbuddy.domain.oauth.service.MemberService;
+import io.codebuddy.closetbuddy.domain.oauth.service.OauthService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,7 +27,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final MemberService memberService;
+    private final OauthService oauthService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -38,7 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if ( token != null && jwtTokenProvider.validate(token) ) {
 
             TokenBody tokenBody = jwtTokenProvider.parseJwt(token);
-            MemberDetails memberPrincipalDetails = memberService.getMemberDetailsById(tokenBody.getMemberId());
+            MemberDetails memberPrincipalDetails = oauthService.getMemberDetailsById(tokenBody.getMemberId());
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     memberPrincipalDetails, token, memberPrincipalDetails.getAuthorities()

@@ -1,6 +1,6 @@
 package io.codebuddy.closetbuddy.domain.products.controller;
 
-import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberDetails;
+import io.codebuddy.closetbuddy.domain.common.security.auth.MemberDetails;
 import io.codebuddy.closetbuddy.domain.products.model.dto.ProductResponse;
 import io.codebuddy.closetbuddy.domain.products.model.dto.UpdateProductRequest;
 import io.codebuddy.closetbuddy.domain.products.model.dto.ProductCreateRequest;

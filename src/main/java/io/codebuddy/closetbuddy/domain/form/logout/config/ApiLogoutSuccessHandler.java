@@ -1,4 +1,4 @@
-package io.codebuddy.closetbuddy.domain.form.Logout.config;
+package io.codebuddy.closetbuddy.domain.form.logout.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;

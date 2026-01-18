@@ -3,7 +3,7 @@ package io.codebuddy.closetbuddy.domain.accounts.controller;
 import io.codebuddy.closetbuddy.domain.accounts.model.dto.AccountCommand;
 import io.codebuddy.closetbuddy.domain.accounts.model.vo.*;
 import io.codebuddy.closetbuddy.domain.accounts.service.AccountService;
-import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberDetails;
+import io.codebuddy.closetbuddy.domain.common.security.auth.MemberDetails;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
-package io.codebuddy.closetbuddy.domain.form.Logout.config;
+package io.codebuddy.closetbuddy.domain.form.logout.config;
 
 import io.codebuddy.closetbuddy.domain.common.repository.TokenRepository;
-import io.codebuddy.closetbuddy.domain.form.Login.security.auth.MemberDetails;
+import io.codebuddy.closetbuddy.domain.common.security.auth.MemberDetails;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
